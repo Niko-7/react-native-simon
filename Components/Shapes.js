@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-const Shapes = () => {
+const Shapes = ({ screenSize }) => {
   const handlePress = (color) => {
     console.log(color);
   };
