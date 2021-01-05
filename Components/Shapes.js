@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
+import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 
 const Shapes = () => {
-  const [panels, setPanels] = useState(["red", "purple", "blue", "green"]);
+  const [panels, setPanels] = useState(['red', 'purple', 'blue', 'green']);
   const [canClick, setCanClick] = useState(false);
-  const [flashCol, setFlashCol] = useState("");
+  const [flashCol, setFlashCol] = useState('');
   const [sequence, setSequence] = useState([]);
   const [score, setScore] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -17,17 +17,18 @@ const Shapes = () => {
   };
 
   //Will Flash A Single Colour Panel
+  //Change Timeouts For Difficulty Levels
   const flash = (flashy) => {
     return new Promise((resolve, reject) => {
       setFlashCol(flashy);
       setTimeout(() => {
-        console.log("setTimeout 1");
-        setFlashCol("");
+        console.log('setTimeout 1');
+        setFlashCol('');
         setTimeout(() => {
-          console.log("setTimeout 2");
+          console.log('setTimeout 2');
           resolve();
         }, 250);
-      }, 800);
+      }, 750);
     });
   };
 
@@ -44,15 +45,9 @@ const Shapes = () => {
     gameplay(colour);
   };
 
-  // const betweenRounds = async () => {
-  //   alert("WELL DONE!");
-  //   await startFlashing();
-  // };
-
   let clonedSequence = [...sequence];
   //Game Logic Increment Sequence Every Round
   const gameplay = (panelPressed) => {
-    console.log(clonedSequence, "<----clonedsequence");
     const expectedPanel = clonedSequence.shift();
     if (expectedPanel === panelPressed) {
       if (clonedSequence.length === 0) {
@@ -74,23 +69,16 @@ const Shapes = () => {
   };
 
   useEffect(() => {
-    console.log(isPlaying);
     isPlaying && startFlashing();
-    console.log(sequence, "useEffect sequence");
   }, [sequence, score]);
 
-  // const startGame = () => {
-  //   setSequence([getRandomPanel()]);
-  //   startFlashing();
-  // };
-
   return (
-    <View nativeID="body">
+    <View nativeID='body'>
       <Text style={styles.title}>{`CURRENT HIGH SCORE: ${score}`}</Text>
 
       <Button
         style={styles.button}
-        title="start"
+        title='start'
         onPress={() => {
           setIsPlaying(true);
           setSequence([getRandomPanel()]);
@@ -100,12 +88,12 @@ const Shapes = () => {
         <View style={styles.topRow}>
           <TouchableOpacity
             activeOpacity={0.5}
-            onPress={() => handlePress("red")}
+            onPress={() => handlePress('red')}
           >
             <Text
-              nativeID="red"
+              nativeID='red'
               style={
-                flashCol === "red"
+                flashCol === 'red'
                   ? [styles.redFlash, styles.seg]
                   : [styles.redSeg, styles.seg]
               }
@@ -113,12 +101,12 @@ const Shapes = () => {
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.5}
-            onPress={() => handlePress("purple")}
+            onPress={() => handlePress('purple')}
           >
             <Text
-              nativeID="purple"
+              nativeID='purple'
               style={
-                flashCol === "purple"
+                flashCol === 'purple'
                   ? [styles.purpleFlash, styles.seg]
                   : [styles.purpleSeg, styles.seg]
               }
@@ -128,12 +116,12 @@ const Shapes = () => {
         <View style={styles.bottomRow}>
           <TouchableOpacity
             activeOpacity={0.5}
-            onPress={() => handlePress("blue")}
+            onPress={() => handlePress('blue')}
           >
             <Text
-              nativeID="blue"
+              nativeID='blue'
               style={
-                flashCol === "blue"
+                flashCol === 'blue'
                   ? [styles.blueFlash, styles.seg]
                   : [styles.blueSeg, styles.seg]
               }
@@ -141,12 +129,12 @@ const Shapes = () => {
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.5}
-            onPress={() => handlePress("green")}
+            onPress={() => handlePress('green')}
           >
             <Text
-              nativeID="green"
+              nativeID='green'
               style={
-                flashCol === "green"
+                flashCol === 'green'
                   ? [styles.greenFlash, styles.seg]
                   : [styles.greenSeg, styles.seg]
               }
@@ -162,60 +150,60 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 150,
     fontSize: 30,
-    color: "black",
+    color: 'black',
   },
   rowContainer: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   topRow: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "flex-end",
+    flexDirection: 'row',
+    alignItems: 'flex-end',
   },
   bottomRow: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   redSeg: {
-    backgroundColor: "red",
+    backgroundColor: 'red',
     borderTopLeftRadius: 150,
   },
   purpleSeg: {
-    backgroundColor: "purple",
+    backgroundColor: 'purple',
     borderTopRightRadius: 150,
   },
   blueSeg: {
-    backgroundColor: "blue",
+    backgroundColor: 'blue',
     borderBottomLeftRadius: 150,
   },
   greenSeg: {
-    backgroundColor: "green",
+    backgroundColor: 'green',
     borderBottomRightRadius: 150,
   },
   seg: {
     width: 150,
     height: 150,
-    borderColor: "black",
-    borderStyle: "solid",
+    borderColor: 'black',
+    borderStyle: 'solid',
     borderWidth: 3,
   },
   redFlash: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderTopLeftRadius: 150,
   },
   blueFlash: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderBottomLeftRadius: 150,
   },
   purpleFlash: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderTopRightRadius: 150,
   },
   greenFlash: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderBottomRightRadius: 150,
   },
   button: {
