@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
-import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
 
 const Shapes = () => {
-  const [panels, setPanels] = useState(['red', 'yellow', 'blue', 'green']);
+  const [panels, setPanels] = useState(["red", "purple", "blue", "green"]);
   const [canClick, setCanClick] = useState(false);
-  const [flashCol, setFlashCol] = useState('');
-  const [sequence, setSequence] = useState(['red', 'yellow', 'blue', 'green']);
+  const [flashCol, setFlashCol] = useState("");
+  const [sequence, setSequence] = useState([]);
+  const [score, setScore] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   //Will Give You A Random Colour Panel
   const getRandomPanel = () => {
@@ -19,8 +21,10 @@ const Shapes = () => {
     return new Promise((resolve, reject) => {
       setFlashCol(flashy);
       setTimeout(() => {
-        setFlashCol();
+        console.log("setTimeout 1");
+        setFlashCol("");
         setTimeout(() => {
+          console.log("setTimeout 2");
           resolve();
         }, 250);
       }, 800);
@@ -40,144 +44,182 @@ const Shapes = () => {
     gameplay(colour);
   };
 
+  // const betweenRounds = async () => {
+  //   alert("WELL DONE!");
+  //   await startFlashing();
+  // };
+
   let clonedSequence = [...sequence];
   //Game Logic Increment Sequence Every Round
   const gameplay = (panelPressed) => {
+    console.log(clonedSequence, "<----clonedsequence");
     const expectedPanel = clonedSequence.shift();
     if (expectedPanel === panelPressed) {
       if (clonedSequence.length === 0) {
         //start new round
-        setSequence([...sequence, getRandomPanel()]);
-        startFlashing();
+
+        // betweenRounds();
+        setTimeout(() => {
+          setSequence([...sequence, getRandomPanel()]);
+          // startFlashing();
+        }, 1000);
       }
     } else {
       // end game
-      alert(`GAME OVER \n You Scored ${sequence.length - 1} points`);
+      const finalScore = sequence.length - 1;
+      alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
+      setScore(finalScore);
+      setIsPlaying(false);
     }
   };
 
   useEffect(() => {
-    console.log(sequence);
-    startFlashing();
-  }, [sequence]);
+    console.log(isPlaying);
+    isPlaying && startFlashing();
+    console.log(sequence, "useEffect sequence");
+  }, [sequence, score]);
+
+  // const startGame = () => {
+  //   setSequence([getRandomPanel()]);
+  //   startFlashing();
+  // };
 
   return (
-    <View style={styles.rowContainer}>
-      <View style={styles.topRow}>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => handlePress('red')}
-        >
-          <Text
-            nativeID='red'
-            style={
-              flashCol === 'red'
-                ? [styles.redFlash, styles.seg]
-                : [styles.redSeg, styles.seg]
-            }
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => handlePress('purple')}
-        >
-          <Text
-            nativeID='purple'
-            style={
-              flashCol === 'purple'
-                ? [styles.purpleFlash, styles.seg]
-                : [styles.purpleSeg, styles.seg]
-            }
-          />
-        </TouchableOpacity>
+    <View nativeID="body">
+      <Text style={styles.title}>{`CURRENT HIGH SCORE: ${score}`}</Text>
+
+      <Button
+        style={styles.button}
+        title="start"
+        onPress={() => {
+          setIsPlaying(true);
+          setSequence([getRandomPanel()]);
+        }}
+      />
+      <View style={styles.rowContainer}>
+        <View style={styles.topRow}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => handlePress("red")}
+          >
+            <Text
+              nativeID="red"
+              style={
+                flashCol === "red"
+                  ? [styles.redFlash, styles.seg]
+                  : [styles.redSeg, styles.seg]
+              }
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => handlePress("purple")}
+          >
+            <Text
+              nativeID="purple"
+              style={
+                flashCol === "purple"
+                  ? [styles.purpleFlash, styles.seg]
+                  : [styles.purpleSeg, styles.seg]
+              }
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.bottomRow}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => handlePress("blue")}
+          >
+            <Text
+              nativeID="blue"
+              style={
+                flashCol === "blue"
+                  ? [styles.blueFlash, styles.seg]
+                  : [styles.blueSeg, styles.seg]
+              }
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => handlePress("green")}
+          >
+            <Text
+              nativeID="green"
+              style={
+                flashCol === "green"
+                  ? [styles.greenFlash, styles.seg]
+                  : [styles.greenSeg, styles.seg]
+              }
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.bottomRow}>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => handlePress('blue')}
-        >
-          <Text
-            nativeID='blue'
-            style={
-              flashCol === 'blue'
-                ? [styles.blueFlash, styles.seg]
-                : [styles.blueSeg, styles.seg]
-            }
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => handlePress('green')}
-        >
-          <Text
-            nativeID='green'
-            style={
-              flashCol === 'green'
-                ? [styles.greenFlash, styles.seg]
-                : [styles.greenSeg, styles.seg]
-            }
-          />
-        </TouchableOpacity>
-      </View>
-      <Button title='start' onPress={() => setSequence([getRandomPanel()])} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  title: {
+    marginTop: 150,
+    fontSize: 30,
+    color: "black",
+  },
   rowContainer: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
   topRow: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
+    flexDirection: "row",
+    alignItems: "flex-end",
   },
   bottomRow: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   redSeg: {
-    backgroundColor: 'red',
+    backgroundColor: "red",
     borderTopLeftRadius: 150,
   },
   purpleSeg: {
-    backgroundColor: 'purple',
+    backgroundColor: "purple",
     borderTopRightRadius: 150,
   },
   blueSeg: {
-    backgroundColor: 'blue',
+    backgroundColor: "blue",
     borderBottomLeftRadius: 150,
   },
   greenSeg: {
-    backgroundColor: 'green',
+    backgroundColor: "green",
     borderBottomRightRadius: 150,
   },
   seg: {
     width: 150,
     height: 150,
-    borderColor: 'black',
-    borderStyle: 'solid',
+    borderColor: "black",
+    borderStyle: "solid",
     borderWidth: 3,
   },
   redFlash: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderTopLeftRadius: 150,
   },
   blueFlash: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderBottomLeftRadius: 150,
   },
-  yellowFlash: {
-    backgroundColor: 'white',
+  purpleFlash: {
+    backgroundColor: "white",
     borderTopRightRadius: 150,
   },
   greenFlash: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderBottomRightRadius: 150,
+  },
+  button: {
+    marginBottom: 60,
   },
 });
 
