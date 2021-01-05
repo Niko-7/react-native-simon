@@ -5,6 +5,7 @@ import Menu from './Components/Menu';
 import Shapes from './Components/Shapes';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import Splash from './Components/Splash';
 
 const Stack = createStackNavigator();
 
@@ -12,6 +13,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+          name="Splash"
+          component={Splash}
+          options={{ title: 'Simon Says' }}
+        />
         <Stack.Screen
           name="Menu"
           component={Menu}

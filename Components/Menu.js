@@ -5,7 +5,7 @@ import { View, StyleSheet, TextInput, Button, Keyboard } from 'react-native';
 const Menu = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [purpose, setPurpose] = useState('');
-  const [menuView, setMenuView] = useState('start');
+  const [menuView, setMenuView] = useState('username');
   const [emptyField, setEmptyField] = useState('false');
 
   const handleUsernameNext = () => {
@@ -17,11 +17,15 @@ const Menu = ({ navigation }) => {
     }
   };
 
+  const handleUsernameBack = () => {
+    setMenuView('start');
+  };
+  const handlePurposeBack = () => {
+    setMenuView('username');
+  };
+
   return (
     <View style={styles.menuContainer}>
-      {menuView === 'start' && (
-        <Button title="Start" onPress={() => setMenuView('username')} />
-      )}
       {menuView === 'username' && (
         <View>
           <TextInput
@@ -30,12 +34,14 @@ const Menu = ({ navigation }) => {
             placeholder="What is your name?"
             maxLength={20}
             onBlur={Keyboard.dismiss}
+            required
           />
           <Button
             title="Next"
             style={styles.nextButton}
             onPress={handleUsernameNext}
           />
+          <Button title="Back" onPress={handleUsernameBack} />
         </View>
       )}
       {menuView === 'purpose' && (
@@ -46,11 +52,17 @@ const Menu = ({ navigation }) => {
             placeholder="What are you playing for?"
             maxLength={20}
             onBlur={Keyboard.dismiss}
+            required
           />
           <Button
             title="Play"
             style={styles.nextButton}
             onPress={() => navigation.navigate('Shapes')}
+          />
+          <Button
+            title="Back"
+            style={styles.backButton}
+            onPress={handlePurposeBack}
           />
         </View>
       )}
@@ -74,7 +86,8 @@ const styles = StyleSheet.create({
     fontSize: 'large',
     padding: 0
   },
-  nextButton: { margin: 1 }
+  nextButton: { margin: 5 },
+  backButton: { marginTop: 5 }
 });
 
 export default Menu;
