@@ -79,14 +79,14 @@ const Shapes = () => {
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.5}
-          onPress={() => handlePress('yellow')}
+          onPress={() => handlePress('purple')}
         >
           <Text
-            nativeID='yellow'
+            nativeID='purple'
             style={
-              flashCol === 'yellow'
-                ? [styles.yellowFlash, styles.seg]
-                : [styles.yellowSeg, styles.seg]
+              flashCol === 'purple'
+                ? [styles.purpleFlash, styles.seg]
+                : [styles.purpleSeg, styles.seg]
             }
           />
         </TouchableOpacity>
@@ -144,8 +144,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     borderTopLeftRadius: 150,
   },
-  yellowSeg: {
-    backgroundColor: 'yellow',
+  purpleSeg: {
+    backgroundColor: 'purple',
     borderTopRightRadius: 150,
   },
   blueSeg: {
