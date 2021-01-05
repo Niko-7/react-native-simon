@@ -6,6 +6,7 @@ import Shapes from './Components/Shapes';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Splash from './Components/Splash';
+import GameChoice from './Components/GameChoice';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,7 @@ export default function App() {
           component={Splash}
           options={{ title: 'Simon Says' }}
         />
+        <Stack.Screen name="GameChoice" component={GameChoice} />
         <Stack.Screen
           name="Menu"
           component={Menu}

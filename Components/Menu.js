@@ -3,25 +3,19 @@ import { useState } from 'react';
 import { View, StyleSheet, TextInput, Button, Keyboard } from 'react-native';
 
 const Menu = ({ navigation }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [purpose, setPurpose] = useState('');
   const [menuView, setMenuView] = useState('username');
   const [emptyField, setEmptyField] = useState('false');
 
-  const handleUsernameNext = () => {
-    if (username.length > 0) {
+  const handleLoginPress = () => {
+    if (email.length > 0 && password.length > 0) {
       setEmptyField(false);
-      setMenuView('purpose');
+      navigation.navigate('GameChoice');
     } else {
       setEmptyField(true);
     }
-  };
-
-  const handleUsernameBack = () => {
-    setMenuView('start');
-  };
-  const handlePurposeBack = () => {
-    setMenuView('username');
   };
 
   return (
@@ -30,21 +24,28 @@ const Menu = ({ navigation }) => {
         <View>
           <TextInput
             style={styles.textInput}
-            onChangeText={(text) => setUsername(text)}
-            placeholder="What is your name?"
+            onChangeText={(text) => setEmail(text)}
+            placeholder="Enter your email"
+            maxLength={20}
+            onBlur={Keyboard.dismiss}
+            required
+          />
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(text) => setPassword(text)}
+            placeholder="Enter your password"
             maxLength={20}
             onBlur={Keyboard.dismiss}
             required
           />
           <Button
-            title="Next"
-            style={styles.nextButton}
-            onPress={handleUsernameNext}
+            title="Login"
+            style={styles.loginButton}
+            onPress={handleLoginPress}
           />
-          <Button title="Back" onPress={handleUsernameBack} />
         </View>
       )}
-      {menuView === 'purpose' && (
+      {/* {menuView === 'purpose' && (
         <View>
           <TextInput
             style={styles.textInput}
@@ -56,16 +57,11 @@ const Menu = ({ navigation }) => {
           />
           <Button
             title="Play"
-            style={styles.nextButton}
+            style={styles.loginButton}
             onPress={() => navigation.navigate('Shapes')}
           />
-          <Button
-            title="Back"
-            style={styles.backButton}
-            onPress={handlePurposeBack}
-          />
         </View>
-      )}
+      )} */}
     </View>
   );
 };

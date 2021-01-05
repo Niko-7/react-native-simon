@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   splashContainer: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center'
   }
 });
