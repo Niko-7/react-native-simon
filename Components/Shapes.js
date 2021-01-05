@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableHighlight,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 
 const Shapes = () => {
   const [panels, setPanels] = useState(['red', 'yellow', 'blue', 'green']);
   const [canClick, setCanClick] = useState(false);
   const [flashCol, setFlashCol] = useState('');
-  const [sequence, setSequence] = useState(['red']);
+  const [sequence, setSequence] = useState(['red', 'yellow', 'blue', 'green']);
 
   //Will Give You A Random Colour Panel
   const getRandomPanel = () => {
@@ -46,14 +40,11 @@ const Shapes = () => {
     gameplay(colour);
   };
 
+  let clonedSequence = [...sequence];
+  //Game Logic Increment Sequence Every Round
   const gameplay = (panelPressed) => {
-    // console.log(panelPressed, 'panel click');
-    // if (!canClick) return;
-    const clonedSequence = [...sequence];
-    // console.log(clonedSequence, 'clone 46');
     const expectedPanel = clonedSequence.shift();
     if (expectedPanel === panelPressed) {
-      // console.log(clonedSequence, 'clone');
       if (clonedSequence.length === 0) {
         //start new round
         setSequence([...sequence, getRandomPanel()]);
@@ -61,11 +52,12 @@ const Shapes = () => {
       }
     } else {
       // end game
-      alert('GAME OVER');
+      alert(`GAME OVER \n You Scored ${sequence.length - 1} points`);
     }
   };
 
   useEffect(() => {
+    console.log(sequence);
     startFlashing();
   }, [sequence]);
 
@@ -127,6 +119,7 @@ const Shapes = () => {
           />
         </TouchableOpacity>
       </View>
+      <Button title='start' onPress={() => setSequence([getRandomPanel()])} />
     </View>
   );
 };
