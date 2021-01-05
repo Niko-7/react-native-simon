@@ -26,8 +26,10 @@ const Shapes = () => {
         setFlashCol();
 
         console.log("flash off");
-        resolve();
-        setTimeout(() => {}, 250);
+
+        setTimeout(() => {
+          resolve();
+        }, 250);
       }, 1000);
     });
   };
