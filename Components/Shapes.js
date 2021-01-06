@@ -55,19 +55,28 @@ const Shapes = () => {
     if (expectedPanel === panelPressed) {
       if (clonedSequence.length === 0) {
         //start new round
-
-        // betweenRounds();
         setTimeout(() => {
           setSequence([...sequence, getRandomPanel()]);
-          // startFlashing();
         }, 1000);
       }
     } else {
-      // end game
-      const finalScore = sequence.length - 1;
-      alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
-      setScore(finalScore);
-      setIsPlaying(false);
+      // end game and set score
+      if (difficulty === 'easy') {
+        const finalScore = sequence.length - 1;
+        alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
+        setScore(finalScore);
+        setIsPlaying(false);
+      } else if (difficulty === 'medium') {
+        const finalScore = 2 * sequence.length - 2;
+        alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
+        setScore(finalScore);
+        setIsPlaying(false);
+      } else if (difficulty === 'hard') {
+        const finalScore = 3 * sequence.length - 3;
+        alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
+        setScore(finalScore);
+        setIsPlaying(false);
+      }
     }
   };
 
@@ -78,7 +87,6 @@ const Shapes = () => {
   return (
     <View nativeID='body'>
       <Text style={styles.title}>{`CURRENT HIGH SCORE: ${score}`}</Text>
-
       <Button
         style={styles.button}
         title='start'
