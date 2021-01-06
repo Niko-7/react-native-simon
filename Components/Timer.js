@@ -1,20 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
-const Timer = ({ gameover, isActive, roundTime }) => {
-  const [seconds, setSeconds] = useState(3);
-
-  function reset() {
-    setSeconds(roundTime);
-  }
-
+const Timer = ({ gameover, isActive, setSeconds, seconds }) => {
   useEffect(() => {
     let interval = null;
     if (isActive) {
       interval = setInterval(() => {
         setSeconds((seconds) => seconds - 1);
         if (isActive && seconds === 0) {
-          reset();
           gameover();
         }
       }, 1000);
@@ -25,9 +18,7 @@ const Timer = ({ gameover, isActive, roundTime }) => {
   return (
     <View>
       <Text>{seconds}s</Text>
-      <View style={styles.row}>
-        {/* <Button title="Start" onPress={() => startTimer()}></Button> */}
-      </View>
+      <View style={styles.row}></View>
     </View>
   );
 };
