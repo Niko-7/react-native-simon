@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 
-const Timer = ({ gameover }) => {
+const Timer = ({ gameover, isActive, roundTime }) => {
   const [seconds, setSeconds] = useState(3);
-  const [isActive, setIsActive] = useState(false);
-
-  function startTimer() {
-    setIsActive(true);
-  }
 
   function reset() {
-    setSeconds(3);
-    setIsActive(false);
+    setSeconds(roundTime);
   }
 
   useEffect(() => {
@@ -32,10 +26,7 @@ const Timer = ({ gameover }) => {
     <View>
       <Text>{seconds}s</Text>
       <View style={styles.row}>
-        {/* <Button
-          title="Start"
-          onPress={() => startTimer()}
-        ></Button> */}
+        {/* <Button title="Start" onPress={() => startTimer()}></Button> */}
       </View>
     </View>
   );

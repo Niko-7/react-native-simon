@@ -12,6 +12,7 @@ const Shapes = () => {
   const [difficulty, setDifficulty] = useState("easy");
   const [flashTime, setFlashTime] = useState();
   const [betweenTime, setBetweenTime] = useState();
+  const [isActive, setIsActive] = useState(false);
 
   //Will Give You A Random Colour Panel
   const getRandomPanel = () => {
@@ -35,10 +36,6 @@ const Shapes = () => {
     });
   };
 
-  const triggerTimer = () => {
-    this.refs.Timer.startTimer();
-  };
-
   // async await expects a promise
   //Send The Sequence Of Colour To Flash
   const startFlashing = async () => {
@@ -46,14 +43,19 @@ const Shapes = () => {
       await flash(panel);
     }
     //start timer
-    await triggerTimer();
+    startTimer();
   };
+
+  function startTimer() {
+    setIsActive(true);
+  }
 
   const handlePress = (colour) => {
     gameplay(colour);
   };
 
   const gameover = () => {
+    setIsActive(false);
     if (difficulty === "easy") {
       const finalScore = sequence.length - 1;
       alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
@@ -78,6 +80,7 @@ const Shapes = () => {
     const expectedPanel = clonedSequence.shift();
     if (expectedPanel === panelPressed) {
       if (clonedSequence.length === 0) {
+        setIsActive(false);
         //start new round
         setTimeout(() => {
           setSequence([...sequence, getRandomPanel()]);
@@ -105,7 +108,13 @@ const Shapes = () => {
           setSequence([getRandomPanel()]);
         }}
       />
-      <Timer gameover={gameover} ref={triggerTimer} />
+      <Timer
+        gameover={gameover}
+        startTimer={startTimer}
+        isActive={isActive}
+        setIsActive={setIsActive}
+        roundTime={sequence.length * 5}
+      />
       <View style={styles.rowContainer}>
         <View style={styles.topRow}>
           <TouchableOpacity
