@@ -9,6 +9,9 @@ const Shapes = () => {
   const [sequence, setSequence] = useState([]);
   const [score, setScore] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [difficulty, setDifficulty] = useState('easy');
+  const [flashTime, setFlashTime] = useState();
+  const [betweenTime, setBetweenTime] = useState();
 
   //Will Give You A Random Colour Panel
   const getRandomPanel = () => {
@@ -20,15 +23,15 @@ const Shapes = () => {
   //Change Timeouts For Difficulty Levels
   const flash = (flashy) => {
     return new Promise((resolve, reject) => {
+      setCanClick(false);
       setFlashCol(flashy);
       setTimeout(() => {
-        console.log('setTimeout 1');
         setFlashCol('');
         setTimeout(() => {
-          console.log('setTimeout 2');
           resolve();
-        }, 250);
-      }, 750);
+          setCanClick(true);
+        }, betweenTime);
+      }, flashTime);
     });
   };
 
@@ -88,6 +91,7 @@ const Shapes = () => {
         <View style={styles.topRow}>
           <TouchableOpacity
             activeOpacity={0.5}
+            disabled={canClick ? null : true}
             onPress={() => handlePress('red')}
           >
             <Text
@@ -101,6 +105,7 @@ const Shapes = () => {
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.5}
+            disabled={canClick ? null : true}
             onPress={() => handlePress('purple')}
           >
             <Text
@@ -115,6 +120,7 @@ const Shapes = () => {
         </View>
         <View style={styles.bottomRow}>
           <TouchableOpacity
+            disabled={canClick ? null : true}
             activeOpacity={0.5}
             onPress={() => handlePress('blue')}
           >
@@ -128,6 +134,7 @@ const Shapes = () => {
             />
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={canClick ? null : true}
             activeOpacity={0.5}
             onPress={() => handlePress('green')}
           >
@@ -141,6 +148,33 @@ const Shapes = () => {
             />
           </TouchableOpacity>
         </View>
+      </View>
+      <View style={styles.buttons}>
+        <Button
+          title='easy'
+          onPress={() => {
+            setDifficulty('easy');
+            setBetweenTime(250);
+            setFlashTime(800);
+          }}
+        />
+        <Button
+          title='Normal'
+          onPress={() => {
+            setDifficulty('medium');
+            setBetweenTime(250);
+            setFlashTime(300);
+          }}
+        />
+        <Button
+          style
+          title='Hard'
+          onPress={() => {
+            setDifficulty('hard');
+            setBetweenTime(250);
+            setFlashTime(100);
+          }}
+        />
       </View>
     </View>
   );
