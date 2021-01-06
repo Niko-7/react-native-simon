@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import Shapes from "./Components/Shapes";
+import Timer from "./Components/Timer";
 
 export default function App() {
   return (
