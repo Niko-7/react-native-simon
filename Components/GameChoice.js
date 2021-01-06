@@ -1,11 +1,30 @@
 import React from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Button } from 'react-native-paper';
 
-const GameChoice = () => {
+const GameChoice = ({ navigation }) => {
   return (
     <View style={styles.gameChoiceContainer}>
-      <Button style={styles.button} title="Single Player" />
-      <Button style={styles.button} title="Multiplayer" />
+      <View style={styles.buttonsContainer}>
+        <View style={styles.buttons}>
+          <Button
+            mode="contained"
+            color="blue"
+            onPress={() => navigation.navigate('MenuSinglePlayer')}
+          >
+            Single Player
+          </Button>
+        </View>
+        <View style={styles.buttons}>
+          <Button
+            mode="contained"
+            color="blue"
+            onPress={() => navigation.navigate('MenuMultiplayer')}
+          >
+            Multiplayer
+          </Button>
+        </View>
+      </View>
     </View>
   );
 };
@@ -17,8 +36,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  button: {
-    minWidth: 500
+  buttonsContainer: {
+    width: '50%'
+  },
+  buttons: {
+    margin: 5
   }
 });
 
