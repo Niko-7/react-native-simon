@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
 import Timer from "./Timer";
 
@@ -36,17 +35,41 @@ const Shapes = () => {
     });
   };
 
+  const triggerTimer = () => {
+    this.refs.Timer.startTimer();
+  };
+
   // async await expects a promise
   //Send The Sequence Of Colour To Flash
   const startFlashing = async () => {
     for (const panel of sequence) {
       await flash(panel);
     }
+    //start timer
+    await triggerTimer();
   };
 
   const handlePress = (colour) => {
-    console.log(colour);
     gameplay(colour);
+  };
+
+  const gameover = () => {
+    if (difficulty === "easy") {
+      const finalScore = sequence.length - 1;
+      alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
+      setScore(finalScore);
+      setIsPlaying(false);
+    } else if (difficulty === "medium") {
+      const finalScore = 2 * sequence.length - 2;
+      alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
+      setScore(finalScore);
+      setIsPlaying(false);
+    } else if (difficulty === "hard") {
+      const finalScore = 3 * sequence.length - 3;
+      alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
+      setScore(finalScore);
+      setIsPlaying(false);
+    }
   };
 
   let clonedSequence = [...sequence];
@@ -58,26 +81,12 @@ const Shapes = () => {
         //start new round
         setTimeout(() => {
           setSequence([...sequence, getRandomPanel()]);
+          // reset the timer and start it counting again
         }, 1000);
       }
     } else {
       // end game and set score
-      if (difficulty === "easy") {
-        const finalScore = sequence.length - 1;
-        alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
-        setScore(finalScore);
-        setIsPlaying(false);
-      } else if (difficulty === "medium") {
-        const finalScore = 2 * sequence.length - 2;
-        alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
-        setScore(finalScore);
-        setIsPlaying(false);
-      } else if (difficulty === "hard") {
-        const finalScore = 3 * sequence.length - 3;
-        alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
-        setScore(finalScore);
-        setIsPlaying(false);
-      }
+      gameover();
     }
   };
 
@@ -96,7 +105,7 @@ const Shapes = () => {
           setSequence([getRandomPanel()]);
         }}
       />
-      <Timer />
+      <Timer gameover={gameover} ref={triggerTimer} />
       <View style={styles.rowContainer}>
         <View style={styles.topRow}>
           <TouchableOpacity

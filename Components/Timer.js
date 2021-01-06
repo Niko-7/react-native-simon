@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 
-const Timer = () => {
+const Timer = ({ gameover }) => {
   const [seconds, setSeconds] = useState(3);
   const [isActive, setIsActive] = useState(false);
 
-  function startGame() {
-    console.log(isActive, "isactive");
+  function startTimer() {
     setIsActive(true);
   }
 
   function reset() {
-    setSeconds(10);
+    setSeconds(3);
     setIsActive(false);
   }
 
@@ -22,6 +21,7 @@ const Timer = () => {
         setSeconds((seconds) => seconds - 1);
         if (isActive && seconds === 0) {
           reset();
+          gameover();
         }
       }, 1000);
     }
@@ -29,20 +29,12 @@ const Timer = () => {
   }, [isActive, seconds]);
 
   return (
-    <View style={styles.app}>
-      <View style={styles.time}>
-        <Text>{seconds}s</Text>
-      </View>
+    <View>
+      <Text>{seconds}s</Text>
       <View style={styles.row}>
         {/* <Button
-          style={[styles.button, styles.buttonPrimary]}
           title="Start"
-          onPress={() => startGame()}
-        ></Button>
-        <Button
-          style={styles.button}
-          onPress={() => reset()}
-          title="Reset"
+          onPress={() => startTimer()}
         ></Button> */}
       </View>
     </View>
@@ -55,6 +47,4 @@ const styles = StyleSheet.create({
   app: {},
   time: {},
   row: {},
-  button: {},
-  buttonPrimary: {},
 });
