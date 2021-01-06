@@ -49,7 +49,6 @@ const Signup = ({ route, navigation }) => {
 
   return (
     <View style={styles.signupContainer}>
-      {console.log(route)}
       <View style={styles.signupItems}>
         <TextInput
           style={styles.textInput}
