@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet } from "react-native";
 
 const Timer = ({ gameover, isActive, setSeconds, seconds }) => {
   useEffect(() => {
@@ -7,6 +7,7 @@ const Timer = ({ gameover, isActive, setSeconds, seconds }) => {
     if (isActive) {
       interval = setInterval(() => {
         setSeconds((seconds) => seconds - 1);
+
         if (isActive && seconds === 0) {
           gameover();
         }
@@ -25,8 +26,4 @@ const Timer = ({ gameover, isActive, setSeconds, seconds }) => {
 
 export default Timer;
 
-const styles = StyleSheet.create({
-  app: {},
-  time: {},
-  row: {},
-});
+const styles = StyleSheet.create({});
