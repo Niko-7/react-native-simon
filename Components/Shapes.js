@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import Timer from "./Timer";
-import { Button } from "react-native-paper";
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import Timer from './Timer';
+import { Button } from 'react-native-paper';
 
 const Shapes = ({ route }) => {
-  const [panels, setPanels] = useState(["red", "purple", "blue", "green"]);
+  const [panels, setPanels] = useState(['red', 'purple', 'blue', 'green']);
   const [canClick, setCanClick] = useState(false);
-  const [flashCol, setFlashCol] = useState("");
+  const [flashCol, setFlashCol] = useState('');
   const [sequence, setSequence] = useState([]);
   const [score, setScore] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -14,7 +14,7 @@ const Shapes = ({ route }) => {
   const [flashTime, setFlashTime] = useState(route.params.flashTime);
   const [betweenTime, setBetweenTime] = useState(route.params.betweenTime);
   const [isActive, setIsActive] = useState(false);
-  const [seconds, setSeconds] = useState();
+  const [seconds, setSeconds] = useState(0);
 
   //Will Give You A Random Colour Panel
   const getRandomPanel = () => {
@@ -29,7 +29,7 @@ const Shapes = ({ route }) => {
       setCanClick(false);
       setFlashCol(flashy);
       setTimeout(() => {
-        setFlashCol("");
+        setFlashCol('');
         setTimeout(() => {
           resolve();
           setCanClick(true);
@@ -63,17 +63,17 @@ const Shapes = ({ route }) => {
 
   const gameover = () => {
     setIsActive(false);
-    if (difficulty === "easy") {
+    if (difficulty === 'easy') {
       const finalScore = sequence.length - 1;
       alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
       setScore(finalScore);
       setIsPlaying(false);
-    } else if (difficulty === "medium") {
+    } else if (difficulty === 'normal') {
       const finalScore = 2 * sequence.length - 2;
       alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
       setScore(finalScore);
       setIsPlaying(false);
-    } else if (difficulty === "hard") {
+    } else if (difficulty === 'hard') {
       const finalScore = 3 * sequence.length - 3;
       alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
       setScore(finalScore);
@@ -114,7 +114,7 @@ const Shapes = ({ route }) => {
 
   return (
     <View style={styles.pageContainer}>
-      {console.log("cloned Sequence --->", clonedSequence)}
+      {console.log('cloned Sequence --->', clonedSequence)}
       <View style={styles.header}>
         <Text style={styles.title}>{`CURRENT HIGH SCORE: ${score}`}</Text>
         <View styles={styles.startButton}>
@@ -137,6 +137,7 @@ const Shapes = ({ route }) => {
             startTimer={startTimer}
             isActive={isActive}
             setIsActive={setIsActive}
+            sequenceLength={sequence.length}
             setSeconds={setSeconds}
             seconds={seconds}
           />
@@ -147,12 +148,12 @@ const Shapes = ({ route }) => {
           <TouchableOpacity
             activeOpacity={0.5}
             disabled={canClick ? null : true}
-            onPress={() => gameplay("red")}
+            onPress={() => gameplay('red')}
           >
             <Text
               nativeID="red"
               style={
-                flashCol === "red"
+                flashCol === 'red'
                   ? [styles.redFlash, styles.seg]
                   : [styles.redSeg, styles.seg]
               }
@@ -161,12 +162,12 @@ const Shapes = ({ route }) => {
           <TouchableOpacity
             activeOpacity={0.5}
             disabled={canClick ? null : true}
-            onPress={() => gameplay("purple")}
+            onPress={() => gameplay('purple')}
           >
             <Text
               nativeID="purple"
               style={
-                flashCol === "purple"
+                flashCol === 'purple'
                   ? [styles.purpleFlash, styles.seg]
                   : [styles.purpleSeg, styles.seg]
               }
@@ -177,12 +178,12 @@ const Shapes = ({ route }) => {
           <TouchableOpacity
             disabled={canClick ? null : true}
             activeOpacity={0.5}
-            onPress={() => gameplay("blue")}
+            onPress={() => gameplay('blue')}
           >
             <Text
               nativeID="blue"
               style={
-                flashCol === "blue"
+                flashCol === 'blue'
                   ? [styles.blueFlash, styles.seg]
                   : [styles.blueSeg, styles.seg]
               }
@@ -191,12 +192,12 @@ const Shapes = ({ route }) => {
           <TouchableOpacity
             disabled={canClick ? null : true}
             activeOpacity={0.5}
-            onPress={() => gameplay("green")}
+            onPress={() => gameplay('green')}
           >
             <Text
               nativeID="green"
               style={
-                flashCol === "green"
+                flashCol === 'green'
                   ? [styles.greenFlash, styles.seg]
                   : [styles.greenSeg, styles.seg]
               }
@@ -221,9 +222,9 @@ const Shapes = ({ route }) => {
 const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   header: {
     flex: 1,
@@ -235,62 +236,62 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     fontSize: 30,
-    color: "black",
+    color: 'black',
   },
   timer: {
     flex: 1,
   },
   rowContainer: {
     flex: 5,
-    flexDirection: "column",
-    justifyContent: "center",
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   topRow: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "flex-end",
+    flexDirection: 'row',
+    alignItems: 'flex-end',
   },
   bottomRow: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   redSeg: {
-    backgroundColor: "red",
+    backgroundColor: 'red',
     borderTopLeftRadius: 150,
   },
   purpleSeg: {
-    backgroundColor: "purple",
+    backgroundColor: 'purple',
     borderTopRightRadius: 150,
   },
   blueSeg: {
-    backgroundColor: "blue",
+    backgroundColor: 'blue',
     borderBottomLeftRadius: 150,
   },
   greenSeg: {
-    backgroundColor: "green",
+    backgroundColor: 'green',
     borderBottomRightRadius: 150,
   },
   seg: {
     width: 150,
     height: 150,
-    borderColor: "black",
-    borderStyle: "solid",
+    borderColor: 'black',
+    borderStyle: 'solid',
     borderWidth: 3,
   },
   redFlash: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderTopLeftRadius: 150,
   },
   blueFlash: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderBottomLeftRadius: 150,
   },
   purpleFlash: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderTopRightRadius: 150,
   },
   greenFlash: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderBottomRightRadius: 150,
   },
   buttons: {
