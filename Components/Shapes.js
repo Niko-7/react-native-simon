@@ -2,16 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import Timer from './Timer';
 
-const Shapes = () => {
+const Shapes = ({ route }) => {
   const [panels, setPanels] = useState(['red', 'purple', 'blue', 'green']);
   const [canClick, setCanClick] = useState(false);
   const [flashCol, setFlashCol] = useState('');
   const [sequence, setSequence] = useState([]);
   const [score, setScore] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [difficulty, setDifficulty] = useState('easy');
-  const [flashTime, setFlashTime] = useState();
-  const [betweenTime, setBetweenTime] = useState();
+  const [difficulty, setDifficulty] = useState(route.params.difficulty);
+  const [flashTime, setFlashTime] = useState(route.params.flashTime);
+  const [betweenTime, setBetweenTime] = useState(route.params.betweenTime);
   const [isActive, setIsActive] = useState(false);
   const [seconds, setSeconds] = useState();
 
@@ -105,7 +105,6 @@ const Shapes = () => {
   }, [sequence, score]);
 
   return (
-    // <View nativeID="body">
     <View style={styles.pageContainer}>
       <View style={styles.header}>
         <Text style={styles.title}>{`CURRENT HIGH SCORE: ${score}`}</Text>
@@ -193,35 +192,7 @@ const Shapes = () => {
           </TouchableOpacity>
         </View>
       </View>
-      {/* <View style={styles.buttons}>
-        <Button
-          title="easy"
-          onPress={() => {
-            setDifficulty("easy");
-            setBetweenTime(250);
-            setFlashTime(800);
-          }}
-        />
-        <Button
-          title="Normal"
-          onPress={() => {
-            setDifficulty("medium");
-            setBetweenTime(250);
-            setFlashTime(300);
-          }}
-        />
-        <Button
-          style
-          title="Hard"
-          onPress={() => {
-            setDifficulty("hard");
-            setBetweenTime(250);
-            setFlashTime(100);
-          }}
-        />
-      </View> */}
     </View>
-    // </View>
   );
 };
 
@@ -251,7 +222,6 @@ const styles = StyleSheet.create({
     flex: 5,
     flexDirection: 'column',
     justifyContent: 'center'
-    // alignItems: 'center'
   },
   topRow: {
     flex: 1,

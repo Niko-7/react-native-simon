@@ -12,7 +12,11 @@ const MenuSinglePlayer = ({ navigation }) => {
             mode="contained"
             color="blue"
             onPress={() =>
-              navigation.navigate('Shapes', { difficulty: 'easy' })
+              navigation.navigate('Shapes', {
+                difficulty: 'easy',
+                betweenTime: 250,
+                flashTime: 800
+              })
             }
           >
             Easy
@@ -23,7 +27,11 @@ const MenuSinglePlayer = ({ navigation }) => {
             mode="contained"
             color="blue"
             onPress={() =>
-              navigation.navigate('Shapes', { difficulty: 'normal' })
+              navigation.navigate('Shapes', {
+                difficulty: 'normal',
+                betweenTime: 250,
+                flashTime: 300
+              })
             }
           >
             Normal
@@ -34,7 +42,11 @@ const MenuSinglePlayer = ({ navigation }) => {
             mode="contained"
             color="blue"
             onPress={() =>
-              navigation.navigate('Shapes', { difficulty: 'hard' })
+              navigation.navigate('Shapes', {
+                difficulty: 'hard',
+                betweenTime: 250,
+                flashTime: 100
+              })
             }
           >
             Hard
