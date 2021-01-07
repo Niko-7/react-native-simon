@@ -17,72 +17,13 @@ export default function App() {
   return (
     <NavigationContainer>
       <PaperProvider>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Splash"
-            component={Splash}
-            options={{
-              title: '',
-              headerStyle: {
-                height: 0
-              }
-            }}
-          />
-          <Stack.Screen
-            name="Signup"
-            component={Signup}
-            options={{
-              title: '',
-              headerStyle: {
-                height: 0
-              },
-              headerTintColor: '#ffffff'
-            }}
-          />
-          <Stack.Screen
-            name="GameChoice"
-            component={GameChoice}
-            options={{
-              title: '',
-              headerStyle: {
-                height: 0
-              },
-              headerTintColor: '#ffffff'
-            }}
-          />
-          <Stack.Screen
-            name="MenuSinglePlayer"
-            component={MenuSinglePlayer}
-            options={{
-              title: '',
-              headerStyle: {
-                height: 0
-              },
-              headerTintColor: '#ffffff'
-            }}
-          />
-          <Stack.Screen
-            name="MenuMultiplayer"
-            component={MenuMultiplayer}
-            options={{
-              title: '',
-              headerStyle: {
-                height: 0
-              },
-              headerTintColor: '#ffffff'
-            }}
-          />
-          <Stack.Screen
-            name="Shapes"
-            component={Shapes}
-            options={{
-              title: '',
-              headerStyle: {
-                height: 0
-              },
-              headerTintColor: '#ffffff'
-            }}
-          />
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Splash" component={Splash} />
+          <Stack.Screen name="Signup" component={Signup} />
+          <Stack.Screen name="GameChoice" component={GameChoice} />
+          <Stack.Screen name="MenuSinglePlayer" component={MenuSinglePlayer} />
+          <Stack.Screen name="MenuMultiplayer" component={MenuMultiplayer} />
+          <Stack.Screen name="Shapes" component={Shapes} />
         </Stack.Navigator>
       </PaperProvider>
     </NavigationContainer>
