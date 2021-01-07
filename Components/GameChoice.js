@@ -5,7 +5,6 @@ import { Button } from 'react-native-paper';
 const GameChoice = ({ route, navigation }) => {
   return (
     <View style={styles.gameChoiceContainer}>
-      {console.log(route.params.user)}
       <View style={styles.buttonsContainer}>
         <View style={styles.buttons}>
           <Button
