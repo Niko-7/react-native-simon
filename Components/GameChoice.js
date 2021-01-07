@@ -2,9 +2,10 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
-const GameChoice = ({ navigation }) => {
+const GameChoice = ({ route, navigation }) => {
   return (
     <View style={styles.gameChoiceContainer}>
+      {console.log(route.params.user)}
       <View style={styles.buttonsContainer}>
         <View style={styles.buttons}>
           <Button
@@ -34,14 +35,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   buttonsContainer: {
-    width: '50%'
+    width: '50%',
   },
   buttons: {
-    margin: 5
-  }
+    margin: 5,
+  },
 });
 
 export default GameChoice;
