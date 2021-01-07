@@ -224,80 +224,80 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   header: {
     flex: 1,
-    marginTop: 150,
+    marginTop: 150
   },
   startButton: {
-    flex: 1,
+    flex: 1
   },
   title: {
     flex: 1,
     fontSize: 30,
-    color: 'black',
+    color: 'black'
   },
   timer: {
-    flex: 1,
+    flex: 1
   },
   rowContainer: {
     flex: 5,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   topRow: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'flex-end'
   },
   bottomRow: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   redSeg: {
     backgroundColor: 'red',
-    borderTopLeftRadius: 150,
+    borderTopLeftRadius: 150
   },
   purpleSeg: {
     backgroundColor: 'purple',
-    borderTopRightRadius: 150,
+    borderTopRightRadius: 150
   },
   blueSeg: {
     backgroundColor: 'blue',
-    borderBottomLeftRadius: 150,
+    borderBottomLeftRadius: 150
   },
   greenSeg: {
     backgroundColor: 'green',
-    borderBottomRightRadius: 150,
+    borderBottomRightRadius: 150
   },
   seg: {
     width: 150,
     height: 150,
     borderColor: 'black',
     borderStyle: 'solid',
-    borderWidth: 3,
+    borderWidth: 3
   },
   redFlash: {
     backgroundColor: 'white',
-    borderTopLeftRadius: 150,
+    borderTopLeftRadius: 150
   },
   blueFlash: {
     backgroundColor: 'white',
-    borderBottomLeftRadius: 150,
+    borderBottomLeftRadius: 150
   },
   purpleFlash: {
     backgroundColor: 'white',
-    borderTopRightRadius: 150,
+    borderTopRightRadius: 150
   },
   greenFlash: {
     backgroundColor: 'white',
-    borderBottomRightRadius: 150,
+    borderBottomRightRadius: 150
   },
   buttons: {
     marginTop: 20,
-    marginBottom: 60,
-  },
+    marginBottom: 60
+  }
 });
 
 export default Shapes;
