@@ -13,7 +13,6 @@ const Timer = ({
 
   useEffect(() => {
     let timeLeft = null;
-    setSecondsLeft(seconds);
     // If timer is actively counting down
     if (isTimerActive) {
       // interval is a variable - setSecondsLeft runs once
@@ -29,7 +28,11 @@ const Timer = ({
     }
     // returns the function - stops the setInterval.
     return () => clearInterval(timeLeft);
-  }, [isTimerActive, seconds]);
+  }, [isTimerActive, secondsLeft]);
+
+  useEffect(() => {
+    setSecondsLeft(seconds);
+  }, [seconds]);
 
   return <View>{isTimerActive && <Text>{secondsLeft}s</Text>}</View>;
 };

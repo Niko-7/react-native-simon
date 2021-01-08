@@ -18,12 +18,36 @@ export default function App() {
     <NavigationContainer>
       <PaperProvider>
         <Stack.Navigator>
-          <Stack.Screen name="Splash" component={Splash} />
-          <Stack.Screen name="Signup" component={Signup} />
-          <Stack.Screen name="GameChoice" component={GameChoice} />
-          <Stack.Screen name="MenuSinglePlayer" component={MenuSinglePlayer} />
-          <Stack.Screen name="MenuMultiplayer" component={MenuMultiplayer} />
-          <Stack.Screen name="Game" component={Game} />
+          <Stack.Screen
+            name="MenuSinglePlayer"
+            component={MenuSinglePlayer}
+            options={{ title: 'Argulympics' }}
+          />
+          <Stack.Screen
+            name="Splash"
+            component={Splash}
+            options={{ title: 'Argulympics' }}
+          />
+          <Stack.Screen
+            name="Signup"
+            component={Signup}
+            options={{ title: 'Argulympics' }}
+          />
+          <Stack.Screen
+            name="GameChoice"
+            component={GameChoice}
+            options={{ title: 'Argulympics' }}
+          />
+          <Stack.Screen
+            name="MenuMultiplayer"
+            component={MenuMultiplayer}
+            options={{ title: 'Argulympics' }}
+          />
+          <Stack.Screen
+            name="Game"
+            component={Game}
+            options={{ title: 'Argulympics' }}
+          />
         </Stack.Navigator>
       </PaperProvider>
     </NavigationContainer>
@@ -35,6 +59,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
+    justifyContent: 'center'
+  }
 });
