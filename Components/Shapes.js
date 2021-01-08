@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const Shapes = ({ params, gameplay, startTimer, isPlaying, sequence }) => {
   const [canClick, setCanClick] = useState(false);
-  const [flashCol, setFlashCol] = useState("");
+  const [flashCol, setFlashCol] = useState('');
   const [flashTime, setFlashTime] = useState(params.flashTime);
   const [betweenTime, setBetweenTime] = useState(params.betweenTime);
 
   useEffect(() => {
-    console.log("use");
     // setSequence([getRandomPanel()]);
     isPlaying && startFlashing();
   }, [isPlaying, sequence]);
@@ -16,12 +15,11 @@ const Shapes = ({ params, gameplay, startTimer, isPlaying, sequence }) => {
   //Will Flash A Single Colour Panel
   //Change Timeouts For Difficulty Levels
   const flash = (panel) => {
-    console.log(panel, "PANEL in FLASH");
     return new Promise((resolve, reject) => {
       setCanClick(false);
       setFlashCol(panel);
       setTimeout(() => {
-        setFlashCol("");
+        setFlashCol('');
         setTimeout(() => {
           resolve();
           setCanClick(true);
@@ -47,12 +45,12 @@ const Shapes = ({ params, gameplay, startTimer, isPlaying, sequence }) => {
           <TouchableOpacity
             activeOpacity={0.5}
             disabled={canClick ? null : true}
-            onPress={() => gameplay("red")}
+            onPress={() => gameplay('red')}
           >
             <Text
               nativeID="red"
               style={
-                flashCol === "red"
+                flashCol === 'red'
                   ? [styles.redFlash, styles.seg]
                   : [styles.redSeg, styles.seg]
               }
@@ -61,12 +59,12 @@ const Shapes = ({ params, gameplay, startTimer, isPlaying, sequence }) => {
           <TouchableOpacity
             activeOpacity={0.5}
             disabled={canClick ? null : true}
-            onPress={() => gameplay("purple")}
+            onPress={() => gameplay('purple')}
           >
             <Text
               nativeID="purple"
               style={
-                flashCol === "purple"
+                flashCol === 'purple'
                   ? [styles.purpleFlash, styles.seg]
                   : [styles.purpleSeg, styles.seg]
               }
@@ -77,12 +75,12 @@ const Shapes = ({ params, gameplay, startTimer, isPlaying, sequence }) => {
           <TouchableOpacity
             disabled={canClick ? null : true}
             activeOpacity={0.5}
-            onPress={() => gameplay("blue")}
+            onPress={() => gameplay('blue')}
           >
             <Text
               nativeID="blue"
               style={
-                flashCol === "blue"
+                flashCol === 'blue'
                   ? [styles.blueFlash, styles.seg]
                   : [styles.blueSeg, styles.seg]
               }
@@ -91,12 +89,12 @@ const Shapes = ({ params, gameplay, startTimer, isPlaying, sequence }) => {
           <TouchableOpacity
             disabled={canClick ? null : true}
             activeOpacity={0.5}
-            onPress={() => gameplay("green")}
+            onPress={() => gameplay('green')}
           >
             <Text
               nativeID="green"
               style={
-                flashCol === "green"
+                flashCol === 'green'
                   ? [styles.greenFlash, styles.seg]
                   : [styles.greenSeg, styles.seg]
               }
@@ -111,62 +109,62 @@ const Shapes = ({ params, gameplay, startTimer, isPlaying, sequence }) => {
 const styles = StyleSheet.create({
   shapesContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   rowContainer: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
+    flexDirection: 'column',
+    justifyContent: 'center'
   },
   topRow: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "flex-end",
+    flexDirection: 'row',
+    alignItems: 'flex-end'
   },
   bottomRow: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   redSeg: {
-    backgroundColor: "red",
-    borderTopLeftRadius: 150,
+    backgroundColor: 'red',
+    borderTopLeftRadius: 150
   },
   purpleSeg: {
-    backgroundColor: "purple",
-    borderTopRightRadius: 150,
+    backgroundColor: 'purple',
+    borderTopRightRadius: 150
   },
   blueSeg: {
-    backgroundColor: "blue",
-    borderBottomLeftRadius: 150,
+    backgroundColor: 'blue',
+    borderBottomLeftRadius: 150
   },
   greenSeg: {
-    backgroundColor: "green",
-    borderBottomRightRadius: 150,
+    backgroundColor: 'green',
+    borderBottomRightRadius: 150
   },
   seg: {
     width: 150,
     height: 150,
-    borderColor: "black",
-    borderStyle: "solid",
-    borderWidth: 3,
+    borderColor: 'black',
+    borderStyle: 'solid',
+    borderWidth: 3
   },
   redFlash: {
-    backgroundColor: "white",
-    borderTopLeftRadius: 150,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 150
   },
   blueFlash: {
-    backgroundColor: "white",
-    borderBottomLeftRadius: 150,
+    backgroundColor: 'white',
+    borderBottomLeftRadius: 150
   },
   purpleFlash: {
-    backgroundColor: "white",
-    borderTopRightRadius: 150,
+    backgroundColor: 'white',
+    borderTopRightRadius: 150
   },
   greenFlash: {
-    backgroundColor: "white",
-    borderBottomRightRadius: 150,
-  },
+    backgroundColor: 'white',
+    borderBottomRightRadius: 150
+  }
 });
 
 export default Shapes;

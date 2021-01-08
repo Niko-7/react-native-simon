@@ -18,11 +18,10 @@ export default function App() {
     <NavigationContainer>
       <PaperProvider>
         <Stack.Navigator>
-          <Stack.Screen name="MenuSinglePlayer" component={MenuSinglePlayer} />
           <Stack.Screen name="Splash" component={Splash} />
           <Stack.Screen name="Signup" component={Signup} />
           <Stack.Screen name="GameChoice" component={GameChoice} />
-
+          <Stack.Screen name="MenuSinglePlayer" component={MenuSinglePlayer} />
           <Stack.Screen name="MenuMultiplayer" component={MenuMultiplayer} />
           <Stack.Screen name="Game" component={Game} />
         </Stack.Navigator>

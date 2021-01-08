@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 const Timer = ({
   gameover,
   isTimerActive,
   sequence,
   seconds = 3,
-  setSeconds,
+  setSeconds
 }) => {
   // --> Possible states <--
   const [secondsLeft, setSecondsLeft] = useState(seconds);
@@ -22,7 +22,6 @@ const Timer = ({
       }, 1000);
 
       if (secondsLeft === 0) {
-        console.log("timer gameover");
         // gameover and stop the setInterval
         gameover();
         clearInterval(timeLeft);
@@ -32,11 +31,7 @@ const Timer = ({
     return () => clearInterval(timeLeft);
   }, [isTimerActive, seconds]);
 
-  return (
-    <View>
-      <Text>{secondsLeft}s</Text>
-    </View>
-  );
+  return <View>{isTimerActive && <Text>{secondsLeft}s</Text>}</View>;
 };
 
 export default Timer;

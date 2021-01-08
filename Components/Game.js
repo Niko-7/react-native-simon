@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Button } from "react-native-paper";
-import GameHeader from "./GameHeader";
-import Shapes from "./Shapes";
-import Timer from "./Timer";
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { Button } from 'react-native-paper';
+import GameHeader from './GameHeader';
+import Shapes from './Shapes';
+import Timer from './Timer';
 
 const Game = ({ route }) => {
   const { difficulty } = route.params;
   const { params } = route;
-  const [panels, setPanels] = useState(["red", "purple", "blue", "green"]);
+  const [panels, setPanels] = useState(['red', 'purple', 'blue', 'green']);
   const [sequence, setSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isTimerActive, setIsTimerActive] = useState(false);
@@ -37,13 +37,8 @@ const Game = ({ route }) => {
   const gameplay = (panelPressed) => {
     // Clone sequence to not mutate the sequence
     // let clonedSequence = [...sequence];
-    console.log(sequence, "SEQUENCE in GAME");
-    console.log(clonedSequence, "CLONEDsequence in GAME");
-    console.log(panelPressed, "PANEL pressed in GAME");
     // Get the first entry in clonedSequence array
     let expectedPanel = clonedSequence.shift();
-
-    console.log(expectedPanel, "expectedpanel");
 
     // If the pressed panel is the first panel in the array...
     // Gameplay is invoked again with the NEW first panel
@@ -64,7 +59,6 @@ const Game = ({ route }) => {
 
       // wrong panel is pressed...
     } else if (expectedPanel !== panelPressed) {
-      console.log("shapes gameover");
       // end game and resetSeconds timer
       gameover();
       resetSeconds();
@@ -77,17 +71,17 @@ const Game = ({ route }) => {
 
   const gameover = () => {
     setIsTimerActive(false);
-    if (difficulty === "easy") {
+    if (difficulty === 'easy') {
       const finalScore = sequence.length - 1;
       alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
       setScore(finalScore);
       setIsPlaying(false);
-    } else if (difficulty === "normal") {
+    } else if (difficulty === 'normal') {
       const finalScore = 2 * sequence.length - 2;
       alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
       setScore(finalScore);
       setIsPlaying(false);
-    } else if (difficulty === "hard") {
+    } else if (difficulty === 'hard') {
       const finalScore = 3 * sequence.length - 3;
       alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
       setScore(finalScore);
@@ -97,7 +91,6 @@ const Game = ({ route }) => {
 
   return (
     <View style={styles.gameContainer}>
-      {console.log("render")}
       <View style={styles.headerContainer}>
         <GameHeader score={score} />
       </View>
@@ -134,21 +127,21 @@ const Game = ({ route }) => {
 const styles = StyleSheet.create({
   gameContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   headerContainer: {
-    flex: 1,
+    flex: 1
   },
   buttonContainer: {
-    flex: 1,
+    flex: 1
   },
   timerContainer: {
-    flex: 1,
+    flex: 1
   },
   shapesContainer: {
-    flex: 7,
-  },
+    flex: 7
+  }
 });
 
 export default Game;
