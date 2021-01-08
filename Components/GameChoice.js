@@ -2,6 +2,8 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 
+import { firebase } from '../src/firebaseConfig';
+
 const GameChoice = ({ route, navigation }) => {
   return (
     <View style={styles.userInfo}>
@@ -15,8 +17,8 @@ const GameChoice = ({ route, navigation }) => {
         <View style={styles.buttonsContainer}>
           <Button
             style={styles.buttons}
-            mode='contained'
-            color='blue'
+            mode="contained"
+            color="blue"
             onPress={() => navigation.navigate('MenuSinglePlayer')}
           >
             Single Player
@@ -25,8 +27,8 @@ const GameChoice = ({ route, navigation }) => {
         <View style={styles.buttonsContainer}>
           <Button
             style={styles.buttons}
-            mode='contained'
-            color='blue'
+            mode="contained"
+            color="blue"
             onPress={() => navigation.navigate('MenuMultiplayer')}
           >
             Multiplayer
