@@ -36,7 +36,7 @@ const Splash = ({ navigation }) => {
             .get()
             .then((document) => {
               if (!document.exists) {
-                alert('Incorrect login details. \n Please try again.');
+                alert('Incorrect login details.\nPlease try again.');
                 return;
               }
 
