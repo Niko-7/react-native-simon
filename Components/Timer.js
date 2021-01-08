@@ -1,22 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
-const Timer = ({ gameover, isActive, seconds, setSeconds }) => {
+const Timer = ({
+  gameover,
+  isTimerActive,
+  sequence,
+  seconds = 3,
+  setSeconds
+}) => {
   // --> Possible states <--
+  const [secondsLeft, setSecondsLeft] = useState(seconds);
 
   useEffect(() => {
     let timeLeft = null;
-    // console.log("isActive", isActive);
+    setSecondsLeft(seconds);
     // If timer is actively counting down
-    if (isActive) {
-      // interval is a variable - setSeconds runs once
-
+    if (isTimerActive) {
+      // interval is a variable - setSecondsLeft runs once
       timeLeft = setInterval(() => {
-        setSeconds((seconds) => seconds - 1);
+        setSecondsLeft((secondsLeft) => secondsLeft - 1);
       }, 1000);
 
-      if (seconds === 0) {
-        console.log("timer gameover");
+      if (secondsLeft === 0) {
         // gameover and stop the setInterval
         gameover();
         clearInterval(timeLeft);
@@ -24,13 +29,9 @@ const Timer = ({ gameover, isActive, seconds, setSeconds }) => {
     }
     // returns the function - stops the setInterval.
     return () => clearInterval(timeLeft);
-  }, [isActive, seconds]);
+  }, [isTimerActive, seconds]);
 
-  return (
-    <View>
-      <Text>{seconds}s</Text>
-    </View>
-  );
+  return <View>{isTimerActive && <Text>{secondsLeft}s</Text>}</View>;
 };
 
 export default Timer;
