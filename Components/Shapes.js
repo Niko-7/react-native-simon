@@ -1,22 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const Shapes = ({ params, startTimer, isPlaying }) => {
+const Shapes = ({
+  params,
+  gameplay,
+  startTimer,
+  isPlaying,
+  sequence,
+  setSequence,
+  getRandomPanel
+}) => {
   const [canClick, setCanClick] = useState(false);
   const [flashCol, setFlashCol] = useState('');
-  const [difficulty] = useState(params.difficulty);
   const [flashTime, setFlashTime] = useState(params.flashTime);
   const [betweenTime, setBetweenTime] = useState(params.betweenTime);
 
   useEffect(() => {
     console.log('use');
-    // setSequence([getRandomPanel()]);
+    setSequence([getRandomPanel()]);
     isPlaying && startFlashing();
   }, [isPlaying]);
 
   //Will Flash A Single Colour Panel
   //Change Timeouts For Difficulty Levels
   const flash = (panel) => {
+    console.log(panel, 'PANEL in FLASH');
     return new Promise((resolve, reject) => {
       setCanClick(false);
       setFlashCol(panel);
@@ -39,10 +47,6 @@ const Shapes = ({ params, startTimer, isPlaying }) => {
     //start timer
     startTimer();
   };
-
-  function reset() {
-    setSeconds(sequence.length * 2);
-  }
 
   return (
     <View style={styles.shapesContainer}>

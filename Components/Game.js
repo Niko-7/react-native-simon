@@ -6,34 +6,40 @@ import Shapes from './Shapes';
 import Timer from './Timer';
 
 const Game = ({ route }) => {
+  const { difficulty } = route.params;
   const { params } = route;
   const [panels, setPanels] = useState(['red', 'purple', 'blue', 'green']);
+  const [sequence, setSequence] = useState([]);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isTimerActive, setIsTimerActive] = useState(false);
+  const [score, setScore] = useState(0);
+  const [seconds, setSeconds] = useState(3);
+
   //Will Give You A Random Colour Panel
   const getRandomPanel = () => {
     const panel = panels[parseInt(Math.random() * panels.length)];
     return panel;
   };
-  const [sequence, setSequence] = useState([getRandomPanel()]);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isTimerActive, setIsTimerActive] = useState(false);
 
   const handleStartPress = () => {
     setIsPlaying(true);
     setIsTimerActive(true);
+    setSequence([getRandomPanel()]);
   };
 
   function startTimer() {
     setIsTimerActive(true);
   }
 
-  // let clonedSequence = [...sequence];
+  let clonedSequence = [...sequence];
 
   //Game Logic Increment Sequence Every Round
   const gameplay = (panelPressed) => {
     // Clone sequence to not mutate the sequence
-    let clonedSequence = [...sequence];
-    console.log(clonedSequence, 'clonedSequence');
-    console.log(panelPressed, 'panel pressed');
+    // let clonedSequence = [...sequence];
+    console.log(sequence, 'SEQUENCE in GAME');
+    console.log(clonedSequence, 'CLONEDsequence in GAME');
+    console.log(panelPressed, 'PANEL pressed in GAME');
     // Get the first entry in clonedSequence array
     let expectedPanel = clonedSequence[0];
     clonedSequence.shift();
@@ -67,6 +73,10 @@ const Game = ({ route }) => {
     }
   };
 
+  function reset() {
+    setSeconds(sequence.length * 2);
+  }
+
   const gameover = () => {
     setIsTimerActive(false);
     if (difficulty === 'easy') {
@@ -91,7 +101,7 @@ const Game = ({ route }) => {
     <View style={styles.gameContainer}>
       {console.log('render')}
       <View style={styles.headerContainer}>
-        <GameHeader />
+        <GameHeader score={score} />
       </View>
       <View styles={styles.buttonContainer}>
         <Button onPress={handleStartPress} mode="contained" color="blue">
@@ -99,7 +109,13 @@ const Game = ({ route }) => {
         </Button>
       </View>
       <View style={styles.timerContainer}>
-        <Timer isTimerActive={isTimerActive} />
+        <Timer
+          isTimerActive={isTimerActive}
+          sequence={sequence}
+          seconds={seconds}
+          setSeconds={setSeconds}
+          gameover={gameover}
+        />
       </View>
       <View style={styles.shapesContainer}>
         <Shapes
@@ -107,6 +123,9 @@ const Game = ({ route }) => {
           gameover={gameover}
           startTimer={startTimer}
           isPlaying={isPlaying}
+          sequence={sequence}
+          getRandomPanel={getRandomPanel}
+          setSequence={setSequence}
           params={params}
         />
       </View>
