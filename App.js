@@ -19,11 +19,6 @@ export default function App() {
       <PaperProvider>
         <Stack.Navigator>
           <Stack.Screen
-            name="MenuSinglePlayer"
-            component={MenuSinglePlayer}
-            options={{ title: 'Argulympics' }}
-          />
-          <Stack.Screen
             name="Splash"
             component={Splash}
             options={{ title: 'Argulympics' }}
@@ -36,6 +31,11 @@ export default function App() {
           <Stack.Screen
             name="GameChoice"
             component={GameChoice}
+            options={{ title: 'Argulympics' }}
+          />
+          <Stack.Screen
+            name="MenuSinglePlayer"
+            component={MenuSinglePlayer}
             options={{ title: 'Argulympics' }}
           />
           <Stack.Screen
