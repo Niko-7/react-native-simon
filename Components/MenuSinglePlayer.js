@@ -1,6 +1,6 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import { Button, Text } from "react-native-paper";
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Button, Text } from 'react-native-paper';
 
 const MenuSinglePlayer = ({ navigation }) => {
   return (
@@ -12,10 +12,10 @@ const MenuSinglePlayer = ({ navigation }) => {
             mode="contained"
             color="blue"
             onPress={() =>
-              navigation.navigate("Game", {
-                difficulty: "easy",
+              navigation.navigate('Game', {
+                difficulty: 'easy',
                 betweenTime: 250,
-                flashTime: 800,
+                flashTime: 800
               })
             }
           >
@@ -27,10 +27,10 @@ const MenuSinglePlayer = ({ navigation }) => {
             mode="contained"
             color="blue"
             onPress={() =>
-              navigation.navigate("Game", {
-                difficulty: "normal",
+              navigation.navigate('Game', {
+                difficulty: 'normal',
                 betweenTime: 250,
-                flashTime: 300,
+                flashTime: 300
               })
             }
           >
@@ -42,10 +42,10 @@ const MenuSinglePlayer = ({ navigation }) => {
             mode="contained"
             color="blue"
             onPress={() =>
-              navigation.navigate("Game", {
-                difficulty: "hard",
+              navigation.navigate('Game', {
+                difficulty: 'hard',
                 betweenTime: 250,
-                flashTime: 100,
+                flashTime: 100
               })
             }
           >
@@ -60,16 +60,16 @@ const MenuSinglePlayer = ({ navigation }) => {
 const styles = StyleSheet.create({
   menuSinglePlayerContainer: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   buttonsContainer: {
-    width: "50%",
+    width: '50%'
   },
   button: {
-    margin: 5,
-  },
+    margin: 5
+  }
 });
 
 export default MenuSinglePlayer;
