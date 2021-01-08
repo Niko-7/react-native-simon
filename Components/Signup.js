@@ -9,42 +9,48 @@ const Signup = ({ route, navigation }) => {
   const [email, setEmail] = useState(route.params.email);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [emptyUsername, setEmptyUsername] = useState(null);
-  const [emptyEmail, setEmptyEmail] = useState(null);
-  const [emptyPassword, setEmptyPassword] = useState(null);
-  const [passwordsMismatch, setPasswordsMismatch] = useState(null);
+  const [emptyUsername, setEmptyUsername] = useState(false);
+  const [emptyEmail, setEmptyEmail] = useState(false);
+  const [emptyPassword, setEmptyPassword] = useState(false);
+  const [passwordsMismatch, setPasswordsMismatch] = useState(false);
 
   const handlePress = () => {
-    if (email.length < 1) {
+    if (email.length < 1 && password.length < 1 && username.length < 1) {
       setEmptyEmail(true);
-    } else if (email.length > 0) {
-      setEmptyEmail(false);
-    }
-
-    if (password.length < 1) {
       setEmptyPassword(true);
-    } else if (password.length > 0) {
-      setEmptyPassword(false);
-    }
-
-    if (username.length < 1) {
       setEmptyUsername(true);
-    } else if (username.length > 0) {
+    } else if (email.length < 1 && password.length < 1 && username.length > 0) {
+      setEmptyEmail(true);
+      setEmptyPassword(true);
       setEmptyUsername(false);
-    }
-
-    if (password === confirmPassword) {
-      setPasswordsMismatch(false);
-    } else {
+    } else if (email.length < 1 && password.length > 0 && username.length < 1) {
+      setEmptyEmail(true);
+      setEmptyPassword(false);
+      setEmptyUsername(true);
+    } else if (email.length < 1 && password.length > 0 && username.length > 0) {
+      setEmptyEmail(true);
+      setEmptyPassword(false);
+      setEmptyUsername(false);
+    } else if (email.length > 0 && password.length < 1 && username.length < 1) {
+      setEmptyEmail(false);
+      setEmptyPassword(true);
+      setEmptyUsername(true);
+    } else if (email.length > 0 && password.length < 1 && username.length > 0) {
+      setEmptyEmail(false);
+      setEmptyPassword(true);
+      setEmptyUsername(false);
+    } else if (email.length > 0 && password.length > 0 && username.length < 1) {
+      setEmptyEmail(false);
+      setEmptyPassword(false);
+      setEmptyUsername(true);
+    } else if (confirmPassword !== password) {
       setPasswordsMismatch(true);
-    }
+    } else {
+      setEmptyEmail(false);
+      setEmptyPassword(false);
+      setEmptyUsername(false);
+      setPasswordsMismatch(false);
 
-    if (
-      emptyEmail === false &&
-      emptyPassword === false &&
-      emptyUsername === false &&
-      passwordsMismatch === false
-    ) {
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
