@@ -1,25 +1,32 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 
 const GameChoice = ({ route, navigation }) => {
   return (
-    <View style={styles.gameChoiceContainer}>
-      {console.log(route.params.user)}
-      <View style={styles.buttonsContainer}>
-        <View style={styles.buttons}>
+    <View style={styles.userInfo}>
+      <View style={styles.userNameMsg}>
+        <Text style={styles.userNameSize}>
+          Welcome {route.params.user.username}
+        </Text>
+      </View>
+      {/* <View>{console.log(route.params.user)}</View> */}
+      <View style={styles.gameChoiceContainer}>
+        <View style={styles.buttonsContainer}>
           <Button
-            mode="contained"
-            color="blue"
+            style={styles.buttons}
+            mode='contained'
+            color='blue'
             onPress={() => navigation.navigate('MenuSinglePlayer')}
           >
             Single Player
           </Button>
         </View>
-        <View style={styles.buttons}>
+        <View style={styles.buttonsContainer}>
           <Button
-            mode="contained"
-            color="blue"
+            style={styles.buttons}
+            mode='contained'
+            color='blue'
             onPress={() => navigation.navigate('MenuMultiplayer')}
           >
             Multiplayer
@@ -33,6 +40,7 @@ const GameChoice = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   gameChoiceContainer: {
     flex: 1,
+    justifyContent: 'flex-end',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
@@ -42,6 +50,18 @@ const styles = StyleSheet.create({
   },
   buttons: {
     margin: 5,
+  },
+  userNameSize: {
+    fontSize: 25,
+  },
+  userNameMsg: {
+    alignItems: 'center',
+  },
+  userInfo: {
+    flex: 1,
+    // justifyContent: 'flex-start',
+    justifyContent: 'center',
+    marginTop: 50,
   },
 });
 
