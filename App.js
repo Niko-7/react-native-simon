@@ -24,8 +24,8 @@ export default function App() {
             options={{
               title: '',
               headerStyle: {
-                height: 0
-              }
+                height: 0,
+              },
             }}
           />
           <Stack.Screen
@@ -34,9 +34,9 @@ export default function App() {
             options={{
               title: '',
               headerStyle: {
-                height: 0
+                height: 0,
               },
-              headerTintColor: '#ffffff'
+              headerTintColor: '#ffffff',
             }}
           />
           <Stack.Screen
@@ -45,9 +45,9 @@ export default function App() {
             options={{
               title: '',
               headerStyle: {
-                height: 0
+                height: 0,
               },
-              headerTintColor: '#ffffff'
+              headerTintColor: '#ffffff',
             }}
           />
           <Stack.Screen
@@ -56,9 +56,9 @@ export default function App() {
             options={{
               title: '',
               headerStyle: {
-                height: 0
+                height: 0,
               },
-              headerTintColor: '#ffffff'
+              headerTintColor: '#ffffff',
             }}
           />
           <Stack.Screen
@@ -67,9 +67,9 @@ export default function App() {
             options={{
               title: '',
               headerStyle: {
-                height: 0
+                height: 0,
               },
-              headerTintColor: '#ffffff'
+              headerTintColor: '#ffffff',
             }}
           />
           <Stack.Screen
@@ -78,9 +78,9 @@ export default function App() {
             options={{
               title: '',
               headerStyle: {
-                height: 0
+                height: 0,
               },
-              headerTintColor: '#ffffff'
+              headerTintColor: '#ffffff',
             }}
           />
         </Stack.Navigator>
@@ -94,6 +94,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });

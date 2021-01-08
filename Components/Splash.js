@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, TextInput, HelperText } from 'react-native-paper';
 
+import { firebase } from '../src/firebaseConfig';
+
 const Splash = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,7 +23,32 @@ const Splash = ({ navigation }) => {
     } else {
       setEmptyEmail(false);
       setEmptyPassword(false);
-      navigation.navigate('GameChoice');
+
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((res) => {
+          const uid = res.user.uid;
+          const userRef = firebase.firestore().collection('users');
+
+          userRef
+            .doc(uid)
+            .get()
+            .then((document) => {
+              if (!document.exists) {
+                alert('Incorrect login details.\nPlease try again.');
+                return;
+              }
+
+              const user = document.data();
+              navigation.navigate('GameChoice', { user });
+            });
+        })
+        .catch((err) => {
+          // console.error(err);
+          alert('Incorrect login details. \n Please try again.');
+          // alert(err);
+        });
     }
   };
 
@@ -72,18 +99,18 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   textInput: {
     textAlign: 'center',
-    marginBottom: 10
+    marginBottom: 10,
   },
   loginItems: {
-    width: '50%'
+    width: '50%',
   },
   buttons: {
-    margin: 5
-  }
+    margin: 5,
+  },
 });
 
 export default Splash;

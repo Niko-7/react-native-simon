@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, Button, HelperText } from 'react-native-paper';
 
+import { firebase, firebaseConfig } from '../src/firebaseConfig';
+
 const Signup = ({ route, navigation }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState(route.params.email);
@@ -43,7 +45,44 @@ const Signup = ({ route, navigation }) => {
       emptyUsername === false &&
       passwordsMismatch === false
     ) {
-      navigation.navigate('GameChoice');
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((res) => {
+          const uid = res.user.uid;
+          const userData = {
+            id: uid,
+            email,
+            username,
+            createdAt: new Date().toISOString(),
+            decision: 'None',
+            firstName: '',
+            lastName: '',
+            userImg: `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/no-profile-image.png?alt=media`,
+          };
+
+          const scoresData = {
+            id: uid,
+            createdAt: new Date().toISOString(),
+            highScore: 0,
+          };
+
+          const usersRef = firebase.firestore().collection('users');
+          const scoresRef = firebase.firestore().collection('scores');
+
+          usersRef
+            .doc(uid)
+            .set(userData)
+            .then(() => {
+              scoresRef.doc(uid).set(scoresData);
+            })
+            .then(() => {
+              navigation.navigate('GameChoice', { user: userData });
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -104,14 +143,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   signupItems: {
-    width: '50%'
+    width: '50%',
   },
   buttons: {
-    marginTop: 5
-  }
+    marginTop: 5,
+  },
 });
 
 export default Signup;
