@@ -1,33 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Timer from './Timer';
-import { Button } from 'react-native-paper';
 
-const Shapes = ({ route }) => {
-  const [panels, setPanels] = useState(['red', 'purple', 'blue', 'green']);
+const Shapes = ({ params, gameplay, startTimer, isPlaying, sequence }) => {
   const [canClick, setCanClick] = useState(false);
   const [flashCol, setFlashCol] = useState('');
-  const [sequence, setSequence] = useState([]);
-  const [score, setScore] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [difficulty, setDifficulty] = useState(route.params.difficulty);
-  const [flashTime, setFlashTime] = useState(route.params.flashTime);
-  const [betweenTime, setBetweenTime] = useState(route.params.betweenTime);
-  const [isActive, setIsActive] = useState(false);
-  const [seconds, setSeconds] = useState(0);
+  const [flashTime, setFlashTime] = useState(params.flashTime);
+  const [betweenTime, setBetweenTime] = useState(params.betweenTime);
 
-  //Will Give You A Random Colour Panel
-  const getRandomPanel = () => {
-    const panel = panels[parseInt(Math.random() * panels.length)];
-    return panel;
-  };
+  useEffect(() => {
+    // setSequence([getRandomPanel()]);
+    isPlaying && startFlashing();
+  }, [isPlaying, sequence]);
 
   //Will Flash A Single Colour Panel
   //Change Timeouts For Difficulty Levels
-  const flash = (flashy) => {
+  const flash = (panel) => {
     return new Promise((resolve, reject) => {
       setCanClick(false);
-      setFlashCol(flashy);
+      setFlashCol(panel);
       setTimeout(() => {
         setFlashCol('');
         setTimeout(() => {
@@ -48,101 +38,8 @@ const Shapes = ({ route }) => {
     startTimer();
   };
 
-  function startTimer() {
-    setIsActive(true);
-  }
-
-  function reset() {
-    setSeconds(sequence.length * 2);
-  }
-
-  // handlePress calls
-  // const handlePress = (colour) => {
-  //   gameplay(colour);
-  // };
-
-  const gameover = () => {
-    setIsActive(false);
-    if (difficulty === 'easy') {
-      const finalScore = sequence.length - 1;
-      alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
-      setScore(finalScore);
-      setIsPlaying(false);
-    } else if (difficulty === 'normal') {
-      const finalScore = 2 * sequence.length - 2;
-      alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
-      setScore(finalScore);
-      setIsPlaying(false);
-    } else if (difficulty === 'hard') {
-      const finalScore = 3 * sequence.length - 3;
-      alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
-      setScore(finalScore);
-      setIsPlaying(false);
-    }
-  };
-
-  let clonedSequence = [...sequence];
-
-  //Game Logic Increment Sequence Every Round
-  const gameplay = (panelPressed) => {
-    // Clone sequence to not mutate the sequence
-    // let clonedSequence = [...sequence];
-
-    // Get the first entry in clonedSequence array
-    const expectedPanel = clonedSequence.shift();
-
-    if (expectedPanel === panelPressed) {
-      if (clonedSequence.length === 0) {
-        setIsActive(false);
-        reset();
-        //start new round
-        setTimeout(() => {
-          setSequence([...sequence, getRandomPanel()]);
-          // reset the timer and start it counting again
-        }, 1000);
-      }
-    } else if (expectedPanel !== panelPressed) {
-      // end game and set score
-      gameover();
-      reset();
-    }
-  };
-
-  useEffect(() => {
-    isPlaying && startFlashing();
-  }, [sequence, score]);
-
   return (
-    <View style={styles.pageContainer}>
-      {console.log('cloned Sequence --->', clonedSequence)}
-      <View style={styles.header}>
-        <Text style={styles.title}>{`CURRENT HIGH SCORE: ${score}`}</Text>
-        <View styles={styles.startButton}>
-          <Button
-            style={styles.button}
-            onPress={() => {
-              setIsPlaying(true);
-              setSequence([getRandomPanel()]);
-              setSeconds(3);
-            }}
-            mode="contained"
-            color="blue"
-          >
-            start
-          </Button>
-        </View>
-        <View style={styles.timer}>
-          <Timer
-            gameover={gameover}
-            startTimer={startTimer}
-            isActive={isActive}
-            setIsActive={setIsActive}
-            sequenceLength={sequence.length}
-            setSeconds={setSeconds}
-            seconds={seconds}
-          />
-        </View>
-      </View>
+    <View style={styles.shapesContainer}>
       <View style={styles.rowContainer}>
         <View style={styles.topRow}>
           <TouchableOpacity
@@ -205,99 +102,69 @@ const Shapes = ({ route }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <Button
-        mode="contained"
-        color="blue"
-        onPress={() => {
-          reset();
-          setIsActive(!isActive);
-        }}
-      >
-        Reset
-      </Button>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  pageContainer: {
+  shapesContainer: {
     flex: 1,
-    flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
-  },
-  header: {
-    flex: 1,
-    marginTop: 150,
-  },
-  startButton: {
-    flex: 1,
-  },
-  title: {
-    flex: 1,
-    fontSize: 30,
-    color: 'black',
-  },
-  timer: {
-    flex: 1,
+    alignItems: 'center'
   },
   rowContainer: {
-    flex: 5,
+    flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   topRow: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'flex-end'
   },
   bottomRow: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   redSeg: {
     backgroundColor: 'red',
-    borderTopLeftRadius: 150,
+    borderTopLeftRadius: 150
   },
   purpleSeg: {
     backgroundColor: 'purple',
-    borderTopRightRadius: 150,
+    borderTopRightRadius: 150
   },
   blueSeg: {
     backgroundColor: 'blue',
-    borderBottomLeftRadius: 150,
+    borderBottomLeftRadius: 150
   },
   greenSeg: {
     backgroundColor: 'green',
-    borderBottomRightRadius: 150,
+    borderBottomRightRadius: 150
   },
   seg: {
     width: 150,
     height: 150,
     borderColor: 'black',
     borderStyle: 'solid',
-    borderWidth: 3,
+    borderWidth: 3
   },
   redFlash: {
     backgroundColor: 'white',
-    borderTopLeftRadius: 150,
+    borderTopLeftRadius: 150
   },
   blueFlash: {
     backgroundColor: 'white',
-    borderBottomLeftRadius: 150,
+    borderBottomLeftRadius: 150
   },
   purpleFlash: {
     backgroundColor: 'white',
-    borderTopRightRadius: 150,
+    borderTopRightRadius: 150
   },
   greenFlash: {
     backgroundColor: 'white',
-    borderBottomRightRadius: 150,
-  },
-  buttons: {
-    marginTop: 20,
-    marginBottom: 60,
-  },
+    borderBottomRightRadius: 150
+  }
 });
 
 export default Shapes;

@@ -12,7 +12,7 @@ const MenuSinglePlayer = ({ navigation }) => {
             mode="contained"
             color="blue"
             onPress={() =>
-              navigation.navigate('Shapes', {
+              navigation.navigate('Game', {
                 difficulty: 'easy',
                 betweenTime: 250,
                 flashTime: 800
@@ -27,7 +27,7 @@ const MenuSinglePlayer = ({ navigation }) => {
             mode="contained"
             color="blue"
             onPress={() =>
-              navigation.navigate('Shapes', {
+              navigation.navigate('Game', {
                 difficulty: 'normal',
                 betweenTime: 250,
                 flashTime: 300
@@ -42,7 +42,7 @@ const MenuSinglePlayer = ({ navigation }) => {
             mode="contained"
             color="blue"
             onPress={() =>
-              navigation.navigate('Shapes', {
+              navigation.navigate('Game', {
                 difficulty: 'hard',
                 betweenTime: 250,
                 flashTime: 100
