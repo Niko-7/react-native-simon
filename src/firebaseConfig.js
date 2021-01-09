@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
 
 import '@firebase/auth';
 import '@firebase/firestore';
@@ -10,7 +10,7 @@ const firebaseConfig = {
   storageBucket: 'fir-reactnative-simon.appspot.com',
   messagingSenderId: '836249636731',
   appId: '1:836249636731:web:371375558b32d8bdfa77de',
-  measurementId: 'G-5X8QCWZWVS',
+  measurementId: 'G-5X8QCWZWVS'
 };
 
 if (!firebase.apps.length) {

@@ -65,8 +65,9 @@ const Game = ({ route }) => {
     }
   };
 
+  // Sets timer for next round
   function resetSeconds() {
-    setSeconds(sequence.length * 2);
+    setSeconds((sequence.length + 1) * 2);
   }
 
   const gameover = () => {
