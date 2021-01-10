@@ -7,9 +7,9 @@ import Timer from './Timer';
 import { firebase } from '../src/firebaseConfig';
 
 const Game = ({ route }) => {
-  const { difficulty } = route.params;
   const { params } = route;
-  const { username, id } = route.params.user;
+  const { difficulty } = params;
+  const { username, id } = params.user;
   const [panels, setPanels] = useState(['red', 'purple', 'blue', 'green']);
   const [sequence, setSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);

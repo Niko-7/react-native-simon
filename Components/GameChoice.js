@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 
-const GameChoice = ({ route, navigation }) => {
-  const { user } = route.params;
+const GameChoice = (props) => {
+  const user = props.extraData;
   return (
     <View style={styles.userInfo}>
       <View style={styles.userNameMsg}>
         <Text style={styles.userNameSize}>Welcome {user.username}</Text>
+        {/* <Button title="logout" /> */}
       </View>
       <View style={styles.gameChoiceContainer}>
         <View style={styles.buttonsContainer}>
@@ -25,7 +26,7 @@ const GameChoice = ({ route, navigation }) => {
             style={styles.buttons}
             mode="contained"
             color="blue"
-            onPress={() => navigation.navigate('MenuMultiplayer', user)}
+            onPress={() => navigation.navigate('MenuMultiplayer', { user })}
           >
             Multiplayer
           </Button>

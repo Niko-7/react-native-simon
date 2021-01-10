@@ -27,7 +27,7 @@ const MenuMultiplayer = ({ navigation }) => {
           <Button
             mode="contained"
             color="blue"
-            onPress={() => navigation.navigate('Shapes')}
+            onPress={() => navigation.navigate('WaitingRoom')}
           >
             Create a Room
           </Button>
