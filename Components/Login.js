@@ -4,7 +4,7 @@ import { Button, TextInput, HelperText } from 'react-native-paper';
 
 import { firebase } from '../src/firebaseConfig';
 
-const Splash = ({ navigation }) => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emptyEmail, setEmptyEmail] = useState(false);
@@ -53,7 +53,7 @@ const Splash = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.splashContainer}>
+    <View style={styles.loginContainer}>
       <View style={styles.loginItems}>
         <TextInput
           style={styles.textInput}
@@ -95,22 +95,22 @@ const Splash = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  splashContainer: {
+  loginContainer: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   textInput: {
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 10
   },
   loginItems: {
-    width: '50%',
+    width: '50%'
   },
   buttons: {
-    margin: 5,
-  },
+    margin: 5
+  }
 });
 
-export default Splash;
+export default Login;
