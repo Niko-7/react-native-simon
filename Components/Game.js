@@ -17,9 +17,10 @@ const Game = ({ route }) => {
   const [highScore, setHighScore] = useState();
   const [currentScore, setCurrentScore] = useState(0);
   const [seconds, setSeconds] = useState(3);
+  const scoreRef = firebase.firestore().collection('scores').doc(id);
 
+  // On game load, will pull users high score from db and setHighScore
   useEffect(() => {
-    const scoreRef = firebase.firestore().collection('scores').doc(id);
     scoreRef
       .get()
       .then(function (doc) {
@@ -103,28 +104,22 @@ const Game = ({ route }) => {
 
   const gameover = () => {
     setIsTimerActive(false);
-    if (difficulty === 'easy') {
-      const finalScore = sequence.length - 1;
-      alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
-      setHighScore(finalScore);
-      setIsPlaying(false);
-    } else if (difficulty === 'normal') {
-      const finalScore = 2 * sequence.length - 2;
-      alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
-      setHighScore(finalScore);
-      setIsPlaying(false);
-    } else if (difficulty === 'hard') {
-      const finalScore = 3 * sequence.length - 3;
-      alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
-      setHighScore(finalScore);
-      setIsPlaying(false);
+    alert(`GAME OVER \n You Scored ${currentScore} points 🎖`);
+    setIsPlaying(false);
+    if (highScore < currentScore) {
+      setHighScore(currentScore);
+      return scoreRef
+        .update({
+          highScore: currentScore
+        })
+        .catch(function (error) {
+          console.error('Error updating document: ', error);
+        });
     }
   };
 
   return (
     <View style={styles.gameContainer}>
-      {console.log(params, 'Game')}
-
       <View style={styles.headerContainer}>
         <GameHighScore
           isPlaying={isPlaying}
