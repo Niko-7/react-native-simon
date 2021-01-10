@@ -1,19 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
-import GameHeader from './GameHeader';
+import GameHighScore from './GameHighScore';
 import Shapes from './Shapes';
 import Timer from './Timer';
+import { firebase } from '../src/firebaseConfig';
 
 const Game = ({ route }) => {
   const { difficulty } = route.params;
   const { params } = route;
+  const { username, id } = route.params.user;
   const [panels, setPanels] = useState(['red', 'purple', 'blue', 'green']);
   const [sequence, setSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isTimerActive, setIsTimerActive] = useState(false);
-  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState();
+  const [currentScore, setCurrentScore] = useState(0);
   const [seconds, setSeconds] = useState(3);
+
+  useEffect(() => {
+    const scoreRef = firebase.firestore().collection('scores').doc(id);
+    scoreRef
+      .get()
+      .then(function (doc) {
+        if (doc.exists) {
+          const data = doc.data();
+          setHighScore(data.highScore);
+        } else {
+          console.log('No such document!');
+        }
+      })
+      .catch(function (error) {
+        console.log('Error getting document:', error);
+      });
+  }, []);
 
   //Will Give You A Random Colour Panel
   const getRandomPanel = () => {
@@ -47,6 +67,7 @@ const Game = ({ route }) => {
         // once all the panels have been pressed...
         // stop and resets the timer
         setIsTimerActive(false);
+        setCurrentScore(calculatePoints());
         resetSeconds();
 
         //start new round
@@ -65,40 +86,58 @@ const Game = ({ route }) => {
     }
   };
 
+  const calculatePoints = () => {
+    if (difficulty === 'easy') {
+      return sequence.length;
+    } else if (difficulty === 'normal') {
+      return 2 * sequence.length;
+    } else if (difficulty === 'hard') {
+      return 3 * sequence.length;
+    }
+  };
+
   // Sets timer for next round
-  function resetSeconds() {
+  const resetSeconds = () => {
     setSeconds((sequence.length + 1) * 2);
-  }
+  };
 
   const gameover = () => {
     setIsTimerActive(false);
     if (difficulty === 'easy') {
       const finalScore = sequence.length - 1;
       alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
-      setScore(finalScore);
+      setHighScore(finalScore);
       setIsPlaying(false);
     } else if (difficulty === 'normal') {
       const finalScore = 2 * sequence.length - 2;
       alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
-      setScore(finalScore);
+      setHighScore(finalScore);
       setIsPlaying(false);
     } else if (difficulty === 'hard') {
       const finalScore = 3 * sequence.length - 3;
       alert(`GAME OVER \n You Scored ${finalScore} points 🎖`);
-      setScore(finalScore);
+      setHighScore(finalScore);
       setIsPlaying(false);
     }
   };
 
   return (
     <View style={styles.gameContainer}>
+      {console.log(params, 'Game')}
+
       <View style={styles.headerContainer}>
-        <GameHeader score={score} />
+        <GameHighScore
+          isPlaying={isPlaying}
+          currentScore={currentScore}
+          highScore={highScore}
+        />
       </View>
       <View styles={styles.buttonContainer}>
-        <Button onPress={handleStartPress} mode="contained" color="blue">
-          start
-        </Button>
+        {!isPlaying && (
+          <Button onPress={handleStartPress} mode="contained" color="blue">
+            start
+          </Button>
+        )}
       </View>
       <View style={styles.timerContainer}>
         <Timer
@@ -120,6 +159,7 @@ const Game = ({ route }) => {
           setSequence={setSequence}
           params={params}
         />
+        <Text style={{ textAlign: 'center' }}>Logged in as {username}</Text>
       </View>
     </View>
   );
@@ -128,6 +168,8 @@ const Game = ({ route }) => {
 const styles = StyleSheet.create({
   gameContainer: {
     flex: 1,
+    marginTop: 20,
+    marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center'
   },

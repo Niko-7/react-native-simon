@@ -21,19 +21,17 @@ export default function App() {
     <NavigationContainer>
       <PaperProvider>
         <Stack.Navigator>
-          {user ? (
-            <Stack.Screen
-              name="GameChoice"
-              component={GameChoice}
-              options={{ title: 'Argulympics' }}
-            />
-          ) : (
-            <Stack.Screen
-              name="Login"
-              component={Login}
-              options={{ title: 'Argulympics' }}
-            />
-          )}
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ title: 'Argulympics' }}
+            setUser={setUser}
+          />
+          <Stack.Screen
+            name="GameChoice"
+            component={GameChoice}
+            options={{ title: 'Argulympics' }}
+          />
           <Stack.Screen
             name="Signup"
             component={Signup}
