@@ -3,22 +3,23 @@ import { View, StyleSheet, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 import { firebase } from '../src/firebaseConfig';
 
-const GameChoice = (props) => {
+const GameChoice = ({ setUser, extraData, navigation }) => {
   const logoutPress = () => {
     firebase
       .auth()
       .signOut()
       .then(() => {
-        props.setUser(null);
+        setUser(null);
         // Sign-out successful.
       })
       .catch((error) => {
         // An error happened.
       });
   };
-  const user = props.extraData;
+  const user = extraData;
   return (
     <View style={styles.userInfo}>
+      {/* {console.log(props)} */}
       <View style={styles.userNameMsg}>
         <Text style={styles.userNameSize}>Welcome {user.username}</Text>
         <Button mode="contained" color="blue" onPress={logoutPress}>

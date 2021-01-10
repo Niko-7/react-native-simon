@@ -62,13 +62,14 @@ export default function App() {
                 component={Signup}
                 options={{ title: 'Argulympics' }}
               />
-              <Stack.Screen
-                name="MenuSinglePlayer"
-                component={MenuSinglePlayer}
-                options={{ title: 'Argulympics' }}
-              />
             </>
           )}
+          <Stack.Screen
+            name="MenuSinglePlayer"
+            component={MenuSinglePlayer}
+            options={{ title: 'Argulympics' }}
+          />
+
           <Stack.Screen
             name="MenuMultiplayer"
             component={MenuMultiplayer}
