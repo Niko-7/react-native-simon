@@ -1,14 +1,29 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Button } from 'react-native-paper';
+import { firebase } from '../src/firebaseConfig';
 
 const GameChoice = (props) => {
+  const logoutPress = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        props.setUser(null);
+        // Sign-out successful.
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  };
   const user = props.extraData;
   return (
     <View style={styles.userInfo}>
       <View style={styles.userNameMsg}>
         <Text style={styles.userNameSize}>Welcome {user.username}</Text>
-        {/* <Button title="logout" /> */}
+        <Button mode="contained" color="blue" onPress={logoutPress}>
+          log out
+        </Button>
       </View>
       <View style={styles.gameChoiceContainer}>
         <View style={styles.buttonsContainer}>

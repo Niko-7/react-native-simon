@@ -46,7 +46,9 @@ export default function App() {
         <Stack.Navigator>
           {user ? (
             <Stack.Screen name="GameChoice" options={{ title: 'Argulympics' }}>
-              {(props) => <GameChoice extraData={user} />}
+              {(props) => (
+                <GameChoice {...props} setUser={setUser} extraData={user} />
+              )}
             </Stack.Screen>
           ) : (
             <>
