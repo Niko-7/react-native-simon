@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Button, TextInput, Text } from 'react-native-paper';
-import { firebase } from '../src/firebaseConfig';
+import React, { useState } from "react";
+import { View, StyleSheet } from "react-native";
+import { Button, TextInput, Text } from "react-native-paper";
+import { firebase } from "../src/firebaseConfig";
 
 const MenuMultiplayer = ({
   navigation,
@@ -9,22 +9,20 @@ const MenuMultiplayer = ({
     params: { user },
   },
 }) => {
-
   const [argument, setArgument] = useState("");
   const [roomCode, setRoomCode] = useState("");
 
   const db = firebase.firestore();
 
-    const joinRoom = (roomCode) => {
-    
-    db.collection('multiplayerGames')
-      .where('roomCode', '==', roomCode)
+  const joinRoom = (roomCode) => {
+    db.collection("multiplayerGames")
+      .where("roomCode", "==", roomCode)
       .get()
       .then((doc) => {
         if (doc.exists) {
-          db.collection('multiplayerGames')
+          db.collection("multiplayerGames")
             .doc(roomCode)
-            .collection('users')
+            .collection("users")
             .doc(user.username)
             .set({
               username: user.username,
@@ -34,11 +32,10 @@ const MenuMultiplayer = ({
               argument: argument,
               isHost: false,
             });
-          navigation.navigate('WaitingRoom', { user, roomCode });
+          navigation.navigate("WaitingRoom", { user, roomCode });
         } else {
-          alert({ error: 'Room does not exist!' });
+          alert({ error: "Room does not exist!" });
         }
-      
       });
   };
 
@@ -50,6 +47,7 @@ const MenuMultiplayer = ({
         user,
       });
     }
+  };
 
   return (
     <View style={styles.menuMultiplayerContainer}>
@@ -69,22 +67,13 @@ const MenuMultiplayer = ({
             dense={true}
           />
           <View style={styles.button}>
-          
             <Button
               mode="contained"
               color="blue"
-              onPress={() => 
-             { 
-              joinRoom(roomCode);
-              }}
+              onPress={() => joinRoom(roomCode)}
             >
               Join a Room
             </Button>
-
-
-
-
-            
           </View>
         </View>
         <Text>Starting An Argument?</Text>
