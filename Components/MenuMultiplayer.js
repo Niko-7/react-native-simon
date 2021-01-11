@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, TextInput, Text } from 'react-native-paper';
-import { firebase } from '../src/firebaseConfig';
+
+import { joinRoom, createRoom } from './NetworkFuncs';
 
 const MenuMultiplayer = ({
   navigation,
@@ -12,69 +13,16 @@ const MenuMultiplayer = ({
   const [argument, setArgument] = useState('');
   const [roomCode, setRoomCode] = useState('');
 
-  const db = firebase.firestore();
-
-  const joinRoom = (roomCode) => {
-    db.collection('multiplayerGames')
-      .where('roomCode', '==', roomCode)
-      .get()
-      .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          const roomId = doc.id;
-          // doc.data() is never undefined for query doc snapshots
-          // console.log(doc.id, ' => ', doc.data());
-          if (doc.exists) {
-            db.collection('multiplayerGames')
-              .doc(roomId)
-              .collection('users')
-              .doc(user.username)
-              .set({
-                username: user.username,
-                userId: user.id,
-                userImg: user.userImg,
-                score: 0,
-                argument: argument,
-                isHost: false,
-              });
-            navigation.navigate('WaitingRoom', { user, roomCode });
-          } else {
-            alert('Room does not exist!');
-          }
-        });
-      })
-      .catch(function (error) {
-        console.log('Error getting documents: ', error);
-      });
-    // .then((doc) => {
-    //   if (doc.exists) {
-    //     db.collection('multiplayerGames')
-    //       .doc(roomCode)
-    //       .collection('users')
-    //       .doc(user.username)
-    //       .set({
-    //         username: user.username,
-    //         userId: user.id,
-    //         userImg: user.userImg,
-    //         score: 0,
-    //         argument: argument,
-    //         isHost: false,
-    //       });
-    //     navigation.navigate('WaitingRoom', { user, roomCode });
-    //   } else {
-    //     alert('Room does not exist!');
-    //   }
-    // })
-  };
-
-  const createRoom = () => {
-    if (argument.length > 0) {
-      navigation.navigate('WaitingRoom', {
-        argument,
-        isHost: true,
-        user,
-      });
+  const generateRoomCode = () => {
+    let result = '';
+    let letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    for (let i = 0; i < 4; i++) {
+      result += letters.charAt(Math.floor(Math.random() * letters.length));
     }
+    return result;
   };
+
+  const code = generateRoomCode();
 
   return (
     <View style={styles.menuMultiplayerContainer}>
@@ -97,7 +45,7 @@ const MenuMultiplayer = ({
             <Button
               mode="contained"
               color="blue"
-              onPress={() => joinRoom(roomCode)}
+              onPress={() => joinRoom(roomCode, user, argument, navigation)}
             >
               Join a Room
             </Button>
@@ -105,7 +53,11 @@ const MenuMultiplayer = ({
         </View>
         <Text>Starting An Argument?</Text>
         <View style={styles.button}>
-          <Button mode="contained" color="blue" onPress={() => createRoom()}>
+          <Button
+            mode="contained"
+            color="blue"
+            onPress={() => createRoom(code, user, argument, navigation)}
+          >
             Create a Room
           </Button>
         </View>
