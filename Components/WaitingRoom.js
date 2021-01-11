@@ -9,7 +9,7 @@ const WaitingRoom = ({
     params: { user, roomCode, isHost },
   },
 }) => {
-  const [users, setUsers] = useState([user, user, user]);
+  const [users, setUsers] = useState([user]);
   const [hostRoomCode, setHostRoomCode] = useState("");
 
   const roomsRef = firebase.firestore().collection("multiplayerGames");
