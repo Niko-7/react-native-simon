@@ -19,7 +19,6 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
   const user = extraData;
   return (
     <View style={styles.userInfo}>
-      {/* {console.log(props)} */}
       <View style={styles.userNameMsg}>
         <Text style={styles.userNameSize}>Welcome {user.username}</Text>
         <Button mode="contained" color="blue" onPress={logoutPress}>

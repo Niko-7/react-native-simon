@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 
-const MenuMultiplayer = ({ navigation }) => {
+const MenuMultiplayer = ({
+  navigation,
+  route: {
+    params: { user }
+  }
+}) => {
   const [roomCode, setRoomCode] = useState(null);
   return (
     <View style={styles.menuMultiplayerContainer}>
@@ -27,7 +32,7 @@ const MenuMultiplayer = ({ navigation }) => {
           <Button
             mode="contained"
             color="blue"
-            onPress={() => navigation.navigate('WaitingRoom')}
+            onPress={() => navigation.navigate('WaitingRoom', { user })}
           >
             Create a Room
           </Button>
