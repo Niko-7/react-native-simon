@@ -97,9 +97,7 @@ const MenuMultiplayer = ({
             <Button
               mode="contained"
               color="blue"
-              onPress={() => {
-                joinRoom(roomCode);
-              }}
+              onPress={() => joinRoom(roomCode)}
             >
               Join a Room
             </Button>
