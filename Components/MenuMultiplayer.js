@@ -9,47 +9,72 @@ const MenuMultiplayer = ({
     params: { user },
   },
 }) => {
-
-  const [argument, setArgument] = useState("");
-  const [roomCode, setRoomCode] = useState("");
+  const [argument, setArgument] = useState('');
+  const [roomCode, setRoomCode] = useState('');
 
   const db = firebase.firestore();
 
-    const joinRoom = (roomCode) => {
-    
+  const joinRoom = (roomCode) => {
     db.collection('multiplayerGames')
       .where('roomCode', '==', roomCode)
       .get()
-      .then((doc) => {
-        if (doc.exists) {
-          db.collection('multiplayerGames')
-            .doc(roomCode)
-            .collection('users')
-            .doc(user.username)
-            .set({
-              username: user.username,
-              userId: user.id,
-              userImg: user.userImg,
-              score: 0,
-              argument: argument,
-              isHost: false,
-            });
-          navigation.navigate('WaitingRoom', { user, roomCode });
-        } else {
-          alert({ error: 'Room does not exist!' });
-        }
-      
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          const roomId = doc.id;
+          // doc.data() is never undefined for query doc snapshots
+          // console.log(doc.id, ' => ', doc.data());
+          if (doc.exists) {
+            db.collection('multiplayerGames')
+              .doc(roomId)
+              .collection('users')
+              .doc(user.username)
+              .set({
+                username: user.username,
+                userId: user.id,
+                userImg: user.userImg,
+                score: 0,
+                argument: argument,
+                isHost: false,
+              });
+            navigation.navigate('WaitingRoom', { user, roomCode });
+          } else {
+            alert('Room does not exist!');
+          }
+        });
+      })
+      .catch(function (error) {
+        console.log('Error getting documents: ', error);
       });
+    // .then((doc) => {
+    //   if (doc.exists) {
+    //     db.collection('multiplayerGames')
+    //       .doc(roomCode)
+    //       .collection('users')
+    //       .doc(user.username)
+    //       .set({
+    //         username: user.username,
+    //         userId: user.id,
+    //         userImg: user.userImg,
+    //         score: 0,
+    //         argument: argument,
+    //         isHost: false,
+    //       });
+    //     navigation.navigate('WaitingRoom', { user, roomCode });
+    //   } else {
+    //     alert('Room does not exist!');
+    //   }
+    // })
   };
 
   const createRoom = () => {
     if (argument.length > 0) {
-      navigation.navigate("WaitingRoom", {
+      navigation.navigate('WaitingRoom', {
         argument,
         isHost: true,
         user,
       });
     }
+  };
 
   return (
     <View style={styles.menuMultiplayerContainer}>
@@ -69,22 +94,15 @@ const MenuMultiplayer = ({
             dense={true}
           />
           <View style={styles.button}>
-          
             <Button
               mode="contained"
               color="blue"
-              onPress={() => 
-             { 
-              joinRoom(roomCode);
+              onPress={() => {
+                joinRoom(roomCode);
               }}
             >
               Join a Room
             </Button>
-
-
-
-
-            
           </View>
         </View>
         <Text>Starting An Argument?</Text>
@@ -101,13 +119,13 @@ const MenuMultiplayer = ({
 const styles = StyleSheet.create({
   menuMultiplayerContainer: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   argumentInput: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
   button: {
     margin: 5,
