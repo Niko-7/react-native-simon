@@ -2,7 +2,8 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
-const MenuSinglePlayer = ({ navigation }) => {
+const MenuSinglePlayer = ({ route, navigation }) => {
+  const { user } = route.params;
   return (
     <View style={styles.menuSinglePlayerContainer}>
       <Text>Select Difficulty</Text>
@@ -15,7 +16,8 @@ const MenuSinglePlayer = ({ navigation }) => {
               navigation.navigate('Game', {
                 difficulty: 'easy',
                 betweenTime: 250,
-                flashTime: 800
+                flashTime: 800,
+                user
               })
             }
           >
@@ -30,7 +32,8 @@ const MenuSinglePlayer = ({ navigation }) => {
               navigation.navigate('Game', {
                 difficulty: 'normal',
                 betweenTime: 250,
-                flashTime: 300
+                flashTime: 300,
+                user
               })
             }
           >
@@ -45,7 +48,8 @@ const MenuSinglePlayer = ({ navigation }) => {
               navigation.navigate('Game', {
                 difficulty: 'hard',
                 betweenTime: 250,
-                flashTime: 100
+                flashTime: 100,
+                user
               })
             }
           >

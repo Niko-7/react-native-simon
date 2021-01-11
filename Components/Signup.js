@@ -4,7 +4,7 @@ import { TextInput, Button, HelperText } from 'react-native-paper';
 
 import { firebase, firebaseConfig } from '../src/firebaseConfig';
 
-const Signup = ({ route, navigation }) => {
+const Signup = ({ route, navigation, setUser }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState(route.params.email);
   const [password, setPassword] = useState('');
@@ -64,13 +64,13 @@ const Signup = ({ route, navigation }) => {
             decision: 'None',
             firstName: '',
             lastName: '',
-            userImg: `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/no-profile-image.png?alt=media`,
+            userImg: `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/no-profile-image.png?alt=media`
           };
 
           const scoresData = {
             id: uid,
             createdAt: new Date().toISOString(),
-            highScore: 0,
+            highScore: 0
           };
 
           const usersRef = firebase.firestore().collection('users');
@@ -83,6 +83,7 @@ const Signup = ({ route, navigation }) => {
               scoresRef.doc(uid).set(scoresData);
             })
             .then(() => {
+              setUser(userData);
               navigation.navigate('GameChoice', { user: userData });
             });
         })
@@ -149,14 +150,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   signupItems: {
-    width: '50%',
+    width: '50%'
   },
   buttons: {
-    marginTop: 5,
-  },
+    marginTop: 5
+  }
 });
 
 export default Signup;
