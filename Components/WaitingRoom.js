@@ -6,32 +6,42 @@ import { firebase } from '../src/firebaseConfig';
 
 const WaitingRoom = ({
   route: {
-    params: { user, roomCode, isHost, id },
+    params: { user, roomCode, isHost, roomId },
   },
 }) => {
-  const [users, setUsers] = useState([user]);
+  const [users, setUsers] = useState([]);
 
-  const roomsRef = firebase.firestore().collection('multiplayerGames');
+  const roomsRef = firebase
+    .firestore()
+    .collection('multiplayerGames')
+    .doc(roomId)
+    .collection('users');
 
   useEffect(() => {
-    roomsRef
-      .doc(id)
-      .collection('users')
-      .onSnapshot(function (doc) {
-        console.log(doc);
-      })
-      .catch(function (error) {
-        console.error('Error adding document: ', error);
+    // roomsRef.get().then(function (querySnapshot) {
+    //   querySnapshot.forEach(function (doc) {
+    //     console.log(doc.data());
+    //   });
+    // });
+
+    roomsRef.onSnapshot((querySnapshot) => {
+      const currentUsers = [];
+      querySnapshot.forEach((user) => {
+        currentUsers.push(user.data());
       });
+      console.log(currentUsers);
+      setUsers(currentUsers);
+    });
   }, []);
 
   const handleReady = () => {};
   return (
     <View>
+      {console.log(users, 'current users')}
       <View>{roomCode}</View>
       {users.map((user) => {
         return (
-          <Card>
+          <Card key={user.userId}>
             <Card.Content>
               <Title>{user.username}</Title>
               <Paragraph>Card content</Paragraph>
@@ -39,7 +49,7 @@ const WaitingRoom = ({
           </Card>
         );
       })}
-      <Button onPress={handleReady}>Ready</Button>
+      <Button onPress={handleReady}>Start</Button>
       {/* <Button>Start Game</Button> */}
     </View>
   );

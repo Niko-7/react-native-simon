@@ -12,18 +12,14 @@ const generateRoomCode = () => {
 };
 
 export const joinRoom = (code, user, argument, navigation) => {
-  console.log('running');
-
   roomsRef
     .where('roomCode', '==', code)
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
         const roomId = doc.id;
-        console.log(roomId);
 
         if (doc.exists) {
-          console.log('in exists');
           roomsRef.doc(roomId).collection('users').doc(user.username).set({
             username: user.username,
             userId: user.id,
@@ -32,8 +28,12 @@ export const joinRoom = (code, user, argument, navigation) => {
             argument: argument,
             isHost: false,
           });
-          // navigation.navigate('WaitingRoom', { user, code, isHost: false });
-          console.log('got here');
+          navigation.navigate('WaitingRoom', {
+            user,
+            code,
+            isHost: false,
+            roomId,
+          });
         } else {
           alert('Room does not exist!');
         }
