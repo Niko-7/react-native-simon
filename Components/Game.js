@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import GameHighScore from "./GameHighScore";
 import Shapes from "./Shapes";
 import Timer from "./Timer";
+import AppLoading from "expo-app-loading";
+import * as Font from "expo-font";
 import { firebase } from "../src/firebaseConfig";
 
 const Game = ({ route }) => {
+  let [fontsLoaded, error] = Font.useFonts({
+    Graduate: require("../assets/fonts/Graduate-Regular.ttf"),
+  });
+
   const { params } = route;
   const { difficulty } = params;
   const { username, id } = params.user;
@@ -118,67 +124,121 @@ const Game = ({ route }) => {
     }
   };
 
-  return (
-    <View style={styles.gameContainer}>
-      <View style={styles.headerContainer}>
-        <GameHighScore
-          isPlaying={isPlaying}
-          currentScore={currentScore}
-          highScore={highScore}
-        />
-      </View>
-      <View styles={styles.buttonContainer}>
-        {!isPlaying && (
-          <Button onPress={handleStartPress} mode="contained" color="blue">
-            start
-          </Button>
-        )}
-      </View>
-      <View style={styles.timerContainer}>
-        <Timer
-          isTimerActive={isTimerActive}
-          sequence={sequence}
-          seconds={seconds}
-          setSeconds={setSeconds}
-          gameover={gameover}
-        />
-      </View>
-      <View style={styles.shapesContainer}>
-        <Shapes
-          gameplay={gameplay}
-          gameover={gameover}
-          startTimer={startTimer}
-          isPlaying={isPlaying}
-          sequence={sequence}
-          getRandomPanel={getRandomPanel}
-          setSequence={setSequence}
-          params={params}
-        />
-        <Text style={{ textAlign: "center" }}>Logged in as {username}</Text>
-      </View>
-    </View>
-  );
-};
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View style={styles.gameContainer}>
+        <View style={styles.headerContainer}>
+          <View style={styles.imgCont}>
+            <Image
+              style={styles.img}
+              source={require("../assets/Argulympics-no-logo.png")}
+            />
+          </View>
 
+          <View style={styles.username}>
+            <Text style={styles.subtitle}>user: {username}</Text>
+          </View>
+          <View style={styles.highScore}>
+            <GameHighScore
+              isPlaying={isPlaying}
+              currentScore={currentScore}
+              highScore={highScore}
+            />
+          </View>
+          <View style={styles.timerButton}>
+            {isPlaying ? (
+              <View style={styles.timerContainer}>
+                <Timer
+                  isTimerActive={isTimerActive}
+                  sequence={sequence}
+                  seconds={seconds}
+                  setSeconds={setSeconds}
+                  gameover={gameover}
+                />
+              </View>
+            ) : (
+              <View style={styles.buttonContainer}>
+                <Button
+                  style={styles.button}
+                  onPress={handleStartPress}
+                  mode="contained"
+                  color="blue"
+                >
+                  start
+                </Button>
+              </View>
+            )}
+          </View>
+        </View>
+
+        <View style={styles.shapesContainer}>
+          <Shapes
+            gameplay={gameplay}
+            gameover={gameover}
+            startTimer={startTimer}
+            isPlaying={isPlaying}
+            sequence={sequence}
+            getRandomPanel={getRandomPanel}
+            setSequence={setSequence}
+            params={params}
+          />
+        </View>
+      </View>
+    );
+  }
+};
 const styles = StyleSheet.create({
   gameContainer: {
     flex: 1,
-    marginTop: 20,
-    marginBottom: 20,
-    justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#bde0fe",
   },
   headerContainer: {
     flex: 1,
-  },
-  buttonContainer: {
-    flex: 1,
-  },
-  timerContainer: {
-    flex: 1,
+
+    width: "100%",
   },
   shapesContainer: {
-    flex: 7,
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+
+  buttonContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+
+  button: {
+    width: 60,
+  },
+
+  imgCont: {
+    flex: 1,
+    alignItems: "center",
+  },
+  username: {
+    flex: 1,
+    alignItems: "center",
+    marginTop: 25,
+  },
+  timerButton: {
+    alignItems: "center",
+    flex: 1,
+  },
+  highScore: {
+    flex: 1,
+  },
+  img: {
+    marginTop: 0,
+    width: "100%",
+    resizeMode: "center",
+  },
+  subtitle: {
+    fontFamily: "Graduate",
+    fontSize: 32,
+    marginBottom: 30,
   },
 });
 
