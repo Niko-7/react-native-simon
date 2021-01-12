@@ -6,7 +6,7 @@ import { firebase } from '../src/firebaseConfig';
 
 const WaitingRoom = ({
   route: {
-    params: { user, roomCode, isHost, roomId },
+    params: { user, code, roomId },
   },
 }) => {
   const [users, setUsers] = useState([]);
@@ -18,18 +18,15 @@ const WaitingRoom = ({
     .collection('users');
 
   useEffect(() => {
-    // roomsRef.get().then(function (querySnapshot) {
-    //   querySnapshot.forEach(function (doc) {
-    //     console.log(doc.data());
-    //   });
-    // });
-
     roomsRef.onSnapshot((querySnapshot) => {
       const currentUsers = [];
       querySnapshot.forEach((user) => {
-        currentUsers.push(user.data());
+        if (user.data().isHost) {
+          currentUsers.unshift(user.data());
+        } else {
+          currentUsers.push(user.data());
+        }
       });
-      console.log(currentUsers);
       setUsers(currentUsers);
     });
   }, []);
@@ -37,8 +34,9 @@ const WaitingRoom = ({
   const handleReady = () => {};
   return (
     <View>
-      {console.log(users, 'current users')}
-      <View>{roomCode}</View>
+      <View>
+        <Text>ROOM CODE: {code}</Text>
+      </View>
       {users.map((user) => {
         return (
           <Card key={user.userId}>

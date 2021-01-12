@@ -31,7 +31,6 @@ export const joinRoom = (code, user, argument, navigation) => {
           navigation.navigate('WaitingRoom', {
             user,
             code,
-            isHost: false,
             roomId,
           });
         } else {
@@ -45,7 +44,6 @@ export const joinRoom = (code, user, argument, navigation) => {
 };
 
 export const createRoom = (user, argument, navigation) => {
-  let id = '';
   const code = generateRoomCode();
 
   roomsRef
@@ -53,38 +51,46 @@ export const createRoom = (user, argument, navigation) => {
       roomCode: code,
       createdAt: new Date().toISOString(),
       gameIsActive: false,
-      host: user,
+      host: { username: user.username, userId: user.id },
       playersGameOver: [],
       winner: null,
     })
-    .then((doc) => {
-      id = doc.id;
+    .then(() => {
+      addHost(code, user, argument, navigation);
     })
-    .then((id) => {
-      console.log(id);
-      roomsRef.doc(id).collection('users').doc(user.username).add({
-        username: user.username,
-        userId: user.id,
-        userImg: user.userImg,
-        score: 0,
-        argument: argument,
-        isHost: true,
-      });
-    })
-    // .then(() => {
-    //   roomsRef
-    //     .where('roomCode', '==', code)
-    //     .get()
-    //     .then((querySnapshot) => {
-    //       return querySnapshot.forEach((doc) => {
-    //         return doc.id;
-    //       });
-    //     });
-    // })
-    // .then((id) => {
-    //   navigation.navigate('WaitingRoom', { user, code, isHost: true, id });
-    // })
     .catch((err) => {
       console.error(err);
+    });
+};
+
+export const addHost = (code, user, argument, navigation) => {
+  roomsRef
+    .where('roomCode', '==', code)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        const roomId = doc.id;
+
+        if (doc.exists) {
+          roomsRef.doc(roomId).collection('users').doc(user.username).set({
+            username: user.username,
+            userId: user.id,
+            userImg: user.userImg,
+            score: 0,
+            argument: argument,
+            isHost: true,
+          });
+          navigation.navigate('WaitingRoom', {
+            user,
+            code,
+            roomId,
+          });
+        } else {
+          alert('Room does not exist!');
+        }
+      });
+    })
+    .catch((error) => {
+      console.log('Error getting documents: ', error);
     });
 };
