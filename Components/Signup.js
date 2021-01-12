@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { TextInput, Button, HelperText } from 'react-native-paper';
+import React, { useState } from "react";
+import { View, StyleSheet } from "react-native";
+import { TextInput, Button, HelperText } from "react-native-paper";
 
-import { firebase, firebaseConfig } from '../src/firebaseConfig';
+import { firebase, firebaseConfig } from "../src/firebaseConfig";
 
 const Signup = ({ route, navigation, setUser }) => {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState(route.params.email);
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [emptyUsername, setEmptyUsername] = useState(false);
   const [emptyEmail, setEmptyEmail] = useState(false);
   const [emptyPassword, setEmptyPassword] = useState(false);
@@ -61,20 +61,20 @@ const Signup = ({ route, navigation, setUser }) => {
             email,
             username,
             createdAt: new Date().toISOString(),
-            decision: 'None',
-            firstName: '',
-            lastName: '',
-            userImg: `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/no-profile-image.png?alt=media`
+            decision: "None",
+            firstName: "",
+            lastName: "",
+            userImg: `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/no-profile-image.png?alt=media`,
           };
 
           const scoresData = {
             id: uid,
             createdAt: new Date().toISOString(),
-            highScore: 0
+            highScore: 0,
           };
 
-          const usersRef = firebase.firestore().collection('users');
-          const scoresRef = firebase.firestore().collection('scores');
+          const usersRef = firebase.firestore().collection("users");
+          const scoresRef = firebase.firestore().collection("scores");
 
           usersRef
             .doc(uid)
@@ -84,7 +84,7 @@ const Signup = ({ route, navigation, setUser }) => {
             })
             .then(() => {
               setUser(userData);
-              navigation.navigate('GameChoice', { user: userData });
+              navigation.navigate("GameChoice", { user: userData });
             });
         })
         .catch((err) => {
@@ -148,16 +148,17 @@ const Signup = ({ route, navigation, setUser }) => {
 const styles = StyleSheet.create({
   signupContainer: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
   signupItems: {
-    width: '50%'
+    width: "50%",
   },
   buttons: {
-    marginTop: 5
-  }
+    marginTop: 5,
+    borderRadius: 20,
+  },
 });
 
 export default Signup;

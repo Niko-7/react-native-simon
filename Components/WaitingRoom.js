@@ -59,7 +59,7 @@ const WaitingRoom = ({
     <View>
       {users.map((user) => {
         return (
-          <Card>
+          <Card key={user.id}>
             <Card.Content>
               <Title>{user.username}</Title>
               <Paragraph>Card content</Paragraph>
