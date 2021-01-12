@@ -6,7 +6,7 @@ import {
   Button,
   Card,
   Title,
-  Paragraph
+  Paragraph,
 } from 'react-native-paper';
 import { useEffect, useState } from 'react/cjs/react.development';
 import { firebase } from '../src/firebaseConfig';
@@ -14,10 +14,11 @@ import { firebase } from '../src/firebaseConfig';
 const GameOver = ({
   navigation,
   route: {
-    params: { roomId, user, currentScore }
-  }
+    params: { roomId, user, currentScore },
+  },
 }) => {
   const [users, setUsers] = useState([]);
+  const [usersObj, setUsersObj] = useState({});
 
   const usersRef = firebase
     .firestore()
@@ -30,7 +31,12 @@ const GameOver = ({
     usersRef.get().then((querySnapshot) => {
       const currentUsers = [];
       querySnapshot.forEach((user) => {
+        const username = user.data().username;
+        const gameOver = user.data().gameOver;
+        const score = user.data().score;
+
         currentUsers.push(user.data());
+        setUsersObj({ ...usersObj, [username]: { gameOver, score } });
       });
       setUsers(currentUsers);
     });
@@ -53,6 +59,14 @@ const GameOver = ({
             <Card.Content>
               <Title>{user.username}</Title>
               <Paragraph>Fighting for {user.argument}</Paragraph>
+              {console.log(usersObj)}
+              {usersObj[user.username].gameOver ? (
+                <Text>
+                  {user.username}: {currentScore}
+                </Text>
+              ) : (
+                <Text>{user.username} is still playing...</Text>
+              )}
             </Card.Content>
           </Card>
         );
