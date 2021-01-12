@@ -4,19 +4,19 @@ import { Text } from 'react-native-paper';
 import Leaderboard from 'react-native-leaderboard';
 import { firebase } from '../src/firebaseConfig';
 
-const LeaderBoard = ({ route, navigation }) => {
-  //   const { user } = route.params;
-  //   const [data, setData] = useState();
+const LeaderBoard = () => {
   const [userDb, setUserData] = useState([]);
   const [scoreDb, setScoreData] = useState([]);
   const [allData, setAllData] = useState([]);
 
+  //Connects score data collection and user data collection by their id and returns a single object with the data
   const fullData = scoreDb.map((score) => ({
     ...score,
     ...userDb.find((user) => user.id === score.id),
   }));
 
   useEffect(() => {
+    //sets users data by username and id
     const names = firebase
       .firestore()
       .collection('users')
@@ -31,7 +31,7 @@ const LeaderBoard = ({ route, navigation }) => {
         });
         setUserData(userData);
       });
-
+    //sets scores data by score and id
     const scores = firebase
       .firestore()
       .collection('scores')
@@ -50,6 +50,7 @@ const LeaderBoard = ({ route, navigation }) => {
   }, []);
 
   useEffect(() => {
+    //sets the joined user/score data when the userDb and scoreDb have updated
     setAllData(fullData);
   }, [userDb, scoreDb]);
 
@@ -58,7 +59,6 @@ const LeaderBoard = ({ route, navigation }) => {
       <View style={styles.textView}>
         <Text style={styles.text}>🏆 Leaderboard 🏆</Text>
       </View>
-
       <Leaderboard data={fullData} sortBy='highScore' labelBy='userName' />
     </View>
   );
