@@ -26,6 +26,7 @@ const GameOver = ({
     .collection('users');
 
   useEffect(() => {
+    usersRef.doc(user.username).update({ gameOver: true });
     usersRef.get().then((querySnapshot) => {
       const currentUsers = [];
       querySnapshot.forEach((user) => {
@@ -35,8 +36,10 @@ const GameOver = ({
     });
     usersRef.onSnapshot((querySnapshot) => {
       querySnapshot.forEach((user) => {
-        if (user.gameOver) {
+        const currentUsers = [];
+        if (user.data().gameOver) {
           console.log('player died');
+          currentUsers.push(user.data());
         }
       });
     });
