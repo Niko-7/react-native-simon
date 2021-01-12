@@ -10,6 +10,7 @@ const WaitingRoom = ({
   },
 }) => {
   const [users, setUsers] = useState([]);
+  const [host, setHost] = useState('');
 
   const roomsRef = firebase
     .firestore()
@@ -23,6 +24,7 @@ const WaitingRoom = ({
       querySnapshot.forEach((user) => {
         if (user.data().isHost) {
           currentUsers.unshift(user.data());
+          setHost(user.data().username);
         } else {
           currentUsers.push(user.data());
         }
@@ -41,13 +43,21 @@ const WaitingRoom = ({
         return (
           <Card key={user.userId}>
             <Card.Content>
-              <Title>{user.username}</Title>
+              <Title>
+                {user.isHost && <Title>Host: </Title>}
+                {user.username}
+              </Title>
               <Paragraph>Card content</Paragraph>
             </Card.Content>
           </Card>
         );
       })}
-      <Button onPress={handleReady}>Start</Button>
+      {console.log(user)}
+      {user.username === host ? (
+        <Button onPress={handleReady}>Start</Button>
+      ) : (
+        <Text>Waiting for host to start game...</Text>
+      )}
       {/* <Button>Start Game</Button> */}
     </View>
   );
