@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
-import GameHighScore from './GameHighScore';
-import Shapes from './Shapes';
-import Timer from './Timer';
-import { firebase } from '../src/firebaseConfig';
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { Button } from "react-native-paper";
+import GameHighScore from "./GameHighScore";
+import Shapes from "./Shapes";
+import Timer from "./Timer";
+import { firebase } from "../src/firebaseConfig";
 
 const Game = ({ route }) => {
   const { params } = route;
   const { difficulty } = params;
   const { username, id } = params.user;
-  const [panels, setPanels] = useState(['red', 'purple', 'blue', 'green']);
+  const [panels, setPanels] = useState(["red", "purple", "blue", "green"]);
   const [sequence, setSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [highScore, setHighScore] = useState();
   const [currentScore, setCurrentScore] = useState(0);
   const [seconds, setSeconds] = useState(3);
-  const scoreRef = firebase.firestore().collection('scores').doc(id);
+  const scoreRef = firebase.firestore().collection("scores").doc(id);
 
   // On game load, will pull users high score from db and setHighScore
   useEffect(() => {
@@ -28,11 +28,11 @@ const Game = ({ route }) => {
           const data = doc.data();
           setHighScore(data.highScore);
         } else {
-          console.log('No such document!');
+          console.log("No such document!");
         }
       })
       .catch(function (error) {
-        console.log('Error getting document:', error);
+        console.log("Error getting document:", error);
       });
   }, []);
 
@@ -88,11 +88,11 @@ const Game = ({ route }) => {
   };
 
   const calculatePoints = () => {
-    if (difficulty === 'easy') {
+    if (difficulty === "easy") {
       return sequence.length;
-    } else if (difficulty === 'normal') {
+    } else if (difficulty === "normal") {
       return 2 * sequence.length;
-    } else if (difficulty === 'hard') {
+    } else if (difficulty === "hard") {
       return 3 * sequence.length;
     }
   };
@@ -110,10 +110,10 @@ const Game = ({ route }) => {
       setHighScore(currentScore);
       return scoreRef
         .update({
-          highScore: currentScore
+          highScore: currentScore,
         })
         .catch(function (error) {
-          console.error('Error updating document: ', error);
+          console.error("Error updating document: ", error);
         });
     }
   };
@@ -154,7 +154,7 @@ const Game = ({ route }) => {
           setSequence={setSequence}
           params={params}
         />
-        <Text style={{ textAlign: 'center' }}>Logged in as {username}</Text>
+        <Text style={{ textAlign: "center" }}>Logged in as {username}</Text>
       </View>
     </View>
   );
@@ -165,21 +165,21 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 20,
     marginBottom: 20,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
   headerContainer: {
-    flex: 1
+    flex: 1,
   },
   buttonContainer: {
-    flex: 1
+    flex: 1,
   },
   timerContainer: {
-    flex: 1
+    flex: 1,
   },
   shapesContainer: {
-    flex: 7
-  }
+    flex: 7,
+  },
 });
 
 export default Game;

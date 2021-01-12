@@ -41,7 +41,7 @@ const WaitingRoom = ({
       </View>
       {users.map((user) => {
         return (
-          <Card key={user.userId}>
+          <Card key={user.id}>
             <Card.Content>
               <Title>
                 {user.isHost && <Title>Host: </Title>}

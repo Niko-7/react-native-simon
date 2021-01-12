@@ -21,7 +21,7 @@ export default function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const usersRef = firebase.firestore().collection('users');
+    const usersRef = firebase.firestore().collection("users");
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         usersRef
@@ -46,7 +46,11 @@ export default function App() {
       <PaperProvider>
         <Stack.Navigator>
           {user ? (
-            <Stack.Screen name='GameChoice' options={{ title: 'Argulympics' }}>
+            <Stack.Screen
+              style={styles.banner}
+              name="GameChoice"
+              options={{ title: "Argulympics" }}
+            >
               {(props) => (
                 <GameChoice {...props} setUser={setUser} extraData={user} />
               )}
@@ -56,35 +60,35 @@ export default function App() {
               <Stack.Screen
                 name='Login'
                 component={Login}
-                options={{ title: 'Argulympics' }}
+                options={{ title: "Argulympics" }}
               />
               <Stack.Screen
                 name='Signup'
                 component={Signup}
-                options={{ title: 'Argulympics' }}
+                options={{ title: "Argulympics" }}
               />
             </>
           )}
           <Stack.Screen
             name='MenuSinglePlayer'
             component={MenuSinglePlayer}
-            options={{ title: 'Argulympics' }}
+            options={{ title: "Argulympics" }}
           />
 
           <Stack.Screen
             name='MenuMultiplayer'
             component={MenuMultiplayer}
-            options={{ title: 'Argulympics' }}
+            options={{ title: "Argulympics" }}
           />
           <Stack.Screen
             name='Game'
             component={Game}
-            options={{ title: 'Argulympics' }}
+            options={{ title: "Argulympics" }}
           />
           <Stack.Screen
             name='WaitingRoom'
             component={WaitingRoom}
-            options={{ title: 'Argulympics' }}
+            options={{ title: "Argulympics" }}
           />
           <Stack.Screen
             name='LeaderBoard'
@@ -100,8 +104,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#808080",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
