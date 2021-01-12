@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import Leaderboard from 'react-native-leaderboard';
 import { firebase } from '../src/firebaseConfig';
 
@@ -55,10 +55,22 @@ const LeaderBoard = ({ route, navigation }) => {
 
   return (
     <View>
-      <Text>Leaderboard 🏆</Text>
+      <View style={styles.textView}>
+        <Text style={styles.text}>🏆 Leaderboard 🏆</Text>
+      </View>
+
       <Leaderboard data={fullData} sortBy='highScore' labelBy='userName' />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  textView: {
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 30,
+  },
+});
 
 export default LeaderBoard;
