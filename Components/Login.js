@@ -80,9 +80,16 @@ const Login = ({ navigation }) => {
             Login
           </Button>
         </View>
+        <View
+          style={{
+            margin: 20,
+            borderBottomColor: 'grey',
+            borderBottomWidth: 1
+          }}
+        />
         <View style={styles.buttons}>
           <Button
-            mode="contained"
+            mode="outlined"
             color="blue"
             onPress={() => navigation.navigate('Signup', { email })}
           >
