@@ -10,6 +10,7 @@ import MenuSinglePlayer from './Components/MenuSinglePlayer';
 import MenuMultiplayer from './Components/MenuMultiplayer';
 import Signup from './Components/Signup';
 import Game from './Components/Game';
+import LeaderBoard from './Components/LeaderBoard';
 import WaitingRoom from './Components/WaitingRoom';
 import { firebase } from './src/firebaseConfig';
 
@@ -45,7 +46,7 @@ export default function App() {
       <PaperProvider>
         <Stack.Navigator>
           {user ? (
-            <Stack.Screen name="GameChoice" options={{ title: 'Argulympics' }}>
+            <Stack.Screen name='GameChoice' options={{ title: 'Argulympics' }}>
               {(props) => (
                 <GameChoice {...props} setUser={setUser} extraData={user} />
               )}
@@ -53,36 +54,41 @@ export default function App() {
           ) : (
             <>
               <Stack.Screen
-                name="Login"
+                name='Login'
                 component={Login}
                 options={{ title: 'Argulympics' }}
               />
               <Stack.Screen
-                name="Signup"
+                name='Signup'
                 component={Signup}
                 options={{ title: 'Argulympics' }}
               />
             </>
           )}
           <Stack.Screen
-            name="MenuSinglePlayer"
+            name='MenuSinglePlayer'
             component={MenuSinglePlayer}
             options={{ title: 'Argulympics' }}
           />
 
           <Stack.Screen
-            name="MenuMultiplayer"
+            name='MenuMultiplayer'
             component={MenuMultiplayer}
             options={{ title: 'Argulympics' }}
           />
           <Stack.Screen
-            name="Game"
+            name='Game'
             component={Game}
             options={{ title: 'Argulympics' }}
           />
           <Stack.Screen
-            name="WaitingRoom"
+            name='WaitingRoom'
             component={WaitingRoom}
+            options={{ title: 'Argulympics' }}
+          />
+          <Stack.Screen
+            name='LeaderBoard'
+            component={LeaderBoard}
             options={{ title: 'Argulympics' }}
           />
         </Stack.Navigator>
@@ -96,6 +102,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });
