@@ -88,15 +88,11 @@ const Game = ({ navigation, route }) => {
   };
 
   const calculatePoints = () => {
-    console.log('calculatepoints');
     if (difficulty === 'easy') {
-      console.log(difficulty, 'easy');
       return sequence.length;
     } else if (difficulty === 'normal') {
-      console.log(difficulty, 'normal');
       return 2 * sequence.length;
     } else if (difficulty === 'hard') {
-      console.log(difficulty, 'hard');
       return 3 * sequence.length;
     }
   };
