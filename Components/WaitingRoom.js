@@ -12,9 +12,9 @@ const WaitingRoom = ({
 }) => {
   const [users, setUsers] = useState([]);
   const [host, setHost] = useState('');
-  const [difficulty, setDifficulty] = useState('');
-  const [betweenTime, setBetweenTime] = useState(null);
-  const [flashTime, setFlashTime] = useState(null);
+  // const [difficulty, setDifficulty] = useState('');
+  // const [betweenTime, setBetweenTime] = useState(null);
+  // const [flashTime, setFlashTime] = useState(null);
 
   const usersRef = firebase
     .firestore()

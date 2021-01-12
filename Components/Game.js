@@ -6,10 +6,9 @@ import Shapes from './Shapes';
 import Timer from './Timer';
 import { firebase } from '../src/firebaseConfig';
 
-const Game = ({ route }) => {
-  console.log(route.params);
+const Game = ({ navigation, route }) => {
   let { params } = route;
-  const { difficulty } = params;
+  const { difficulty, isMultiplayer, user, roomId } = params;
   const { username, id } = params.user;
   const [panels, setPanels] = useState(['red', 'purple', 'blue', 'green']);
   const [sequence, setSequence] = useState([]);
@@ -120,6 +119,9 @@ const Game = ({ route }) => {
         .catch(function (error) {
           console.error('Error updating document: ', error);
         });
+    }
+    if (isMultiplayer) {
+      navigation.navigate('GameOver', { user, currentScore, roomId });
     }
   };
 

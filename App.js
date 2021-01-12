@@ -12,6 +12,7 @@ import Signup from './Components/Signup';
 import Game from './Components/Game';
 import WaitingRoom from './Components/WaitingRoom';
 import { firebase } from './src/firebaseConfig';
+import GameOver from './Components/GameOver';
 
 const Stack = createStackNavigator();
 
@@ -83,6 +84,11 @@ export default function App() {
           <Stack.Screen
             name="WaitingRoom"
             component={WaitingRoom}
+            options={{ title: 'Argulympics' }}
+          />
+          <Stack.Screen
+            name="GameOver"
+            component={GameOver}
             options={{ title: 'Argulympics' }}
           />
         </Stack.Navigator>
