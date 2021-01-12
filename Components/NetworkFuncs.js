@@ -26,12 +26,12 @@ export const joinRoom = (code, user, argument, navigation) => {
             userImg: user.userImg,
             score: 0,
             argument: argument,
-            isHost: false,
+            isHost: false
           });
           navigation.navigate('WaitingRoom', {
             user,
             code,
-            roomId,
+            roomId
           });
         } else {
           alert('Room does not exist!');
@@ -53,7 +53,7 @@ export const createRoom = (user, argument, navigation) => {
       gameIsActive: false,
       host: { username: user.username, userId: user.id },
       playersGameOver: [],
-      winner: null,
+      winner: null
     })
     .then(() => {
       addHost(code, user, argument, navigation);
@@ -78,12 +78,13 @@ export const addHost = (code, user, argument, navigation) => {
             userImg: user.userImg,
             score: 0,
             argument: argument,
-            isHost: true,
+            isHost: true
           });
           navigation.navigate('WaitingRoom', {
             user,
             code,
             roomId,
+            argument
           });
         } else {
           alert('Room does not exist!');

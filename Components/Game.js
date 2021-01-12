@@ -7,7 +7,8 @@ import Timer from './Timer';
 import { firebase } from '../src/firebaseConfig';
 
 const Game = ({ route }) => {
-  const { params } = route;
+  console.log(route.params);
+  let { params } = route;
   const { difficulty } = params;
   const { username, id } = params.user;
   const [panels, setPanels] = useState(['red', 'purple', 'blue', 'green']);
@@ -88,11 +89,15 @@ const Game = ({ route }) => {
   };
 
   const calculatePoints = () => {
+    console.log('calculatepoints');
     if (difficulty === 'easy') {
+      console.log(difficulty, 'easy');
       return sequence.length;
     } else if (difficulty === 'normal') {
+      console.log(difficulty, 'normal');
       return 2 * sequence.length;
     } else if (difficulty === 'hard') {
+      console.log(difficulty, 'hard');
       return 3 * sequence.length;
     }
   };

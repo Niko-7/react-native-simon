@@ -5,21 +5,30 @@ import { useEffect } from 'react/cjs/react.development';
 import { firebase } from '../src/firebaseConfig';
 
 const WaitingRoom = ({
+  navigation,
   route: {
-    params: { user, code, roomId },
-  },
+    params: { user, code, roomId }
+  }
 }) => {
   const [users, setUsers] = useState([]);
   const [host, setHost] = useState('');
+  const [difficulty, setDifficulty] = useState('');
+  const [betweenTime, setBetweenTime] = useState(null);
+  const [flashTime, setFlashTime] = useState(null);
 
-  const roomsRef = firebase
+  const usersRef = firebase
     .firestore()
     .collection('multiplayerGames')
     .doc(roomId)
     .collection('users');
 
+  const roomRef = firebase
+    .firestore()
+    .collection('multiplayerGames')
+    .doc(roomId);
+
   useEffect(() => {
-    roomsRef.onSnapshot((querySnapshot) => {
+    usersRef.onSnapshot((querySnapshot) => {
       const currentUsers = [];
       querySnapshot.forEach((user) => {
         if (user.data().isHost) {
@@ -31,9 +40,26 @@ const WaitingRoom = ({
       });
       setUsers(currentUsers);
     });
+    roomRef.onSnapshot((querySnapshot) => {
+      if (querySnapshot.data().gameIsActive) {
+        navigation.navigate('Game', {
+          users,
+          user,
+          roomId,
+          isMultiplayer: true,
+          difficulty: 'normal',
+          flashTime: 300,
+          betweenTime: 250
+        });
+      }
+    });
   }, []);
 
-  const handleReady = () => {};
+  const handleReady = () => {
+    // if (users.length > 1) {
+    roomRef.update({ gameIsActive: true });
+  };
+
   return (
     <View>
       <View>
@@ -47,20 +73,68 @@ const WaitingRoom = ({
                 {user.isHost && <Title>Host: </Title>}
                 {user.username}
               </Title>
-              <Paragraph>Card content</Paragraph>
+              <Paragraph>Fighting for {user.argument}</Paragraph>
             </Card.Content>
           </Card>
         );
       })}
-      {console.log(user)}
+
       {user.username === host ? (
+        // difficulty ? (
         <Button onPress={handleReady}>Start</Button>
       ) : (
+        // ) :
+        //   (
+        //     <View>
+        //       <View style={styles.button}>
+        //         <Button
+        //           mode="contained"
+        //           color="blue"
+        //           onPress={() => {
+        //             setBetweenTime(250);
+        //             setFlashTime(800);
+        //             setDifficulty('easy');
+        //           }}
+        //         >
+        //           Easy
+        //         </Button>
+        //       </View>
+        //       <View style={styles.button}>
+        //         <Button
+        //           mode="contained"
+        //           color="blue"
+        //           onPress={() => {
+        //             setBetweenTime(250);
+        //             setFlashTime(300);
+        //             setDifficulty('normal');
+        //           }}
+        //         >
+        //           Normal
+        //         </Button>
+        //       </View>
+        //       <View style={styles.button}>
+        //         <Button
+        //           mode="contained"
+        //           color="blue"
+        //           onPress={() => {
+        //             setBetweenTime(250);
+        //             setFlashTime(100);
+        //             setDifficulty('hard');
+        //           }}
+        //         >
+        //           Hard
+        //         </Button>
+        //       </View>
+        //     </View>
+        //   )
+        // )
+        // :
         <Text>Waiting for host to start game...</Text>
       )}
-      {/* <Button>Start Game</Button> */}
     </View>
   );
 };
+
+const styles = StyleSheet.create({});
 
 export default WaitingRoom;
