@@ -26,7 +26,8 @@ export const joinRoom = (code, user, argument, navigation) => {
             userImg: user.userImg,
             score: 0,
             argument: argument,
-            isHost: false
+            isHost: false,
+            gameOver: false
           });
           navigation.navigate('WaitingRoom', {
             user,
@@ -78,7 +79,8 @@ export const addHost = (code, user, argument, navigation) => {
             userImg: user.userImg,
             score: 0,
             argument: argument,
-            isHost: true
+            isHost: true,
+            gameOver: false
           });
           navigation.navigate('WaitingRoom', {
             user,
