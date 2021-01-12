@@ -82,9 +82,6 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
             highScore={highScore}
           />
           <Image style={styles.avatar} source={{ uri: imageUrl }} />
-          <Button mode="contained" color="blue" onPress={logoutPress}>
-            log out
-          </Button>
         </View>
         <View style={styles.gameChoiceContainer}>
           <Text style={styles.text}>How would you like to argue?</Text>
@@ -109,15 +106,18 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
             </Button>
           </View>
           <View style={styles.buttonsContainer}>
-          <Button
-            style={styles.buttons}
-            mode='contained'
-            color='blue'
-            onPress={() => navigation.navigate('LeaderBoard', { user })}
-          >
-            LeaderBoard
-          </Button>
-        </View>
+            <Button
+              style={styles.buttons}
+              mode="contained"
+              color="blue"
+              onPress={() => navigation.navigate("LeaderBoard", { user })}
+            >
+              LeaderBoard
+            </Button>
+            <Button mode="contained" color="red" onPress={logoutPress}>
+              log out
+            </Button>
+          </View>
         </View>
       </View>
     );
@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 25,
     fontFamily: "Graduate",
+    marginBottom: 3,
   },
   userNameMsg: {
     alignItems: "center",
