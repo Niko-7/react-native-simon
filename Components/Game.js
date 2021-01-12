@@ -197,21 +197,17 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flex: 1,
-
     width: "100%",
   },
   shapesContainer: {
     flex: 1,
     justifyContent: "flex-end",
+    marginBottom: 40,
   },
 
   buttonContainer: {
     flex: 1,
     alignItems: "center",
-  },
-
-  button: {
-    width: 60,
   },
 
   imgCont: {

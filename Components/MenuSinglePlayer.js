@@ -79,8 +79,7 @@ const MenuSinglePlayer = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   menuSinglePlayerContainer: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
+
     alignItems: "center",
     backgroundColor: "#bde0fe",
   },
