@@ -13,17 +13,6 @@ const MenuMultiplayer = ({
   const [argument, setArgument] = useState('');
   const [roomCode, setRoomCode] = useState('');
 
-  const generateRoomCode = () => {
-    let result = '';
-    let letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    for (let i = 0; i < 4; i++) {
-      result += letters.charAt(Math.floor(Math.random() * letters.length));
-    }
-    return result;
-  };
-
-  const code = generateRoomCode();
-
   return (
     <View style={styles.menuMultiplayerContainer}>
       <View>
@@ -32,6 +21,7 @@ const MenuMultiplayer = ({
           <TextInput
             onChangeText={(text) => setArgument(text)}
             placeholder="Input Argument"
+            dense={true}
           />
         </View>
         <View style={styles.joinRoom}>
@@ -56,7 +46,7 @@ const MenuMultiplayer = ({
           <Button
             mode="contained"
             color="blue"
-            onPress={() => createRoom(code, user, argument, navigation)}
+            onPress={() => createRoom(user, argument, navigation)}
           >
             Create a Room
           </Button>

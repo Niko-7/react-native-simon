@@ -2,15 +2,28 @@ import { firebase } from '../src/firebaseConfig';
 
 const roomsRef = firebase.firestore().collection('multiplayerGames');
 
+const generateRoomCode = () => {
+  let result = '';
+  let letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for (let i = 0; i < 4; i++) {
+    result += letters.charAt(Math.floor(Math.random() * letters.length));
+  }
+  return result;
+};
+
 export const joinRoom = (code, user, argument, navigation) => {
+  console.log('running');
+
   roomsRef
     .where('roomCode', '==', code)
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
         const roomId = doc.id;
+        console.log(roomId);
 
         if (doc.exists) {
+          console.log('in exists');
           roomsRef.doc(roomId).collection('users').doc(user.username).set({
             username: user.username,
             userId: user.id,
@@ -19,19 +32,21 @@ export const joinRoom = (code, user, argument, navigation) => {
             argument: argument,
             isHost: false,
           });
-          navigation.navigate('WaitingRoom', { user, code, isHost: false });
+          // navigation.navigate('WaitingRoom', { user, code, isHost: false });
+          console.log('got here');
         } else {
           alert('Room does not exist!');
         }
       });
     })
-    .catch(function (error) {
+    .catch((error) => {
       console.log('Error getting documents: ', error);
     });
 };
 
-export const createRoom = (code, user, argument, navigation) => {
+export const createRoom = (user, argument, navigation) => {
   let id = '';
+  const code = generateRoomCode();
 
   roomsRef
     .add({
