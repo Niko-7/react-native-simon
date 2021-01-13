@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
-import { TextInput, Button, HelperText } from "react-native-paper";
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { TextInput, Button, HelperText } from 'react-native-paper';
 
-import { firebase, firebaseConfig } from "../src/firebaseConfig";
+import { firebase, firebaseConfig } from '../src/firebaseConfig';
 
 const Signup = ({ route, navigation, setUser }) => {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState(route.params.email);
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [emptyUsername, setEmptyUsername] = useState(false);
   const [emptyEmail, setEmptyEmail] = useState(false);
   const [emptyPassword, setEmptyPassword] = useState(false);
@@ -61,10 +61,10 @@ const Signup = ({ route, navigation, setUser }) => {
             email,
             username,
             createdAt: new Date().toISOString(),
-            decision: "None",
-            firstName: "",
-            lastName: "",
-            userImg: `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/no-profile-image.png?alt=media`,
+            decision: 'None',
+            firstName: '',
+            lastName: '',
+            userImg: `no-profile-image.png`,
           };
 
           const scoresData = {
@@ -73,8 +73,8 @@ const Signup = ({ route, navigation, setUser }) => {
             highScore: 0,
           };
 
-          const usersRef = firebase.firestore().collection("users");
-          const scoresRef = firebase.firestore().collection("scores");
+          const usersRef = firebase.firestore().collection('users');
+          const scoresRef = firebase.firestore().collection('scores');
 
           usersRef
             .doc(uid)
@@ -84,7 +84,7 @@ const Signup = ({ route, navigation, setUser }) => {
             })
             .then(() => {
               setUser(userData);
-              navigation.navigate("GameChoice", { user: userData });
+              navigation.navigate('GameChoice', { user: userData });
             });
         })
         .catch((err) => {
@@ -99,44 +99,44 @@ const Signup = ({ route, navigation, setUser }) => {
         <TextInput
           style={styles.textInput}
           onChangeText={(text) => setUsername(text)}
-          placeholder="Username"
+          placeholder='Username'
           dense={true}
         />
-        <HelperText type="error" visible={emptyUsername}>
+        <HelperText type='error' visible={emptyUsername}>
           Enter a username
         </HelperText>
         <TextInput
           style={styles.textInput}
           onChangeText={(text) => setEmail(text)}
           value={email}
-          placeholder="Email"
+          placeholder='Email'
           dense={true}
         />
-        <HelperText type="error" visible={emptyEmail}>
+        <HelperText type='error' visible={emptyEmail}>
           Please enter your email
         </HelperText>
         <TextInput
           style={styles.textInput}
           onChangeText={(text) => setPassword(text)}
-          placeholder="Password"
+          placeholder='Password'
           dense={true}
           secureTextEntry={true}
         />
-        <HelperText type="error" visible={emptyPassword}>
+        <HelperText type='error' visible={emptyPassword}>
           Enter a password
         </HelperText>
         <TextInput
           style={styles.textInput}
           onChangeText={(text) => setConfirmPassword(text)}
-          placeholder="Repeat Password"
+          placeholder='Repeat Password'
           dense={true}
           secureTextEntry={true}
         />
-        <HelperText type="error" visible={passwordsMismatch}>
+        <HelperText type='error' visible={passwordsMismatch}>
           Passwords do not match
         </HelperText>
         <View style={styles.buttons}>
-          <Button mode="contained" color="blue" onPress={handlePress}>
+          <Button mode='contained' color='blue' onPress={handlePress}>
             Sign Up
           </Button>
         </View>
@@ -148,12 +148,12 @@ const Signup = ({ route, navigation, setUser }) => {
 const styles = StyleSheet.create({
   signupContainer: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   signupItems: {
-    width: "50%",
+    width: '50%',
   },
   buttons: {
     marginTop: 5,
