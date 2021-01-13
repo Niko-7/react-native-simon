@@ -7,8 +7,8 @@ import { joinRoom, createRoom } from './NetworkFuncs';
 const MenuMultiplayer = ({
   navigation,
   route: {
-    params: { user },
-  },
+    params: { user }
+  }
 }) => {
   const [argument, setArgument] = useState('');
   const [roomCode, setRoomCode] = useState('');
@@ -30,6 +30,7 @@ const MenuMultiplayer = ({
             onChangeText={(text) => setRoomCode(text)}
             placeholder="Enter room code"
             dense={true}
+            autoCapitalize="characters"
           />
           <View style={styles.button}>
             <Button
@@ -61,19 +62,19 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   argumentInput: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   button: {
     margin: 5,
-    flex: 1,
+    flex: 1
   },
   joinRoom: {
-    height: 100,
-  },
+    height: 100
+  }
 });
 
 export default MenuMultiplayer;

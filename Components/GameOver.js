@@ -6,7 +6,7 @@ import {
   Button,
   Card,
   Title,
-  Paragraph,
+  Paragraph
 } from 'react-native-paper';
 import { useEffect, useState } from 'react/cjs/react.development';
 import { firebase } from '../src/firebaseConfig';
@@ -14,10 +14,11 @@ import { firebase } from '../src/firebaseConfig';
 const GameOver = ({
   navigation,
   route: {
-    params: { roomId, user, currentScore },
-  },
+    params: { roomId, user, currentScore }
+  }
 }) => {
   const [usersArray, setUsersArray] = useState([]);
+  const [gameOvers, setGameOvers] = useState(0);
 
   const usersRef = firebase
     .firestore()
@@ -39,21 +40,49 @@ const GameOver = ({
     usersRef.onSnapshot((querySnapshot) => {
       querySnapshot.forEach((person) => {
         if (person.data().gameOver) {
-          usersRef.get().then((querySnapshot) => {
-            const currentUsers = [];
-            querySnapshot.forEach((person) => {
-              currentUsers.push(person.data());
+          usersRef
+            .get()
+            .then((querySnapshot) => {
+              const currentUsers = [];
+              querySnapshot.forEach((person) => {
+                currentUsers.push(person.data());
+              });
+              setUsersArray(currentUsers);
+            })
+            .then(() => {
+              const isEndGame = usersArray.every((user) => {
+                return user.gameOver === true;
+              });
+              if (isEndGame) {
+                alert('All players have died');
+              }
             });
-            setUsersArray(currentUsers);
-          });
         }
       });
     });
   }, []);
+
+  // const endGame = async function () {
+  //   return await usersArray.every((user) => {
+  //     // console.log(user.username, user.gameOver);
+  //     return user.gameOver === true;
+  //   });
+  // };
+  // console.log(endGame, 'endGame');
+  // if (endGame) {
+  //   console.log('in endGame');
+  // alert('All players have died');
+  // }
+
+  const sortedArray = usersArray.sort((a, b) => {
+    return b.score - a.score;
+  });
+
   return (
     <View>
       <Text>GAME OVER</Text>
-      {usersArray.map((person) => {
+
+      {sortedArray.map((person) => {
         return (
           <Card key={person.userId}>
             <Card.Content>

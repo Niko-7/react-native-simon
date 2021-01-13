@@ -4,7 +4,7 @@ const roomsRef = firebase.firestore().collection('multiplayerGames');
 
 const generateRoomCode = () => {
   let result = '';
-  let letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   for (let i = 0; i < 4; i++) {
     result += letters.charAt(Math.floor(Math.random() * letters.length));
   }
@@ -12,7 +12,7 @@ const generateRoomCode = () => {
 };
 
 export const joinRoom = (code, user, argument, navigation) => {
-  const regex = /[A-Z]{4}/gi;
+  const regex = /[A-Z]{4}/g;
 
   if (!regex.test(code)) {
     alert('Room code should be 4 letters long!');
@@ -21,28 +21,33 @@ export const joinRoom = (code, user, argument, navigation) => {
       .where('roomCode', '==', code)
       .get()
       .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          const roomId = doc.id;
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach(function (doc) {
+            const roomId = doc.id;
+            console.log('in foreach');
 
-          if (doc.exists) {
-            roomsRef.doc(roomId).collection('users').doc(user.username).set({
-              username: user.username,
-              userId: user.id,
-              userImg: user.userImg,
-              score: 0,
-              argument: argument,
-              isHost: false,
-              gameOver: false,
-            });
-            navigation.navigate('WaitingRoom', {
-              user,
-              code,
-              roomId,
-            });
-          } else {
-            alert('Room does not exist!');
-          }
-        });
+            if (doc.exists) {
+              roomsRef.doc(roomId).collection('users').doc(user.username).set({
+                username: user.username,
+                userId: user.id,
+                userImg: user.userImg,
+                score: 0,
+                argument: argument,
+                isHost: false,
+                gameOver: false
+              });
+              navigation.navigate('WaitingRoom', {
+                user,
+                code,
+                roomId
+              });
+            } else {
+              alert('Room does not exist!');
+            }
+          });
+        } else {
+          alert('Room does not exist!');
+        }
       })
       .catch((error) => {
         console.log('Error getting documents: ', error);
@@ -60,7 +65,7 @@ export const createRoom = (user, argument, navigation) => {
       gameIsActive: false,
       host: { username: user.username, userId: user.id },
       playersGameOver: [],
-      winner: null,
+      winner: null
     })
     .then(() => {
       addHost(code, user, argument, navigation);
@@ -86,13 +91,13 @@ export const addHost = (code, user, argument, navigation) => {
             score: 0,
             argument: argument,
             isHost: true,
-            gameOver: false,
+            gameOver: false
           });
           navigation.navigate('WaitingRoom', {
             user,
             code,
             roomId,
-            argument,
+            argument
           });
         }
       });
