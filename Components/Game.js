@@ -16,7 +16,7 @@ const Game = ({ route }) => {
   const { params } = route;
   const { difficulty } = params;
   const { username, id } = params.user;
-  const [panels, setPanels] = useState(["red", "purple", "blue", "green"]);
+  const [panels, setPanels] = useState(["red", "yellow", "blue", "green"]);
   const [sequence, setSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isTimerActive, setIsTimerActive] = useState(false);
