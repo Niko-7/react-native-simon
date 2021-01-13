@@ -9,11 +9,11 @@ import { firebase } from '../src/firebaseConfig';
 const WaitingRoom = ({
   navigation,
   route: {
-    params: { user, code, roomId },
-  },
+    params: { user, code, roomId }
+  }
 }) => {
   let [fontsLoaded, error] = Font.useFonts({
-    Graduate: require('../assets/fonts/Graduate-Regular.ttf'),
+    Graduate: require('../assets/fonts/Graduate-Regular.ttf')
   });
 
   const [users, setUsers] = useState([]);
@@ -59,22 +59,22 @@ const WaitingRoom = ({
       setUsers(currentUsers);
     });
     getAndLoadHttpUrl(user);
+    const loadingRoom = roomRef.onSnapshot((querySnapshot) => {
+      if (querySnapshot.data().gameIsActive) {
+        showUsers();
+        loadingRoom();
+        navigation.navigate('Game', {
+          users,
+          user,
+          roomId,
+          isMultiplayer: true,
+          difficulty: 'normal',
+          flashTime: 300,
+          betweenTime: 250
+        });
+      }
+    });
   }, []);
-  const loadingRoom = roomRef.onSnapshot((querySnapshot) => {
-    if (querySnapshot.data().gameIsActive) {
-      showUsers();
-      loadingRoom();
-      navigation.navigate('Game', {
-        users,
-        user,
-        roomId,
-        isMultiplayer: true,
-        difficulty: 'normal',
-        flashTime: 300,
-        betweenTime: 250,
-      });
-    }
-  });
 
   const handleReady = () => {
     // if (users.length > 1) {
@@ -192,43 +192,43 @@ export default WaitingRoom;
 const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
-    backgroundColor: '#bde0fe',
+    backgroundColor: '#bde0fe'
   },
 
   // HEADER SECTION
 
   headerCont: {
     flex: 2,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   img: {
     flex: 3,
     width: '100%',
-    resizeMode: 'center',
+    resizeMode: 'center'
   },
   titleCont: {
-    flex: 1,
+    flex: 1
   },
   pageTitleText: {
     fontFamily: 'Graduate',
     textAlign: 'center',
-    fontSize: 30,
+    fontSize: 30
   },
   roomCodeCont: {
-    flex: 1,
+    flex: 1
   },
   roomCodeText: {
     fontFamily: 'Graduate',
     textAlign: 'center',
-    fontSize: 25,
+    fontSize: 25
   },
 
   participantsCont: {
-    flex: 1,
+    flex: 1
   },
   participantsText: {
     fontFamily: 'Graduate',
-    fontSize: 20,
+    fontSize: 20
   },
 
   // TABLE SECTION
@@ -236,14 +236,14 @@ const styles = StyleSheet.create({
   waitingTable: {
     flex: 3,
     justifyContent: 'flex-start',
-    textAlign: 'center',
+    textAlign: 'center'
   },
 
   waitingText: {
     paddingTop: 12,
     textAlign: 'center',
     fontFamily: 'Graduate',
-    fontSize: 25,
+    fontSize: 25
   },
 
   // User Card
@@ -254,33 +254,33 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7A919',
     paddingBottom: 0.2,
     flexDirection: 'row',
-    height: 80,
+    height: 80
   },
 
   // flex horizontal
 
   cardImage: {
-    flex: 1,
+    flex: 1
   },
   cardText: {
     top: -4.5,
     marginLeft: 75,
     flex: 4,
     flexDirection: 'column',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-start'
   },
 
   cardTitle: {
-    fontFamily: 'Graduate',
+    fontFamily: 'Graduate'
   },
   hostTitle: {
-    fontFamily: 'Graduate',
+    fontFamily: 'Graduate'
   },
   highScore: {
-    fontFamily: 'Graduate',
+    fontFamily: 'Graduate'
   },
   avatar: {
     width: 50,
-    height: 50,
-  },
+    height: 50
+  }
 });

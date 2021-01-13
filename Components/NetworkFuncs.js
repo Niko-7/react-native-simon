@@ -39,7 +39,8 @@ export const joinRoom = (code, user, argument, navigation) => {
               navigation.navigate('WaitingRoom', {
                 user,
                 code,
-                roomId
+                roomId,
+                isMultiplayer: true
               });
             } else {
               alert('Room does not exist!');
@@ -97,7 +98,8 @@ export const addHost = (code, user, argument, navigation) => {
             user,
             code,
             roomId,
-            argument
+            argument,
+            isMultiplayer: true
           });
         }
       });
