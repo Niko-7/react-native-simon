@@ -18,15 +18,10 @@ const LeaderBoard = ({ user }) => {
 
   //Connects score data collection and user data collection by their id and returns a single object with the data
 
-  const fullData = scoreDb.map((score) => ({
-    ...score,
-    ...userDb.find((user) => user.id === score.id),
-  }));
-
   const getAndLoadHttpUrl = async (user) => {
     firebase
       .storage()
-      .ref(`/${user.userImg}`) //name in storage in firebase console
+      .ref(`/${user}`) //name in storage in firebase console
       .getDownloadURL()
       .then((url) => {
         setImageUrl(url);
@@ -36,13 +31,15 @@ const LeaderBoard = ({ user }) => {
 
   useEffect(() => {
     //sets users data by username and id
-    const names = firebase
+    firebase
       .firestore()
       .collection('users')
       .get()
       .then((snap) => {
         const userData = [];
         snap.forEach((doc) => {
+          // console.log(doc.data());
+          getAndLoadHttpUrl(doc.data().userImg);
           userData.push({
             userName: doc.data().username,
             id: doc.data().id,
@@ -52,7 +49,7 @@ const LeaderBoard = ({ user }) => {
         setUserData(userData);
       });
     //sets scores data by score and id
-    const scores = firebase
+    firebase
       .firestore()
       .collection('scores')
       .get()
@@ -65,7 +62,7 @@ const LeaderBoard = ({ user }) => {
             icon: doc.data().userImg,
           });
         });
-        scoreData.forEach((score) => {});
+        // scoreData.forEach((score) => {});
         setScoreData(scoreData);
       });
   }, [imageUrl]);
@@ -74,6 +71,11 @@ const LeaderBoard = ({ user }) => {
     //sets the joined user/score data when the userDb and scoreDb have updated
     setAllData(fullData);
   }, [userDb, scoreDb]);
+
+  const fullData = scoreDb.map((score) => ({
+    ...score,
+    ...userDb.find((user) => user.id === score.id),
+  }));
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -91,9 +93,9 @@ const LeaderBoard = ({ user }) => {
           <Leaderboard
             data={fullData}
             sortBy='highScore'
+            icon='https://miro.medium.com/max/2400/1*o8tTGo3vsocTKnCUyz0wHA.jpeg'
             labelBy='userName'
             oddRowColor='#bde0fe'
-            icon='https://miro.medium.com/max/2400/1*o8tTGo3vsocTKnCUyz0wHA.jpeg'
           />
         </View>
       </View>
