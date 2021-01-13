@@ -6,7 +6,7 @@ import {
   Button,
   Card,
   Title,
-  Paragraph,
+  Paragraph
 } from 'react-native-paper';
 import { useEffect, useState } from 'react/cjs/react.development';
 import { firebase } from '../src/firebaseConfig';
@@ -14,8 +14,8 @@ import { firebase } from '../src/firebaseConfig';
 const GameOver = ({
   navigation,
   route: {
-    params: { roomId, user, currentScore },
-  },
+    params: { roomId, user, currentScore }
+  }
 }) => {
   const [usersArray, setUsersArray] = useState([]);
   // const [gameOvers, setGameOvers] = useState([]);
@@ -65,16 +65,33 @@ const GameOver = ({
           players.push(person.data());
         });
       });
-      console.log(players.length, 'current users length');
-      console.log(querySnapshot.data().gameOvers, 'room game overs');
       if (players.length === querySnapshot.data().gameOvers) {
-        console.log(sortedArray);
-        alert(
-          `${sortedArray[0].username} is the winner!\n${sortedArray[0].argument}`
-        );
+        usersRef
+          .orderBy('score', 'desc')
+          .limit(1)
+          .get()
+          .then((users) => {
+            let winner;
+            users.forEach((winnerData) => {
+              winner = winnerData.data();
+            });
+            checkGameOver();
+            trackStatus();
+            if (
+              alert(
+                `${winner.username} is the winner!!\nFighting for ${winner.argument}`
+              )
+            ) {
+              console.log('alert');
+            }
+          });
       }
     });
   }, []);
+
+  // useEffect(() => {
+
+  // }, [usersArray]);
 
   // const endGame = async function () {
   //   return await usersArray.every((user) => {
