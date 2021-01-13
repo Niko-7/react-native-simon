@@ -5,7 +5,6 @@ import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import { joinRoom, createRoom } from "./NetworkFuncs";
 
-
 const MenuMultiplayer = ({
   navigation,
   route: {
@@ -23,19 +22,17 @@ const MenuMultiplayer = ({
     return <AppLoading />;
   } else {
     return (
-       <View
-      style={styles.multiplayerContainer}
-        >
-
+      <View style={styles.multiplayerContainer}>
         <Image
           style={styles.img}
           source={require("../assets/ARGULYMPICS.png")}
         />
 
-
         <View style={styles.inputs}>
           <View style={styles.argumentInput}>
-            <Text style={styles.inputText}>What are you fighting for?!</Text>
+            <Text style={[styles.inputText, styles.red]}>
+              What are you fighting for?!
+            </Text>
             <TextInput
               style={styles.textInputBox}
               onChangeText={(text) => setArgument(text)}
@@ -45,21 +42,24 @@ const MenuMultiplayer = ({
           </View>
 
           <View style={styles.createGame}>
-            <Text style={styles.inputText}>Starting An Argument?</Text>
+            <Text style={[styles.inputText, styles.green]}>
+              Starting An Argument?
+            </Text>
             <View style={styles.button}>
               <Button
-              
                 mode="contained"
-                color="blue"
+                color="green"
                 onPress={() => createRoom(user, argument, navigation)}
               >
-             Create a Room
+                Create a Room
               </Button>
             </View>
           </View>
 
           <View style={styles.joinRoom}>
-            <Text style={styles.inputText}>Joining An Argument?</Text>
+            <Text style={[styles.inputText, styles.yellow]}>
+              Joining An Argument?
+            </Text>
             <TextInput
               style={styles.textInputBox}
               onChangeText={(text) => setRoomCode(text)}
@@ -68,12 +68,11 @@ const MenuMultiplayer = ({
             />
             <View style={styles.button}>
               <Button
-              
                 mode="contained"
-                color="blue"
+                color="yellow"
                 onPress={() => joinRoom(roomCode, user, argument, navigation)}
               >
-              Join a Room  
+                Join a Room
               </Button>
             </View>
           </View>
@@ -121,6 +120,15 @@ const styles = StyleSheet.create({
     fontFamily: "Graduate",
     fontSize: 18,
     textAlign: "center",
+  },
+  red: {
+    color: "red",
+  },
+  green: {
+    color: "green",
+  },
+  yellow: {
+    color: "yellow",
   },
 });
 
