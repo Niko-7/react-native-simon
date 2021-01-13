@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
-import { Button } from 'react-native-paper';
-import AppLoading from 'expo-app-loading';
-import * as Font from 'expo-font';
-import { firebase } from '../src/firebaseConfig';
-import 'firebase/storage';
-import GameHighScore from './GameHighScore';
-import AvatarModals from './Avatars';
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, Text, Image } from "react-native";
+import { Button } from "react-native-paper";
+import AppLoading from "expo-app-loading";
+import * as Font from "expo-font";
+import { firebase } from "../src/firebaseConfig";
+import "firebase/storage";
+import GameHighScore from "./GameHighScore";
+import AvatarModals from "./Avatars";
 
 const GameChoice = ({ setUser, extraData, navigation }) => {
   let [fontsLoaded, error] = Font.useFonts({
-    Graduate: require('../assets/fonts/Graduate-Regular.ttf'),
+    Graduate: require("../assets/fonts/Graduate-Regular.ttf"),
   });
   const [imageUrl, setImageUrl] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [highScore, setHighScore] = useState();
   const [user, setupUser] = useState(extraData);
-  const scoreRef = firebase.firestore().collection('scores').doc(extraData.id);
+  const scoreRef = firebase.firestore().collection("scores").doc(extraData.id);
 
   useEffect(() => {
     // Pulls high score for user
@@ -27,11 +27,11 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
           const data = doc.data();
           setHighScore(data.highScore);
         } else {
-          console.log('No such document!');
+          console.log("No such document!");
         }
       })
       .catch(function (error) {
-        console.log('Error getting document:', error);
+        console.log("Error getting document:", error);
       });
     // attempts to load image
     getAndLoadHttpUrl();
@@ -45,20 +45,20 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
       .then((url) => {
         setImageUrl(url);
       })
-      .catch((e) => console.log('Errors while downloading => ', e));
+      .catch((e) => console.log("Errors while downloading => ", e));
   };
   // const user = extraData;
 
   const updateAvatar = (newImg) => {
     firebase
       .firestore()
-      .collection('users')
+      .collection("users")
       .doc(user.id)
       .update({ userImg: newImg });
 
     firebase
       .firestore()
-      .collection('users')
+      .collection("users")
       .doc(user.id)
       .get()
       .then((user) => {
@@ -87,7 +87,7 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
         <View style={styles.imgCont}>
           <Image
             style={styles.img}
-            source={require('../assets/Argulympics-no-logo.png')}
+            source={require("../assets/Argulympics-no-logo.png")}
           />
         </View>
         <View style={styles.userNameMsg}>
@@ -98,7 +98,9 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
             highScore={highScore}
           />
           <Image style={styles.avatar} source={{ uri: imageUrl }} />
-          <AvatarModals updateAvatar={updateAvatar} />
+          <View style={styles.avatarChange}>
+            <AvatarModals updateAvatar={updateAvatar} />
+          </View>
         </View>
 
         <View style={styles.gameChoiceContainer}>
@@ -106,9 +108,9 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
           <View style={styles.buttonsContainer}>
             <Button
               style={styles.buttons}
-              mode='contained'
-              color='black'
-              onPress={() => navigation.navigate('MenuSinglePlayer', { user })}
+              mode="contained"
+              color="black"
+              onPress={() => navigation.navigate("MenuSinglePlayer", { user })}
             >
               Single Player
             </Button>
@@ -116,9 +118,9 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
           <View style={styles.buttonsContainer}>
             <Button
               style={styles.buttons}
-              mode='contained'
-              color='yellow'
-              onPress={() => navigation.navigate('MenuMultiplayer', { user })}
+              mode="contained"
+              color="yellow"
+              onPress={() => navigation.navigate("MenuMultiplayer", { user })}
             >
               Multiplayer
             </Button>
@@ -126,16 +128,16 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
           <View style={styles.buttonsContainer}>
             <Button
               style={styles.buttons}
-              mode='contained'
-              color='green'
-              onPress={() => navigation.navigate('LeaderBoard', { user })}
+              mode="contained"
+              color="green"
+              onPress={() => navigation.navigate("LeaderBoard", { user })}
             >
               LeaderBoard
             </Button>
             <Button
-              icon='logout'
-              mode='contained'
-              color='red'
+              icon="logout"
+              mode="contained"
+              color="red"
               onPress={logoutPress}
             >
               log out
@@ -148,57 +150,63 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  logOutBtn: {
-    flexDirection: 'row-reverse',
+  gameChoice: {
+    flex: 1,
+    backgroundColor: "#bde0fe",
+    justifyContent: "center",
   },
-  footerLink: {
-    color: '#788eec',
-    fontWeight: 'bold',
-    fontSize: 16,
+  imgCont: {
+    flex: 1,
+  },
+  userNameMsg: {
+    flex: 3,
+    alignItems: "center",
+    paddingBottom: 2,
   },
   gameChoiceContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 3,
+    justifyContent: "flex-end",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonsContainer: {
-    width: '50%',
+    width: "50%",
   },
   buttons: {
     margin: 5,
   },
-  imgCont: {
-    alignItems: 'center',
+  avatarChange: {
+    flex: 1,
   },
+
   img: {
     // flex: 1,
-    width: '100%',
-    resizeMode: 'center',
+    width: "100%",
+    resizeMode: "center",
     // marginBottom: 0,
   },
   text: {
     // flex: 3,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 25,
-    fontFamily: 'Graduate',
+    fontFamily: "Graduate",
     marginBottom: 3,
   },
-  userNameMsg: {
-    alignItems: 'center',
-    paddingBottom: 2,
-  },
-  gameChoice: {
-    flex: 1,
-    backgroundColor: '#bde0fe',
-    justifyContent: 'center',
-  },
+
   avatar: {
-    width: 200,
-    height: 200,
+    width: 170,
+    height: 170,
     marginBottom: 10,
     marginTop: 45,
+  },
+  logOutBtn: {
+    flexDirection: "row-reverse",
+  },
+  footerLink: {
+    color: "#788eec",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 
