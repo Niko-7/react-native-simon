@@ -1,76 +1,211 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
-import { useEffect } from "react/cjs/react.development";
-import { firebase } from "../src/firebaseConfig";
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
+import { useEffect } from 'react/cjs/react.development';
+import AppLoading from 'expo-app-loading';
+import * as Font from 'expo-font';
+import { firebase } from '../src/firebaseConfig';
 
 const WaitingRoom = ({
   route: {
-    params: { user, roomCode, isHost },
+    params: { user, code, roomId },
   },
 }) => {
-  const [users, setUsers] = useState([user]);
-  const [hostRoomCode, setHostRoomCode] = useState("");
+  let [fontsLoaded, error] = Font.useFonts({
+    Graduate: require('../assets/fonts/Graduate-Regular.ttf'),
+  });
 
-  const roomsRef = firebase.firestore().collection("multiplayerGames");
+  const [users, setUsers] = useState([]);
+  const [host, setHost] = useState('');
+  const [imageUrl, setImageUrl] = useState();
 
-  const generateRoomCode = () => {
-    let result = "";
-    let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    for (let i = 0; i < 4; i++) {
-      result += letters.charAt(Math.floor(Math.random() * letters.length));
-    }
-    return result;
+  const getAndLoadHttpUrl = async () => {
+    firebase
+      .storage()
+      .ref(`/${user.userImg}`) //name in storage in firebase console
+      .getDownloadURL()
+      .then((url) => {
+        setImageUrl(url);
+      })
+      .catch((e) => console.log('Errors while downloading => ', e));
   };
 
+  const roomsRef = firebase
+    .firestore()
+    .collection('multiplayerGames')
+    .doc(roomId)
+    .collection('users');
+
   useEffect(() => {
-    if (isHost) {
-      const code = generateRoomCode();
-      setHostRoomCode(code);
-      roomsRef
-        .add({
-          roomCode: code,
-          createdAt: new Date().toISOString(),
-          gameIsActive: false,
-          host: user,
-          players: [user],
-          playersGameOver: [],
-          winner: null,
-        })
-        .then(function (docRef) {
-          firebase
-            .firestore()
-            .collection("multiplayerGames")
-            .doc(docRef.id)
-            .onSnapshot(function (doc) {
-              console.log("Current data: ", doc.data());
-            });
-        })
-        .catch(function (error) {
-          console.error("Error adding document: ", error);
-        });
-    } else {
-      setHostRoomCode(roomCode);
-    }
+    roomsRef.onSnapshot((querySnapshot) => {
+      const currentUsers = [];
+      querySnapshot.forEach((user) => {
+        if (user.data().isHost) {
+          currentUsers.unshift(user.data());
+          setHost(user.data().username);
+        } else {
+          currentUsers.push(user.data());
+        }
+      });
+      setUsers(currentUsers);
+    });
+    getAndLoadHttpUrl(user);
   }, []);
 
   const handleReady = () => {};
-  return (
-    <View>
-      {users.map((user) => {
-        return (
-          <Card>
-            <Card.Content>
-              <Title>{user.username}</Title>
-              <Paragraph>Card content</Paragraph>
-            </Card.Content>
-          </Card>
-        );
-      })}
-      <Button onPress={handleReady}>Ready</Button>
-      {/* <Button>Start Game</Button> */}
-    </View>
-  );
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View style={styles.pageContainer}>
+        <View style={styles.headerCont}>
+          <Image
+            style={styles.img}
+            source={require('../assets/ARGULYMPICS.png')}
+          />
+          <View style={styles.titleCont}>
+            <Text style={styles.pageTitleText}>Get Ready to Argue!</Text>
+          </View>
+
+          <View style={styles.roomCodeCont}>
+            <Text style={styles.roomCodeText}>ROOM CODE: {code}</Text>
+          </View>
+          <View style={styles.participantsCont}>
+            <Text style={styles.participantsText}>Participants:</Text>
+          </View>
+        </View>
+
+        <View style={styles.waitingTable}>
+          {users.map((user) => {
+            return (
+              <Card key={user.id} style={styles.card}>
+                <Card.Content>
+                  <View style={styles.cardImage}>
+                    <Image style={styles.avatar} source={{ uri: imageUrl }} />
+                  </View>
+                  <View style={styles.cardText}>
+                    <Title style={styles.cardTitle}>
+                      {user.isHost && (
+                        <Title style={styles.hostTitle}>Host: </Title>
+                      )}
+                      {user.username}
+                    </Title>
+                    <Paragraph style={styles.highScore}>
+                      Current High Score: {user.score}
+                    </Paragraph>
+                  </View>
+                </Card.Content>
+              </Card>
+            );
+          })}
+
+          {user.username === host ? (
+            <Button onPress={handleReady}>Start</Button>
+          ) : (
+            <Text style={styles.waitingText}>
+              Waiting for host to start game...
+            </Text>
+          )}
+        </View>
+      </View>
+    );
+  }
 };
 
 export default WaitingRoom;
+
+const styles = StyleSheet.create({
+  pageContainer: {
+    flex: 1,
+    backgroundColor: '#bde0fe',
+  },
+
+  // HEADER SECTION
+
+  headerCont: {
+    flex: 2,
+    justifyContent: 'center',
+  },
+  img: {
+    flex: 3,
+    width: '100%',
+    resizeMode: 'center',
+  },
+  titleCont: {
+    flex: 1,
+  },
+  pageTitleText: {
+    fontFamily: 'Graduate',
+    textAlign: 'center',
+    fontSize: 30,
+  },
+  roomCodeCont: {
+    flex: 1,
+  },
+  roomCodeText: {
+    fontFamily: 'Graduate',
+    textAlign: 'center',
+    fontSize: 25,
+  },
+
+  participantsCont: {
+    flex: 1,
+  },
+  participantsText: {
+    fontFamily: 'Graduate',
+    fontSize: 20,
+  },
+
+  // TABLE SECTION
+
+  waitingTable: {
+    flex: 3,
+    justifyContent: 'flex-start',
+    textAlign: 'center',
+  },
+
+  waitingText: {
+    paddingTop: 12,
+    textAlign: 'center',
+    fontFamily: 'Graduate',
+    fontSize: 25,
+  },
+
+  // User Card
+
+  card: {
+    borderColor: '#ED2E18',
+    borderWidth: 2,
+    backgroundColor: '#F7A919',
+    paddingBottom: 0.2,
+    flexDirection: 'row',
+    height: 80,
+  },
+
+  // flex horizontal
+
+  cardImage: {
+    flex: 1,
+  },
+  cardText: {
+    top: -4.5,
+    marginLeft: 75,
+    flex: 4,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+
+  cardTitle: {
+    fontFamily: 'Graduate',
+  },
+  hostTitle: {
+    fontFamily: 'Graduate',
+  },
+  highScore: {
+    fontFamily: 'Graduate',
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+  },
+});
