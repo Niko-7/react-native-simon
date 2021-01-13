@@ -46,7 +46,7 @@ const Login = ({ navigation }) => {
         })
         .catch((err) => {
           // console.error(err);
-          alert('Incorrect login details. \n Please try again.');
+          alert('Incorrect login details.\nPlease try again.');
           // alert(err);
         });
     }
@@ -99,18 +99,18 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   textInput: {
     textAlign: 'center',
-    marginBottom: 10
+    marginBottom: 10,
   },
   loginItems: {
-    width: '50%'
+    width: '50%',
   },
   buttons: {
-    margin: 5
-  }
+    margin: 5,
+  },
 });
 
 export default Login;

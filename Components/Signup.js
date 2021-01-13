@@ -51,45 +51,53 @@ const Signup = ({ route, navigation, setUser }) => {
       setEmptyUsername(false);
       setPasswordsMismatch(false);
 
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then((res) => {
-          const uid = res.user.uid;
-          const userData = {
-            id: uid,
-            email,
-            username,
-            createdAt: new Date().toISOString(),
-            decision: 'None',
-            firstName: '',
-            lastName: '',
-            userImg: `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/no-profile-image.png?alt=media`
-          };
+      const regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-          const scoresData = {
-            id: uid,
-            createdAt: new Date().toISOString(),
-            highScore: 0
-          };
+      if (!regEx.test(email)) {
+        alert('Please enter a valid email address!');
+      } else {
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password)
+          .then((res) => {
+            const uid = res.user.uid;
+            const userData = {
+              id: uid,
+              email,
+              username,
+              createdAt: new Date().toISOString(),
+              decision: 'None',
+              firstName: '',
+              lastName: '',
+              userImg: `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/no-profile-image.png?alt=media`,
+            };
 
-          const usersRef = firebase.firestore().collection('users');
-          const scoresRef = firebase.firestore().collection('scores');
+            const scoresData = {
+              id: uid,
+              createdAt: new Date().toISOString(),
+              highScore: 0,
+            };
 
-          usersRef
-            .doc(uid)
-            .set(userData)
-            .then(() => {
-              scoresRef.doc(uid).set(scoresData);
-            })
-            .then(() => {
-              setUser(userData);
-              navigation.navigate('GameChoice', { user: userData });
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+            const usersRef = firebase.firestore().collection('users');
+            const scoresRef = firebase.firestore().collection('scores');
+
+            usersRef
+              .doc(uid)
+              .set(userData)
+              .then(() => {
+                scoresRef.doc(uid).set(scoresData);
+              })
+              .then(() => {
+                setUser(userData);
+                navigation.navigate('GameChoice', { user: userData });
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+            const error = err.toString().split('Error: ').pop();
+            alert(error);
+          });
+      }
     }
   };
 
@@ -150,14 +158,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   signupItems: {
-    width: '50%'
+    width: '50%',
   },
   buttons: {
-    marginTop: 5
-  }
+    marginTop: 5,
+  },
 });
 
 export default Signup;

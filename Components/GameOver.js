@@ -17,8 +17,7 @@ const GameOver = ({
     params: { roomId, user, currentScore },
   },
 }) => {
-  const [users, setUsers] = useState([]);
-  const [usersObj, setUsersObj] = useState({});
+  const [usersArray, setUsersArray] = useState([]);
 
   const usersRef = firebase
     .firestore()
@@ -27,25 +26,26 @@ const GameOver = ({
     .collection('users');
 
   useEffect(() => {
-    usersRef.doc(user.username).update({ gameOver: true });
+    usersRef.doc(user.username).update({ gameOver: true, score: currentScore });
+
     usersRef.get().then((querySnapshot) => {
       const currentUsers = [];
-      querySnapshot.forEach((user) => {
-        const username = user.data().username;
-        const gameOver = user.data().gameOver;
-        const score = user.data().score;
-
-        currentUsers.push(user.data());
-        setUsersObj({ ...usersObj, [username]: { gameOver, score } });
+      querySnapshot.forEach((person) => {
+        currentUsers.push(person.data());
       });
-      setUsers(currentUsers);
+      setUsersArray(currentUsers);
     });
+
     usersRef.onSnapshot((querySnapshot) => {
-      querySnapshot.forEach((user) => {
-        const currentUsers = [];
-        if (user.data().gameOver) {
-          console.log('player died');
-          currentUsers.push(user.data());
+      querySnapshot.forEach((person) => {
+        if (person.data().gameOver) {
+          usersRef.get().then((querySnapshot) => {
+            const currentUsers = [];
+            querySnapshot.forEach((person) => {
+              currentUsers.push(person.data());
+            });
+            setUsersArray(currentUsers);
+          });
         }
       });
     });
@@ -53,19 +53,18 @@ const GameOver = ({
   return (
     <View>
       <Text>GAME OVER</Text>
-      {users.map((user) => {
+      {usersArray.map((person) => {
         return (
-          <Card key={user.userId}>
+          <Card key={person.userId}>
             <Card.Content>
-              <Title>{user.username}</Title>
-              <Paragraph>Fighting for {user.argument}</Paragraph>
-              {console.log(usersObj)}
-              {usersObj[user.username].gameOver ? (
+              <Title>{person.username}</Title>
+              <Paragraph>Fighting for {person.argument}</Paragraph>
+              {person.gameOver ? (
                 <Text>
-                  {user.username}: {currentScore}
+                  {person.username}: {person.score}
                 </Text>
               ) : (
-                <Text>{user.username} is still playing...</Text>
+                <Text>{person.username} is still playing...</Text>
               )}
             </Card.Content>
           </Card>
