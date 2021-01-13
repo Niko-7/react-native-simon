@@ -1,24 +1,16 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import {
-  Avatar,
-  Text,
-  Button,
-  Card,
-  Title,
-  Paragraph
-} from 'react-native-paper';
+import { View, StyleSheet, Alert } from 'react-native';
+import { Text, Card, Title, Paragraph } from 'react-native-paper';
 import { useEffect, useState } from 'react/cjs/react.development';
 import { firebase } from '../src/firebaseConfig';
 
 const GameOver = ({
   navigation,
   route: {
-    params: { roomId, user, currentScore }
-  }
+    params: { roomId, user, currentScore },
+  },
 }) => {
   const [usersArray, setUsersArray] = useState([]);
-  // const [gameOvers, setGameOvers] = useState([]);
 
   const usersRef = firebase
     .firestore()
@@ -77,33 +69,36 @@ const GameOver = ({
             });
             checkGameOver();
             trackStatus();
-            if (
-              alert(
-                `${winner.username} is the winner!!\nFighting for ${winner.argument}`
-              )
-            ) {
-              console.log('alert');
-            }
+
+            Alert.alert(
+              'Argument settled!',
+              `${winner.username} is the winner!!\nFighting for ${winner.argument}`,
+              [
+                {
+                  text: 'OK',
+                  onPress: () => {
+                    console.log(user);
+                    if (user.isHost) {
+                      roomRef
+                        .delete()
+                        .then(() => {
+                          console.log('room deleted.');
+                        })
+                        .catch((err) => {
+                          console.error('Error removing document: ', error);
+                        });
+                    }
+
+                    navigation.navigate('GameChoice', { extraData: user });
+                  },
+                },
+              ],
+              { cancelable: false }
+            );
           });
       }
     });
   }, []);
-
-  // useEffect(() => {
-
-  // }, [usersArray]);
-
-  // const endGame = async function () {
-  //   return await usersArray.every((user) => {
-  //     // console.log(user.username, user.gameOver);
-  //     return user.gameOver === true;
-  //   });
-  // };
-  // console.log(endGame, 'endGame');
-  // if (endGame) {
-  //   console.log('in endGame');
-  // alert('All players have died');
-  // }
 
   const sortedArray = usersArray.sort((a, b) => {
     return b.score - a.score;
