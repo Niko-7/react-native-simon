@@ -6,7 +6,7 @@ import {
   Button,
   Card,
   Title,
-  Paragraph
+  Paragraph,
 } from 'react-native-paper';
 import { useEffect, useState } from 'react/cjs/react.development';
 import { firebase } from '../src/firebaseConfig';
@@ -14,11 +14,11 @@ import { firebase } from '../src/firebaseConfig';
 const GameOver = ({
   navigation,
   route: {
-    params: { roomId, user, currentScore }
-  }
+    params: { roomId, user, currentScore },
+  },
 }) => {
   const [usersArray, setUsersArray] = useState([]);
-  const [gameOvers, setGameOvers] = useState(0);
+  // const [gameOvers, setGameOvers] = useState([]);
 
   const usersRef = firebase
     .firestore()
@@ -26,8 +26,15 @@ const GameOver = ({
     .doc(roomId)
     .collection('users');
 
+  const roomRef = firebase
+    .firestore()
+    .collection('multiplayerGames')
+    .doc(roomId);
+
   useEffect(() => {
+    console.log(usersArray);
     usersRef.doc(user.username).update({ gameOver: true, score: currentScore });
+    roomRef.update({ gameOvers: firebase.firestore.FieldValue.increment(1) });
 
     usersRef.get().then((querySnapshot) => {
       const currentUsers = [];
@@ -50,12 +57,24 @@ const GameOver = ({
               setUsersArray(currentUsers);
             })
             .then(() => {
-              const isEndGame = usersArray.every((user) => {
-                return user.gameOver === true;
-              });
-              if (isEndGame) {
-                alert('All players have died');
-              }
+              usersRef
+                .where('gameOver', '==', true)
+                .get()
+                .then((querySnapshot) => {
+                  let gameOverUsers = 0;
+                  querySnapshot.forEach(() => {
+                    gameOverUsers++;
+                  });
+                  // setGameOvers(gameOverUsers);
+                })
+                .then(() => {
+                  // console.log(gameOvers.length, 'gameOvers');
+                  console.log(usersArray.length, 'usersArray');
+
+                  // if (gameOvers.length === usersArray.length) {
+                  //   alert('All players have died');
+                  // }
+                });
             });
         }
       });
