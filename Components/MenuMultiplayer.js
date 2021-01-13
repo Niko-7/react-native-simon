@@ -5,6 +5,7 @@ import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import { joinRoom, createRoom } from "./NetworkFuncs";
 
+
 const MenuMultiplayer = ({
   navigation,
   route: {
@@ -22,13 +23,15 @@ const MenuMultiplayer = ({
     return <AppLoading />;
   } else {
     return (
-      <View style={styles.multiplayerContainer}>
-        {/* <View style={styles.imgCont}> */}
+       <View
+      style={styles.multiplayerContainer}
+        >
+
         <Image
           style={styles.img}
           source={require("../assets/ARGULYMPICS.png")}
         />
-        {/* </View> */}
+
 
         <View style={styles.inputs}>
           <View style={styles.argumentInput}>
@@ -45,11 +48,12 @@ const MenuMultiplayer = ({
             <Text style={styles.inputText}>Starting An Argument?</Text>
             <View style={styles.button}>
               <Button
+              
                 mode="contained"
                 color="blue"
                 onPress={() => createRoom(user, argument, navigation)}
               >
-                Create a Room
+             Create a Room
               </Button>
             </View>
           </View>
@@ -64,11 +68,12 @@ const MenuMultiplayer = ({
             />
             <View style={styles.button}>
               <Button
+              
                 mode="contained"
                 color="blue"
                 onPress={() => joinRoom(roomCode, user, argument, navigation)}
               >
-                Join a Room
+              Join a Room  
               </Button>
             </View>
           </View>

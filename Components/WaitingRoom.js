@@ -1,22 +1,40 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
-import { useEffect } from 'react/cjs/react.development';
-import { firebase } from '../src/firebaseConfig';
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Image } from "react-native";
+import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
+import { useEffect } from "react/cjs/react.development";
+import AppLoading from "expo-app-loading";
+import * as Font from "expo-font";
+import { firebase } from "../src/firebaseConfig";
 
 const WaitingRoom = ({
   route: {
     params: { user, code, roomId },
   },
 }) => {
+  let [fontsLoaded, error] = Font.useFonts({
+    Graduate: require("../assets/fonts/Graduate-Regular.ttf"),
+  });
+
   const [users, setUsers] = useState([]);
-  const [host, setHost] = useState('');
+  const [host, setHost] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+
+  const getAndLoadHttpUrl = async () => {
+    firebase
+      .storage()
+      .ref(`/${user.userImg}`) //name in storage in firebase console
+      .getDownloadURL()
+      .then((url) => {
+        setImageUrl(url);
+      })
+      .catch((e) => console.log("Errors while downloading => ", e));
+  };
 
   const roomsRef = firebase
     .firestore()
-    .collection('multiplayerGames')
+    .collection("multiplayerGames")
     .doc(roomId)
-    .collection('users');
+    .collection("users");
 
   useEffect(() => {
     roomsRef.onSnapshot((querySnapshot) => {
@@ -31,36 +49,164 @@ const WaitingRoom = ({
       });
       setUsers(currentUsers);
     });
+    getAndLoadHttpUrl(user);
   }, []);
 
   const handleReady = () => {};
-  return (
-    <View>
-      <View>
-        <Text>ROOM CODE: {code}</Text>
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View style={styles.pageContainer}>
+        <View style={styles.headerCont}>
+          <Image
+            style={styles.img}
+            source={require("../assets/ARGULYMPICS.png")}
+          />
+          <View style={styles.titleCont}>
+            <Text style={styles.pageTitleText}>Get Ready to Argue!</Text>
+          </View>
+
+          <View style={styles.roomCodeCont}>
+            <Text style={styles.roomCodeText}>ROOM CODE: {code}</Text>
+          </View>
+          <View style={styles.participantsCont}>
+            <Text style={styles.participantsText}>Participants:</Text>
+          </View>
+        </View>
+
+        <View style={styles.waitingTable}>
+          {users.map((user) => {
+            console.log(user, "user");
+            return (
+              <Card key={user.id} style={styles.card}>
+                <Card.Content>
+                  <View style={styles.cardImage}>
+                    <Image style={styles.avatar} source={{ uri: imageUrl }} />
+                  </View>
+                  <View style={styles.cardText}>
+                    <Title style={styles.cardTitle}>
+                      {user.isHost && (
+                        <Title style={styles.hostTitle}>Host: </Title>
+                      )}
+                      {user.username}
+                    </Title>
+                    <Paragraph style={styles.highScore}>
+                      Current High Score: {user.score}
+                    </Paragraph>
+                  </View>
+                </Card.Content>
+              </Card>
+            );
+          })}
+
+          {user.username === host ? (
+            <Button onPress={handleReady}>Start</Button>
+          ) : (
+            <Text style={styles.waitingText}>
+              Waiting for host to start game...
+            </Text>
+          )}
+        </View>
       </View>
-      {users.map((user) => {
-        return (
-          <Card key={user.id}>
-            <Card.Content>
-              <Title>
-                {user.isHost && <Title>Host: </Title>}
-                {user.username}
-              </Title>
-              <Paragraph>Card content</Paragraph>
-            </Card.Content>
-          </Card>
-        );
-      })}
-      {console.log(user)}
-      {user.username === host ? (
-        <Button onPress={handleReady}>Start</Button>
-      ) : (
-        <Text>Waiting for host to start game...</Text>
-      )}
-      {/* <Button>Start Game</Button> */}
-    </View>
-  );
+    );
+  }
 };
 
 export default WaitingRoom;
+
+const styles = StyleSheet.create({
+  pageContainer: {
+    flex: 1,
+    backgroundColor: "#bde0fe",
+  },
+
+  // HEADER SECTION
+
+  headerCont: {
+    flex: 2,
+    justifyContent: "center",
+  },
+  img: {
+    flex: 3,
+    width: "100%",
+    resizeMode: "center",
+  },
+  titleCont: {
+    flex: 1,
+  },
+  pageTitleText: {
+    fontFamily: "Graduate",
+    textAlign: "center",
+    fontSize: 30,
+  },
+  roomCodeCont: {
+    flex: 1,
+  },
+  roomCodeText: {
+    fontFamily: "Graduate",
+    textAlign: "center",
+    fontSize: 25,
+  },
+
+  participantsCont: {
+    flex: 1,
+  },
+  participantsText: {
+    fontFamily: "Graduate",
+    fontSize: 20,
+  },
+
+  // TABLE SECTION
+
+  waitingTable: {
+    flex: 3,
+    justifyContent: "flex-start",
+    textAlign: "center",
+  },
+
+  waitingText: {
+    paddingTop: 12,
+    textAlign: "center",
+    fontFamily: "Graduate",
+    fontSize: 25,
+  },
+
+  // User Card
+
+  card: {
+    borderColor: "#ED2E18",
+    borderWidth: 2,
+    backgroundColor: "#F7A919",
+    paddingBottom: 0.2,
+    flexDirection: "row",
+    height: 80,
+  },
+
+  // flex horizontal
+
+  cardImage: {
+    flex: 1,
+  },
+  cardText: {
+    top: -4.5,
+    marginLeft: 75,
+    flex: 4,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+  },
+
+  cardTitle: {
+    fontFamily: "Graduate",
+  },
+  hostTitle: {
+    fontFamily: "Graduate",
+  },
+  highScore: {
+    fontFamily: "Graduate",
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+  },
+});

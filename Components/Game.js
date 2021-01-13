@@ -161,12 +161,13 @@ const Game = ({ route }) => {
             ) : (
               <View style={styles.buttonContainer}>
                 <Button
+                  icon="camera"
                   style={styles.button}
                   onPress={handleStartPress}
                   mode="contained"
-                  color="blue"
+                  color="green"
                 >
-                  start
+                  start!
                 </Button>
               </View>
             )}
@@ -226,6 +227,7 @@ const styles = StyleSheet.create({
   highScore: {
     flex: 1,
   },
+  button: {},
   img: {
     marginTop: 0,
     width: "100%",

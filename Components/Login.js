@@ -90,23 +90,20 @@ const Login = ({ navigation }) => {
           <View style={styles.buttons}>
             <Button
               style={styles.button}
+              icon="login"
               mode="contained"
-              color="blue"
+              color="yellow"
+              dark="true"
               onPress={handleLoginPress}
             >
               Login
             </Button>
           </View>
-          <View
-            style={{
-              margin: 20,
-              borderBottomColor: "grey",
-              borderBottomWidth: 1,
-            }}
-          />
+          <View style={styles.line} />
           <View style={styles.buttons}>
             <Button
-              mode="outlined"
+              style={styles.signupButton}
+              mode="contained"
               color="green"
               onPress={() => navigation.navigate("Signup", { email })}
             >
@@ -140,14 +137,22 @@ const styles = StyleSheet.create({
   loginItems: {
     width: "50%",
   },
+  line: {
+    margin: 10,
+    borderBottomColor: "grey",
+    borderBottomWidth: 1,
+  },
   buttons: {
     margin: 5,
   },
-
   subtitle: {
     fontFamily: "Graduate",
     fontSize: 32,
     marginBottom: 30,
+    color: "red",
+  },
+  signupButton: {
+    marginBottom: 25,
   },
 });
 

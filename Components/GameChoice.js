@@ -39,7 +39,7 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
   const getAndLoadHttpUrl = async () => {
     firebase
       .storage()
-      .ref("/" + "no-profile-image.png") //name in storage in firebase console
+      .ref(`/${extraData.userImg}`) //name in storage in firebase console
       .getDownloadURL()
       .then((url) => {
         setImageUrl(url);
@@ -89,7 +89,7 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
             <Button
               style={styles.buttons}
               mode="contained"
-              color="blue"
+              color="black"
               onPress={() => navigation.navigate("MenuSinglePlayer", { user })}
             >
               Single Player
@@ -99,7 +99,7 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
             <Button
               style={styles.buttons}
               mode="contained"
-              color="blue"
+              color="yellow"
               onPress={() => navigation.navigate("MenuMultiplayer", { user })}
             >
               Multiplayer
@@ -109,12 +109,17 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
             <Button
               style={styles.buttons}
               mode="contained"
-              color="blue"
+              color="green"
               onPress={() => navigation.navigate("LeaderBoard", { user })}
             >
               LeaderBoard
             </Button>
-            <Button mode="contained" color="red" onPress={logoutPress}>
+            <Button
+              icon="logout"
+              mode="contained"
+              color="red"
+              onPress={logoutPress}
+            >
               log out
             </Button>
           </View>
@@ -143,7 +148,7 @@ const styles = StyleSheet.create({
   },
   img: {
     // flex: 1,
-    width: "90%",
+    width: "100%",
     resizeMode: "center",
     // marginBottom: 0,
   },

@@ -69,7 +69,7 @@ const Signup = ({ route, navigation, setUser }) => {
             decision: "None",
             firstName: "",
             lastName: "",
-            userImg: `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/no-profile-image.png?alt=media`,
+            userImg: `no-profile-image.png`,
           };
 
           const scoresData = {

@@ -25,7 +25,7 @@ const MenuSinglePlayer = ({ route, navigation }) => {
           <View style={styles.button}>
             <Button
               mode="contained"
-              color="blue"
+              color="green"
               onPress={() =>
                 navigation.navigate("Game", {
                   difficulty: "easy",
@@ -41,7 +41,7 @@ const MenuSinglePlayer = ({ route, navigation }) => {
           <View style={styles.button}>
             <Button
               mode="contained"
-              color="blue"
+              color="yellow"
               onPress={() =>
                 navigation.navigate("Game", {
                   difficulty: "normal",
@@ -57,7 +57,7 @@ const MenuSinglePlayer = ({ route, navigation }) => {
           <View style={styles.button}>
             <Button
               mode="contained"
-              color="blue"
+              color="red"
               onPress={() =>
                 navigation.navigate("Game", {
                   difficulty: "hard",
