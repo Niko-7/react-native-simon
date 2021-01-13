@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { firebase } from '../src/firebaseConfig';
+import React, { useState, useEffect } from "react";
+import { firebase } from "../src/firebaseConfig";
 import {
   Alert,
   Modal,
@@ -9,77 +9,77 @@ import {
   View,
   Image,
   TouchableOpacity,
-} from 'react-native';
+} from "react-native";
 
 const AvatarModal = ({ updateAvatar }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [userImg, setImg] = useState('');
+  const [userImg, setImg] = useState("");
 
   return (
     <View style={styles.centeredView}>
       <Modal
-        animationType='slide'
+        animationType="slide"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
+          Alert.alert("Modal has been closed.");
         }}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.container}>
-              <TouchableOpacity onPress={() => setImg('3018383.png')}>
+              <TouchableOpacity onPress={() => setImg("3018383.png")}>
                 <Image
                   style={styles.avatar}
-                  source={require('../assets/Avatars/1.png')}
+                  source={require("../assets/Avatars/1.png")}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setImg('3018384.png')}>
+              <TouchableOpacity onPress={() => setImg("3018384.png")}>
                 <Image
                   style={styles.avatar}
-                  source={require('../assets/Avatars/2.png')}
+                  source={require("../assets/Avatars/2.png")}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setImg('3018385.png')}>
+              <TouchableOpacity onPress={() => setImg("3018385.png")}>
                 <Image
                   style={styles.avatar}
-                  source={require('../assets/Avatars/3.png')}
+                  source={require("../assets/Avatars/3.png")}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setImg('3018386.png')}>
+              <TouchableOpacity onPress={() => setImg("3018386.png")}>
                 <Image
                   style={styles.avatar}
-                  source={require('../assets/Avatars/4.png')}
+                  source={require("../assets/Avatars/4.png")}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setImg('3018388.png')}>
+              <TouchableOpacity onPress={() => setImg("3018388.png")}>
                 <Image
                   style={styles.avatar}
-                  source={require('../assets/Avatars/5.png')}
+                  source={require("../assets/Avatars/5.png")}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setImg('3018391.png')}>
+              <TouchableOpacity onPress={() => setImg("3018391.png")}>
                 <Image
                   style={styles.avatar}
-                  source={require('../assets/Avatars/6.png')}
+                  source={require("../assets/Avatars/6.png")}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setImg('3018392.png')}>
+              <TouchableOpacity onPress={() => setImg("3018392.png")}>
                 <Image
                   style={styles.avatar}
-                  source={require('../assets/Avatars/7.png')}
+                  source={require("../assets/Avatars/7.png")}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setImg('3018396.png')}>
+              <TouchableOpacity onPress={() => setImg("3018396.png")}>
                 <Image
                   style={styles.avatar}
-                  source={require('../assets/Avatars/8.png')}
+                  source={require("../assets/Avatars/8.png")}
                 />
               </TouchableOpacity>
             </View>
 
             <TouchableHighlight
-              style={{ ...styles.openButton, backgroundColor: '#2196F3' }}
+              style={{ ...styles.closeButton, backgroundColor: "#2196F3" }}
               onPress={() => {
                 updateAvatar(userImg);
                 setModalVisible(!modalVisible);
@@ -91,14 +91,13 @@ const AvatarModal = ({ updateAvatar }) => {
         </View>
       </Modal>
 
-      <TouchableHighlight
-        style={styles.openButton}
+      <Text
         onPress={() => {
           setModalVisible(true);
         }}
       >
         <Text style={styles.textStyle}>Change Avatar</Text>
-      </TouchableHighlight>
+      </Text>
     </View>
   );
 };
@@ -106,19 +105,22 @@ const AvatarModal = ({ updateAvatar }) => {
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 22,
+  },
+  changeButton: {
+    backgroundColor: "blue",
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    width: '100%',
-    height: '100%',
+    alignItems: "center",
+    shadowColor: "#000",
+    width: "100%",
+    height: "100%",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -128,24 +130,38 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   openButton: {
-    backgroundColor: '#F194FF',
+    backgroundColor: "blue",
+    // borderRadius: 20,
+    padding: 20,
+    elevation: 2,
+    // width: 70,
+  },
+  closeButton: {
+    marginTop: 6,
+    backgroundColor: "blue",
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    width: 70,
   },
   textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  textStyleDone: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: 'center',
+    textAlign: "center",
   },
   container: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    alignItems: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   avatar: {
     width: 150,
