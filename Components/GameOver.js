@@ -32,7 +32,6 @@ const GameOver = ({
     .doc(roomId);
 
   useEffect(() => {
-    console.log(usersArray);
     usersRef.doc(user.username).update({ gameOver: true, score: currentScore });
     roomRef.update({ gameOvers: firebase.firestore.FieldValue.increment(1) });
 
@@ -47,37 +46,33 @@ const GameOver = ({
     const trackStatus = usersRef.onSnapshot((querySnapshot) => {
       querySnapshot.forEach((person) => {
         if (person.data().gameOver) {
-          usersRef
-            .get()
-            .then((querySnapshot) => {
-              const currentUsers = [];
-              querySnapshot.forEach((person) => {
-                currentUsers.push(person.data());
-              });
-              setUsersArray(currentUsers);
-            })
-            .then(() => {
-              usersRef
-                .where('gameOver', '==', true)
-                .get()
-                .then((querySnapshot) => {
-                  let gameOverUsers = 0;
-                  querySnapshot.forEach(() => {
-                    gameOverUsers++;
-                  });
-                  // setGameOvers(gameOverUsers);
-                })
-                .then(() => {
-                  // console.log(gameOvers.length, 'gameOvers');
-                  console.log(usersArray.length, 'usersArray');
-
-                  // if (gameOvers.length === usersArray.length) {
-                  //   alert('All players have died');
-                  // }
-                });
+          usersRef.get().then((querySnapshot) => {
+            const currentUsers = [];
+            querySnapshot.forEach((person) => {
+              currentUsers.push(person.data());
             });
+            setUsersArray(currentUsers);
+          });
         }
       });
+    });
+
+    const players = [];
+
+    const checkGameOver = roomRef.onSnapshot((querySnapshot) => {
+      usersRef.get().then((doc) => {
+        doc.forEach((person) => {
+          players.push(person.data());
+        });
+      });
+      console.log(players.length, 'current users length');
+      console.log(querySnapshot.data().gameOvers, 'room game overs');
+      if (players.length === querySnapshot.data().gameOvers) {
+        console.log(sortedArray);
+        alert(
+          `${sortedArray[0].username} is the winner!\n${sortedArray[0].argument}`
+        );
+      }
     });
   }, []);
 
