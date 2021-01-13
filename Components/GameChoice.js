@@ -12,7 +12,7 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
   let [fontsLoaded, error] = Font.useFonts({
     Graduate: require('../assets/fonts/Graduate-Regular.ttf'),
   });
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [highScore, setHighScore] = useState();
   const [user, setupUser] = useState(extraData);
@@ -20,7 +20,6 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
 
   useEffect(() => {
     // Pulls high score for user
-    console.log('effect');
     scoreRef
       .get()
       .then(function (doc) {
@@ -63,7 +62,6 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
       .doc(user.id)
       .get()
       .then((user) => {
-        console.log(user.data());
         setupUser(user.data());
       });
   };
@@ -86,7 +84,6 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
   } else {
     return (
       <View style={styles.gameChoice}>
-        {console.log('render')}
         <View style={styles.imgCont}>
           <Image
             style={styles.img}

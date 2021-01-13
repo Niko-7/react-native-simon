@@ -10,7 +10,6 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { Button } from 'react-native-paper';
 
 const AvatarModal = ({ updateAvatar }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -29,78 +28,54 @@ const AvatarModal = ({ updateAvatar }) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.container}>
-              <Button onPress={() => setImg('3018383.png')}>
+              <TouchableOpacity onPress={() => setImg('3018383.png')}>
                 <Image
                   style={styles.avatar}
                   source={require('../assets/Avatars/1.png')}
                 />
-              </Button>
-              <Button onPress={() => setImg('3018384.png')}>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setImg('3018384.png')}>
                 <Image
                   style={styles.avatar}
                   source={require('../assets/Avatars/2.png')}
                 />
-              </Button>
-              {/* <TouchableOpacity
-                onPress={() => {
-                  setImg = '3.png';
-                }}
-              >
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setImg('3018385.png')}>
                 <Image
                   style={styles.avatar}
                   source={require('../assets/Avatars/3.png')}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setImg = '4.png';
-                }}
-              >
+              <TouchableOpacity onPress={() => setImg('3018386.png')}>
                 <Image
                   style={styles.avatar}
                   source={require('../assets/Avatars/4.png')}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setImg = '5.png';
-                }}
-              >
+              <TouchableOpacity onPress={() => setImg('3018388.png')}>
                 <Image
                   style={styles.avatar}
                   source={require('../assets/Avatars/5.png')}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setImg = '6.png';
-                }}
-              >
+              <TouchableOpacity onPress={() => setImg('3018391.png')}>
                 <Image
                   style={styles.avatar}
                   source={require('../assets/Avatars/6.png')}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setImg = '7.png';
-                }}
-              >
+              <TouchableOpacity onPress={() => setImg('3018392.png')}>
                 <Image
                   style={styles.avatar}
                   source={require('../assets/Avatars/7.png')}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setImg('8.png');
-                }}
-              >
+              <TouchableOpacity onPress={() => setImg('3018396.png')}>
                 <Image
                   style={styles.avatar}
                   source={require('../assets/Avatars/8.png')}
                 />
-              </TouchableOpacity> */}
+              </TouchableOpacity>
             </View>
 
             <TouchableHighlight

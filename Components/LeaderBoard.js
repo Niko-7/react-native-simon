@@ -6,7 +6,7 @@ import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import { firebase } from '../src/firebaseConfig';
 
-const LeaderBoard = () => {
+const LeaderBoard = ({ user }) => {
   let [fontsLoaded, error] = Font.useFonts({
     Graduate: require('../assets/fonts/Graduate-Regular.ttf'),
   });
@@ -40,22 +40,17 @@ const LeaderBoard = () => {
       .firestore()
       .collection('users')
       .get()
-      .then(
-        (snap) => {
-          const userData = [];
-          snap.forEach((doc) => {
-            getAndLoadHttpUrl(doc.data().userImg);
-            userData.push({
-              userName: doc.data().username,
-              id: doc.data().id,
-              icon: imageUrl,
-            });
+      .then((snap) => {
+        const userData = [];
+        snap.forEach((doc) => {
+          userData.push({
+            userName: doc.data().username,
+            id: doc.data().id,
+            icon: imageUrl,
           });
-          setUserData(userData);
-          console.log(userData);
-        },
-        [imageUrl]
-      );
+        });
+        setUserData(userData);
+      });
     //sets scores data by score and id
     const scores = firebase
       .firestore()
@@ -73,7 +68,7 @@ const LeaderBoard = () => {
         scoreData.forEach((score) => {});
         setScoreData(scoreData);
       });
-  }, []);
+  }, [imageUrl]);
 
   useEffect(() => {
     //sets the joined user/score data when the userDb and scoreDb have updated
@@ -98,7 +93,7 @@ const LeaderBoard = () => {
             sortBy='highScore'
             labelBy='userName'
             oddRowColor='#bde0fe'
-            icon='icon'
+            icon='https://miro.medium.com/max/2400/1*o8tTGo3vsocTKnCUyz0wHA.jpeg'
           />
         </View>
       </View>
