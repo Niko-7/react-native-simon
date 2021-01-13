@@ -7,6 +7,7 @@ import * as Font from 'expo-font';
 import { firebase } from '../src/firebaseConfig';
 
 const WaitingRoom = ({
+  navigation,
   route: {
     params: { user, code, roomId },
   },
@@ -17,6 +18,9 @@ const WaitingRoom = ({
 
   const [users, setUsers] = useState([]);
   const [host, setHost] = useState('');
+  // const [difficulty, setDifficulty] = useState('');
+  // const [betweenTime, setBetweenTime] = useState(null);
+  // const [flashTime, setFlashTime] = useState(null);
   const [imageUrl, setImageUrl] = useState();
 
   const getAndLoadHttpUrl = async () => {
@@ -30,14 +34,19 @@ const WaitingRoom = ({
       .catch((e) => console.log('Errors while downloading => ', e));
   };
 
-  const roomsRef = firebase
+  const usersRef = firebase
     .firestore()
     .collection('multiplayerGames')
     .doc(roomId)
     .collection('users');
 
+  const roomRef = firebase
+    .firestore()
+    .collection('multiplayerGames')
+    .doc(roomId);
+
   useEffect(() => {
-    roomsRef.onSnapshot((querySnapshot) => {
+    const showUsers = usersRef.onSnapshot((querySnapshot) => {
       const currentUsers = [];
       querySnapshot.forEach((user) => {
         if (user.data().isHost) {
@@ -51,14 +60,33 @@ const WaitingRoom = ({
     });
     getAndLoadHttpUrl(user);
   }, []);
+  const loadingRoom = roomRef.onSnapshot((querySnapshot) => {
+    if (querySnapshot.data().gameIsActive) {
+      showUsers();
+      loadingRoom();
+      navigation.navigate('Game', {
+        users,
+        user,
+        roomId,
+        isMultiplayer: true,
+        difficulty: 'normal',
+        flashTime: 300,
+        betweenTime: 250,
+      });
+    }
+  });
 
-  const handleReady = () => {};
+  const handleReady = () => {
+    // if (users.length > 1) {
+    roomRef.update({ gameIsActive: true });
+  };
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
     return (
       <View style={styles.pageContainer}>
         <View style={styles.headerCont}>
+          <Text>ROOM CODE: {code}</Text>
           <Image
             style={styles.img}
             source={require('../assets/ARGULYMPICS.png')}
@@ -90,6 +118,7 @@ const WaitingRoom = ({
                       )}
                       {user.username}
                     </Title>
+                    <Paragraph>Fighting for {user.argument}</Paragraph>
                     <Paragraph style={styles.highScore}>
                       Current High Score: {user.score}
                     </Paragraph>
@@ -102,6 +131,52 @@ const WaitingRoom = ({
           {user.username === host ? (
             <Button onPress={handleReady}>Start</Button>
           ) : (
+            // ) :
+            //   (
+            //     <View>
+            //       <View style={styles.button}>
+            //         <Button
+            //           mode="contained"
+            //           color="blue"
+            //           onPress={() => {
+            //             setBetweenTime(250);
+            //             setFlashTime(800);
+            //             setDifficulty('easy');
+            //           }}
+            //         >
+            //           Easy
+            //         </Button>
+            //       </View>
+            //       <View style={styles.button}>
+            //         <Button
+            //           mode="contained"
+            //           color="blue"
+            //           onPress={() => {
+            //             setBetweenTime(250);
+            //             setFlashTime(300);
+            //             setDifficulty('normal');
+            //           }}
+            //         >
+            //           Normal
+            //         </Button>
+            //       </View>
+            //       <View style={styles.button}>
+            //         <Button
+            //           mode="contained"
+            //           color="blue"
+            //           onPress={() => {
+            //             setBetweenTime(250);
+            //             setFlashTime(100);
+            //             setDifficulty('hard');
+            //           }}
+            //         >
+            //           Hard
+            //         </Button>
+            //       </View>
+            //     </View>
+            //   )
+            // )
+            // :
             <Text style={styles.waitingText}>
               Waiting for host to start game...
             </Text>

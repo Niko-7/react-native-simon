@@ -9,8 +9,8 @@ import { joinRoom, createRoom } from "./NetworkFuncs";
 const MenuMultiplayer = ({
   navigation,
   route: {
-    params: { user },
-  },
+    params: { user }
+  }
 }) => {
   let [fontsLoaded, error] = Font.useFonts({
     Graduate: require("../assets/fonts/Graduate-Regular.ttf"),
@@ -40,7 +40,7 @@ const MenuMultiplayer = ({
               style={styles.textInputBox}
               onChangeText={(text) => setArgument(text)}
               placeholder="Input Argument"
-              // dense={true}
+              
             />
           </View>
 
@@ -64,7 +64,7 @@ const MenuMultiplayer = ({
               style={styles.textInputBox}
               onChangeText={(text) => setRoomCode(text)}
               placeholder="Enter room code"
-              // dense={true}
+              autoCapitalize="characters"
             />
             <View style={styles.button}>
               <Button

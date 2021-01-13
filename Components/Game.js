@@ -122,6 +122,9 @@ const Game = ({ route }) => {
           console.error("Error updating document: ", error);
         });
     }
+    if (isMultiplayer) {
+      navigation.navigate('GameOver', { user, currentScore, roomId });
+    }
   };
 
   if (!fontsLoaded) {
