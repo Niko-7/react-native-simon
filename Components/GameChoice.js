@@ -8,18 +8,19 @@ import 'firebase/storage';
 import GameHighScore from './GameHighScore';
 import AvatarModals from './Avatars';
 
-const GameChoice = ({ setUser, extraData, navigation, route, params }) => {
+const GameChoice = ({ setUser, extraData, navigation }) => {
   let [fontsLoaded, error] = Font.useFonts({
     Graduate: require('../assets/fonts/Graduate-Regular.ttf'),
   });
   const [imageUrl, setImageUrl] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [highScore, setHighScore] = useState();
+  const [user, setupUser] = useState(extraData);
   const scoreRef = firebase.firestore().collection('scores').doc(extraData.id);
 
   useEffect(() => {
-    console.log(user);
     // Pulls high score for user
+    console.log('effect');
     scoreRef
       .get()
       .then(function (doc) {
@@ -35,28 +36,36 @@ const GameChoice = ({ setUser, extraData, navigation, route, params }) => {
       });
     // attempts to load image
     getAndLoadHttpUrl();
-  }, []);
-
-  useEffect(() => {}, []);
+  }, [user]);
 
   const getAndLoadHttpUrl = async () => {
     firebase
       .storage()
-      .ref(extraData.userImg) //name in storage in firebase console
+      .ref(`/${user.userImg}`) //name in storage in firebase console
       .getDownloadURL()
       .then((url) => {
         setImageUrl(url);
       })
       .catch((e) => console.log('Errors while downloading => ', e));
   };
-  const user = extraData;
+  // const user = extraData;
 
   const updateAvatar = (newImg) => {
     firebase
       .firestore()
-      .collection('user')
+      .collection('users')
       .doc(user.id)
       .update({ userImg: newImg });
+
+    firebase
+      .firestore()
+      .collection('users')
+      .doc(user.id)
+      .get()
+      .then((user) => {
+        console.log(user.data());
+        setupUser(user.data());
+      });
   };
 
   const logoutPress = () => {
@@ -77,8 +86,12 @@ const GameChoice = ({ setUser, extraData, navigation, route, params }) => {
   } else {
     return (
       <View style={styles.gameChoice}>
+        {console.log('render')}
         <View style={styles.imgCont}>
-          <Image style={styles.img} source={{ uri: imageUrl }} />
+          <Image
+            style={styles.img}
+            source={require('../assets/Argulympics-no-logo.png')}
+          />
         </View>
         <View style={styles.userNameMsg}>
           <Text style={styles.text}>Welcome, {user.username}!</Text>
@@ -87,7 +100,7 @@ const GameChoice = ({ setUser, extraData, navigation, route, params }) => {
             currentScore={null}
             highScore={highScore}
           />
-          <Image style={styles.avatar} source={{ uri: setImageUrl }} />
+          <Image style={styles.avatar} source={{ uri: imageUrl }} />
           <AvatarModals updateAvatar={updateAvatar} />
         </View>
 
@@ -97,7 +110,7 @@ const GameChoice = ({ setUser, extraData, navigation, route, params }) => {
             <Button
               style={styles.buttons}
               mode='contained'
-              color='blue'
+              color='black'
               onPress={() => navigation.navigate('MenuSinglePlayer', { user })}
             >
               Single Player
@@ -107,7 +120,7 @@ const GameChoice = ({ setUser, extraData, navigation, route, params }) => {
             <Button
               style={styles.buttons}
               mode='contained'
-              color='blue'
+              color='yellow'
               onPress={() => navigation.navigate('MenuMultiplayer', { user })}
             >
               Multiplayer
@@ -117,15 +130,20 @@ const GameChoice = ({ setUser, extraData, navigation, route, params }) => {
             <Button
               style={styles.buttons}
               mode='contained'
-              color='blue'
+              color='green'
               onPress={() => navigation.navigate('LeaderBoard', { user })}
             >
               LeaderBoard
             </Button>
+            <Button
+              icon='logout'
+              mode='contained'
+              color='red'
+              onPress={logoutPress}
+            >
+              log out
+            </Button>
           </View>
-          <Text onPress={logoutPress} style={styles.footerLink}>
-            Log Out
-          </Text>
         </View>
       </View>
     );
@@ -159,7 +177,7 @@ const styles = StyleSheet.create({
   },
   img: {
     // flex: 1,
-    width: '90%',
+    width: '100%',
     resizeMode: 'center',
     // marginBottom: 0,
   },
@@ -168,6 +186,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 25,
     fontFamily: 'Graduate',
+    marginBottom: 3,
   },
   userNameMsg: {
     alignItems: 'center',
