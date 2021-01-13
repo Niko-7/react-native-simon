@@ -16,8 +16,6 @@ const LeaderBoard = ({ user }) => {
   const [allData, setAllData] = useState([]);
   const [imageUrl, setImageUrl] = useState('');
 
-  //Connects score data collection and user data collection by their id and returns a single object with the data
-
   const getAndLoadHttpUrl = async (user) => {
     firebase
       .storage()
@@ -38,7 +36,6 @@ const LeaderBoard = ({ user }) => {
       .then((snap) => {
         const userData = [];
         snap.forEach((doc) => {
-          // console.log(doc.data());
           getAndLoadHttpUrl(doc.data().userImg);
           userData.push({
             userName: doc.data().username,
@@ -59,7 +56,6 @@ const LeaderBoard = ({ user }) => {
           scoreData.push({
             highScore: doc.data().highScore,
             id: doc.data().id,
-            icon: doc.data().userImg,
           });
         });
         // scoreData.forEach((score) => {});
@@ -67,15 +63,16 @@ const LeaderBoard = ({ user }) => {
       });
   }, [imageUrl]);
 
-  useEffect(() => {
-    //sets the joined user/score data when the userDb and scoreDb have updated
-    setAllData(fullData);
-  }, [userDb, scoreDb]);
-
+  //Connects score data collection and user data collection by their id and returns a single object with the data
   const fullData = scoreDb.map((score) => ({
     ...score,
     ...userDb.find((user) => user.id === score.id),
   }));
+
+  useEffect(() => {
+    //sets the joined user/score data when the userDb and scoreDb have updated
+    setAllData(fullData);
+  }, [userDb, scoreDb]);
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -93,7 +90,7 @@ const LeaderBoard = ({ user }) => {
           <Leaderboard
             data={fullData}
             sortBy='highScore'
-            icon='https://miro.medium.com/max/2400/1*o8tTGo3vsocTKnCUyz0wHA.jpeg'
+            icon='icon'
             labelBy='userName'
             oddRowColor='#bde0fe'
           />
