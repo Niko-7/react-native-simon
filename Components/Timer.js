@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import AppLoading from "expo-app-loading";
+import * as Font from "expo-font";
 
 const Timer = ({
   gameover,
   isTimerActive,
   sequence,
   seconds = 3,
-  setSeconds
+  setSeconds,
 }) => {
+  let [fontsLoaded, error] = Font.useFonts({
+    Graduate: require("../assets/fonts/Graduate-Regular.ttf"),
+  });
+
   // --> Possible states <--
   const [secondsLeft, setSecondsLeft] = useState(seconds);
 
@@ -34,9 +40,22 @@ const Timer = ({
     setSecondsLeft(seconds);
   }, [seconds]);
 
-  return <View>{isTimerActive && <Text>{secondsLeft}s</Text>}</View>;
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View>
+        <Text style={styles.timerText}>{secondsLeft}s</Text>
+      </View>
+    );
+  }
 };
 
 export default Timer;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  timerText: {
+    fontFamily: "Graduate",
+    fontSize: 50,
+  },
+});

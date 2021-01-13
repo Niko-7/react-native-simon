@@ -1,23 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
-import GameHighScore from './GameHighScore';
-import Shapes from './Shapes';
-import Timer from './Timer';
-import { firebase } from '../src/firebaseConfig';
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, StyleSheet } from "react-native";
+import { Button } from "react-native-paper";
+import GameHighScore from "./GameHighScore";
+import Shapes from "./Shapes";
+import Timer from "./Timer";
+import AppLoading from "expo-app-loading";
+import * as Font from "expo-font";
+import { firebase } from "../src/firebaseConfig";
 
-const Game = ({ navigation, route }) => {
-  let { params } = route;
-  const { difficulty, isMultiplayer, user, roomId } = params;
+const Game = ({ route }) => {
+  let [fontsLoaded, error] = Font.useFonts({
+    Graduate: require("../assets/fonts/Graduate-Regular.ttf"),
+  });
+
+  const { params } = route;
+  const { difficulty } = params;
   const { username, id } = params.user;
-  const [panels, setPanels] = useState(['red', 'purple', 'blue', 'green']);
+  const [panels, setPanels] = useState(["red", "purple", "blue", "green"]);
   const [sequence, setSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [highScore, setHighScore] = useState();
   const [currentScore, setCurrentScore] = useState(0);
   const [seconds, setSeconds] = useState(3);
-  const scoreRef = firebase.firestore().collection('scores').doc(id);
+  const scoreRef = firebase.firestore().collection("scores").doc(id);
 
   // On game load, will pull users high score from db and setHighScore
   useEffect(() => {
@@ -28,11 +34,11 @@ const Game = ({ navigation, route }) => {
           const data = doc.data();
           setHighScore(data.highScore);
         } else {
-          console.log('No such document!');
+          console.log("No such document!");
         }
       })
       .catch(function (error) {
-        console.log('Error getting document:', error);
+        console.log("Error getting document:", error);
       });
   }, []);
 
@@ -88,11 +94,11 @@ const Game = ({ navigation, route }) => {
   };
 
   const calculatePoints = () => {
-    if (difficulty === 'easy') {
+    if (difficulty === "easy") {
       return sequence.length;
-    } else if (difficulty === 'normal') {
+    } else if (difficulty === "normal") {
       return 2 * sequence.length;
-    } else if (difficulty === 'hard') {
+    } else if (difficulty === "hard") {
       return 3 * sequence.length;
     }
   };
@@ -110,10 +116,10 @@ const Game = ({ navigation, route }) => {
       setHighScore(currentScore);
       return scoreRef
         .update({
-          highScore: currentScore
+          highScore: currentScore,
         })
         .catch(function (error) {
-          console.error('Error updating document: ', error);
+          console.error("Error updating document: ", error);
         });
     }
     if (isMultiplayer) {
@@ -121,68 +127,120 @@ const Game = ({ navigation, route }) => {
     }
   };
 
-  return (
-    <View style={styles.gameContainer}>
-      <View style={styles.headerContainer}>
-        <GameHighScore
-          isPlaying={isPlaying}
-          currentScore={currentScore}
-          highScore={highScore}
-        />
-      </View>
-      <View styles={styles.buttonContainer}>
-        {!isPlaying && (
-          <Button onPress={handleStartPress} mode="contained" color="blue">
-            start
-          </Button>
-        )}
-      </View>
-      <View style={styles.timerContainer}>
-        <Timer
-          isTimerActive={isTimerActive}
-          sequence={sequence}
-          seconds={seconds}
-          setSeconds={setSeconds}
-          gameover={gameover}
-        />
-      </View>
-      <View style={styles.shapesContainer}>
-        <Shapes
-          gameplay={gameplay}
-          gameover={gameover}
-          startTimer={startTimer}
-          isPlaying={isPlaying}
-          sequence={sequence}
-          getRandomPanel={getRandomPanel}
-          setSequence={setSequence}
-          params={params}
-        />
-        <Text style={{ textAlign: 'center' }}>Logged in as {username}</Text>
-      </View>
-    </View>
-  );
-};
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View style={styles.gameContainer}>
+        <View style={styles.headerContainer}>
+          <View style={styles.imgCont}>
+            <Image
+              style={styles.img}
+              source={require("../assets/Argulympics-no-logo.png")}
+            />
+          </View>
 
+          <View style={styles.username}>
+            <Text style={styles.subtitle}>user: {username}</Text>
+          </View>
+          <View style={styles.highScore}>
+            <GameHighScore
+              isPlaying={isPlaying}
+              currentScore={currentScore}
+              highScore={highScore}
+            />
+          </View>
+          <View style={styles.timerButton}>
+            {isPlaying ? (
+              <View style={styles.timerContainer}>
+                <Timer
+                  isTimerActive={isTimerActive}
+                  sequence={sequence}
+                  seconds={seconds}
+                  setSeconds={setSeconds}
+                  gameover={gameover}
+                />
+              </View>
+            ) : (
+              <View style={styles.buttonContainer}>
+                <Button
+                  icon="camera"
+                  style={styles.button}
+                  onPress={handleStartPress}
+                  mode="contained"
+                  color="green"
+                >
+                  start!
+                </Button>
+              </View>
+            )}
+          </View>
+        </View>
+
+        <View style={styles.shapesContainer}>
+          <Shapes
+            gameplay={gameplay}
+            gameover={gameover}
+            startTimer={startTimer}
+            isPlaying={isPlaying}
+            sequence={sequence}
+            getRandomPanel={getRandomPanel}
+            setSequence={setSequence}
+            params={params}
+          />
+        </View>
+      </View>
+    );
+  }
+};
 const styles = StyleSheet.create({
   gameContainer: {
     flex: 1,
-    marginTop: 20,
-    marginBottom: 20,
-    justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: "center",
+    backgroundColor: "#bde0fe",
   },
   headerContainer: {
-    flex: 1
-  },
-  buttonContainer: {
-    flex: 1
-  },
-  timerContainer: {
-    flex: 1
+    flex: 1,
+    width: "100%",
   },
   shapesContainer: {
-    flex: 7
-  }
+    flex: 1,
+    justifyContent: "flex-end",
+    marginBottom: 40,
+  },
+
+  buttonContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+
+  imgCont: {
+    flex: 1,
+    alignItems: "center",
+  },
+  username: {
+    flex: 1,
+    alignItems: "center",
+    marginTop: 25,
+  },
+  timerButton: {
+    alignItems: "center",
+    flex: 1,
+  },
+  highScore: {
+    flex: 1,
+  },
+  button: {},
+  img: {
+    marginTop: 0,
+    width: "100%",
+    resizeMode: "center",
+  },
+  subtitle: {
+    fontFamily: "Graduate",
+    fontSize: 32,
+    marginBottom: 30,
+  },
 });
 
 export default Game;

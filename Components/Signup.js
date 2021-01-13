@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, Image, Text, StyleSheet } from 'react-native';
 import { TextInput, Button, HelperText } from 'react-native-paper';
-
+import AppLoading from 'expo-app-loading';
+import * as Font from 'expo-font';
 import { firebase, firebaseConfig } from '../src/firebaseConfig';
 
 const Signup = ({ route, navigation, setUser }) => {
+  let [fontsLoaded, error] = Font.useFonts({
+    Graduate: require('../assets/fonts/Graduate-Regular.ttf'),
+  });
+
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState(route.params.email);
   const [password, setPassword] = useState('');
@@ -69,7 +74,7 @@ const Signup = ({ route, navigation, setUser }) => {
               decision: 'None',
               firstName: '',
               lastName: '',
-              userImg: `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/no-profile-image.png?alt=media`,
+              userImg: `no-profile-image.png`,
             };
 
             const scoresData = {
@@ -101,56 +106,65 @@ const Signup = ({ route, navigation, setUser }) => {
     }
   };
 
-  return (
-    <View style={styles.signupContainer}>
-      <View style={styles.signupItems}>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(text) => setUsername(text)}
-          placeholder="Username"
-          dense={true}
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View style={styles.signupContainer}>
+        <Image
+          style={styles.img}
+          source={require('../assets/ARGULYMPICS.png')}
         />
-        <HelperText type="error" visible={emptyUsername}>
-          Enter a username
-        </HelperText>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-          placeholder="Email"
-          dense={true}
-        />
-        <HelperText type="error" visible={emptyEmail}>
-          Please enter your email
-        </HelperText>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(text) => setPassword(text)}
-          placeholder="Password"
-          dense={true}
-          secureTextEntry={true}
-        />
-        <HelperText type="error" visible={emptyPassword}>
-          Enter a password
-        </HelperText>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(text) => setConfirmPassword(text)}
-          placeholder="Repeat Password"
-          dense={true}
-          secureTextEntry={true}
-        />
-        <HelperText type="error" visible={passwordsMismatch}>
-          Passwords do not match
-        </HelperText>
-        <View style={styles.buttons}>
-          <Button mode="contained" color="blue" onPress={handlePress}>
-            Sign Up
-          </Button>
+        <Text style={styles.subtitle}>Sign Up!</Text>
+        <View style={styles.signupItems}>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(text) => setUsername(text)}
+            placeholder='Username'
+            dense={true}
+          />
+          <HelperText type='error' visible={emptyUsername}>
+            Enter a username
+          </HelperText>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(text) => setEmail(text)}
+            value={email}
+            placeholder='Email'
+            dense={true}
+          />
+          <HelperText type='error' visible={emptyEmail}>
+            Please enter your email
+          </HelperText>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(text) => setPassword(text)}
+            placeholder='Password'
+            dense={true}
+            secureTextEntry={true}
+          />
+          <HelperText type='error' visible={emptyPassword}>
+            Enter a password
+          </HelperText>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(text) => setConfirmPassword(text)}
+            placeholder='Repeat Password'
+            dense={true}
+            secureTextEntry={true}
+          />
+          <HelperText type='error' visible={passwordsMismatch}>
+            Passwords do not match
+          </HelperText>
+          <View style={styles.buttons}>
+            <Button mode='contained' color='blue' onPress={handlePress}>
+              Sign Up
+            </Button>
+          </View>
         </View>
       </View>
-    </View>
-  );
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -159,12 +173,26 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#bde0fe',
+  },
+  img: {
+    flex: 1,
+    width: '90%',
+    resizeMode: 'center',
+    marginBottom: 0,
+  },
+  subtitle: {
+    fontFamily: 'Graduate',
+    fontSize: 32,
+    marginBottom: 20,
   },
   signupItems: {
+    flex: 1,
     width: '50%',
   },
   buttons: {
     marginTop: 5,
+    borderRadius: 20,
   },
 });
 
