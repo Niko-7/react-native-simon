@@ -44,7 +44,7 @@ const GameOver = ({
       setUsersArray(currentUsers);
     });
 
-    usersRef.onSnapshot((querySnapshot) => {
+    const trackStatus = usersRef.onSnapshot((querySnapshot) => {
       querySnapshot.forEach((person) => {
         if (person.data().gameOver) {
           usersRef

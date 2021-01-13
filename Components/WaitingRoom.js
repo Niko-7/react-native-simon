@@ -7,8 +7,8 @@ import { firebase } from '../src/firebaseConfig';
 const WaitingRoom = ({
   navigation,
   route: {
-    params: { user, code, roomId }
-  }
+    params: { user, code, roomId },
+  },
 }) => {
   const [users, setUsers] = useState([]);
   const [host, setHost] = useState('');
@@ -28,7 +28,7 @@ const WaitingRoom = ({
     .doc(roomId);
 
   useEffect(() => {
-    usersRef.onSnapshot((querySnapshot) => {
+    const showUsers = usersRef.onSnapshot((querySnapshot) => {
       const currentUsers = [];
       querySnapshot.forEach((user) => {
         if (user.data().isHost) {
@@ -40,8 +40,11 @@ const WaitingRoom = ({
       });
       setUsers(currentUsers);
     });
-    roomRef.onSnapshot((querySnapshot) => {
+
+    const loadingRoom = roomRef.onSnapshot((querySnapshot) => {
       if (querySnapshot.data().gameIsActive) {
+        showUsers();
+        loadingRoom();
         navigation.navigate('Game', {
           users,
           user,
@@ -49,7 +52,7 @@ const WaitingRoom = ({
           isMultiplayer: true,
           difficulty: 'normal',
           flashTime: 300,
-          betweenTime: 250
+          betweenTime: 250,
         });
       }
     });
