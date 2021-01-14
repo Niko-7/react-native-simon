@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
-import { useEffect } from 'react/cjs/react.development';
-import AppLoading from 'expo-app-loading';
-import * as Font from 'expo-font';
-import { firebase } from '../src/firebaseConfig';
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Image } from "react-native";
+import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
+import { useEffect } from "react/cjs/react.development";
+import AppLoading from "expo-app-loading";
+import * as Font from "expo-font";
+import { firebase } from "../src/firebaseConfig";
 
 const WaitingRoom = ({
   navigation,
@@ -13,6 +13,7 @@ const WaitingRoom = ({
   }
 }) => {
   let [fontsLoaded, error] = Font.useFonts({
+<<<<<<< HEAD
     Graduate: require('../assets/fonts/Graduate-Regular.ttf')
   });
 
@@ -21,6 +22,13 @@ const WaitingRoom = ({
   // const [difficulty, setDifficulty] = useState('');
   // const [betweenTime, setBetweenTime] = useState(null);
   // const [flashTime, setFlashTime] = useState(null);
+=======
+    Graduate: require("../assets/fonts/Graduate-Regular.ttf"),
+  });
+
+  const [users, setUsers] = useState([]);
+  const [host, setHost] = useState("");
+>>>>>>> waiting-room
   const [imageUrl, setImageUrl] = useState();
 
   const getAndLoadHttpUrl = async () => {
@@ -31,14 +39,14 @@ const WaitingRoom = ({
       .then((url) => {
         setImageUrl(url);
       })
-      .catch((e) => console.log('Errors while downloading => ', e));
+      .catch((e) => console.log("Errors while downloading => ", e));
   };
 
   const usersRef = firebase
     .firestore()
-    .collection('multiplayerGames')
+    .collection("multiplayerGames")
     .doc(roomId)
-    .collection('users');
+    .collection("users");
 
   const roomRef = firebase
     .firestore()
@@ -89,32 +97,36 @@ const WaitingRoom = ({
           <Text>ROOM CODE: {code}</Text>
           <Image
             style={styles.img}
-            source={require('../assets/ARGULYMPICS.png')}
+            source={require("../assets/ARGULYMPICS.png")}
           />
           <View style={styles.titleCont}>
-            <Text style={styles.pageTitleText}>Get Ready to Argue!</Text>
+            <Text style={styles.pageTitleText}> Get Ready to Argue! </Text>
           </View>
-
           <View style={styles.roomCodeCont}>
-            <Text style={styles.roomCodeText}>ROOM CODE: {code}</Text>
+            <Text style={styles.roomCodeText}> ROOM CODE: {code} </Text>
           </View>
           <View style={styles.participantsCont}>
-            <Text style={styles.participantsText}>Participants:</Text>
+            <Text style={styles.participantsText}> Participants: </Text>
           </View>
         </View>
-
         <View style={styles.waitingTable}>
           {users.map((user) => {
+            console.log(user);
             return (
               <Card key={user.id} style={styles.card}>
                 <Card.Content>
                   <View style={styles.cardImage}>
-                    <Image style={styles.avatar} source={{ uri: imageUrl }} />
+                    <Image
+                      style={styles.avatar}
+                      source={{
+                        uri: imageUrl,
+                      }}
+                    />
                   </View>
                   <View style={styles.cardText}>
                     <Title style={styles.cardTitle}>
                       {user.isHost && (
-                        <Title style={styles.hostTitle}>Host: </Title>
+                        <Title style={styles.hostTitle}> Host: </Title>
                       )}
                       {user.username}
                     </Title>
@@ -122,14 +134,16 @@ const WaitingRoom = ({
                     <Paragraph style={styles.highScore}>
                       Current High Score: {user.score}
                     </Paragraph>
+                    <Text numberOfLines={1} style={styles.arguText}>
+                      Fighting for: {user.argument}
+                    </Text>
                   </View>
                 </Card.Content>
               </Card>
             );
           })}
-
           {user.username === host ? (
-            <Button onPress={handleReady}>Start</Button>
+            <Button onPress={handleReady}> Start </Button>
           ) : (
             // ) :
             //   (
@@ -249,12 +263,12 @@ const styles = StyleSheet.create({
   // User Card
 
   card: {
-    borderColor: '#ED2E18',
+    borderColor: "#ED2E18",
     borderWidth: 2,
-    backgroundColor: '#F7A919',
+    backgroundColor: "#F7A919",
     paddingBottom: 0.2,
-    flexDirection: 'row',
-    height: 80
+    flexDirection: "row",
+    height: 100,
   },
 
   // flex horizontal
@@ -266,18 +280,23 @@ const styles = StyleSheet.create({
     top: -4.5,
     marginLeft: 75,
     flex: 4,
-    flexDirection: 'column',
-    justifyContent: 'flex-start'
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    textAlign: "left",
   },
 
   cardTitle: {
-    fontFamily: 'Graduate'
+    fontFamily: "Graduate",
+    textTransform: "uppercase",
   },
   hostTitle: {
-    fontFamily: 'Graduate'
+    fontFamily: "Graduate",
   },
   highScore: {
-    fontFamily: 'Graduate'
+    fontFamily: "Graduate",
+  },
+  arguText: {
+    fontFamily: "Graduate",
   },
   avatar: {
     width: 50,
