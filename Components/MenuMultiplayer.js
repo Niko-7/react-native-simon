@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image, ScrollView, Dimensions } from "react-native";
 import { Button, TextInput, Text } from "react-native-paper";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import { joinRoom, createRoom } from "./NetworkFuncs";
 
+const windowHeight = Dimensions.get("window").height;
+
 const MenuMultiplayer = ({
   navigation,
   route: {
-    params: { user }
-  }
+    params: { user },
+  },
 }) => {
   let [fontsLoaded, error] = Font.useFonts({
     Graduate: require("../assets/fonts/Graduate-Regular.ttf"),
@@ -22,62 +24,62 @@ const MenuMultiplayer = ({
     return <AppLoading />;
   } else {
     return (
-      <View style={styles.multiplayerContainer}>
-        <Image
-          style={styles.img}
-          source={require("../assets/ARGULYMPICS.png")}
-        />
-
-        <View style={styles.inputs}>
-          <View style={styles.argumentInput}>
-            <Text style={[styles.inputText, styles.red]}>
-              What are you fighting for?!
-            </Text>
-            <TextInput
-              style={styles.textInputBox}
-              onChangeText={(text) => setArgument(text)}
-              placeholder="Input Argument"
-              
-            />
-          </View>
-
-          <View style={styles.createGame}>
-            <Text style={[styles.inputText, styles.green]}>
-              Starting An Argument?
-            </Text>
-            <View style={styles.button}>
-              <Button
-                mode="contained"
-                color="green"
-                onPress={() => createRoom(user, argument, navigation)}
-              >
-                Create a Room
-              </Button>
+      <ScrollView style={{ flex: 1 }}>
+        <View style={styles.multiplayerContainer}>
+          <Image
+            style={styles.img}
+            source={require("../assets/ARGULYMPICS.png")}
+          />
+          <View style={styles.inputs}>
+            <View style={styles.argumentInput}>
+              <Text style={[styles.inputText, styles.red]}>
+                What are you fighting for?!
+              </Text>
+              <TextInput
+                style={styles.textInputBox}
+                onChangeText={(text) => setArgument(text)}
+                placeholder="Input Argument"
+              />
             </View>
-          </View>
 
-          <View style={styles.joinRoom}>
-            <Text style={[styles.inputText, styles.yellow]}>
-              Joining An Argument?
-            </Text>
-            <TextInput
-              style={styles.textInputBox}
-              onChangeText={(text) => setRoomCode(text)}
-              placeholder="Enter room code"
-              autoCapitalize="characters"
-            />
-            <View style={styles.button}>
-              <Button
-                mode="contained"
-                color="yellow"
-                onPress={() => joinRoom(roomCode, user, argument, navigation)}
-              >
-                Join a Room
-              </Button>
+            <View style={styles.createGame}>
+              <Text style={[styles.inputText, styles.green]}>
+                Starting An Argument?
+              </Text>
+              <View style={styles.button}>
+                <Button
+                  mode="contained"
+                  color="green"
+                  onPress={() => createRoom(user, argument, navigation)}
+                >
+                  Create a Room
+                </Button>
+              </View>
+            </View>
+
+            <View style={styles.joinRoom}>
+              <Text style={[styles.inputText, styles.yellow]}>
+                Joining An Argument?
+              </Text>
+              <TextInput
+                style={styles.textInputBox}
+                onChangeText={(text) => setRoomCode(text)}
+                placeholder="Enter room code"
+                autoCapitalize="characters"
+              />
+              <View style={styles.button}>
+                <Button
+                  mode="contained"
+                  color="yellow"
+                  onPress={() => joinRoom(roomCode, user, argument, navigation)}
+                >
+                  Join a Room
+                </Button>
+              </View>
             </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 };
@@ -87,6 +89,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#bde0fe",
     alignItems: "center",
+    width: "100%",
+    height: windowHeight,
   },
 
   img: {

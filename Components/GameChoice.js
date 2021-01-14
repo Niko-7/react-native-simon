@@ -27,7 +27,6 @@ const GameChoice = ({ setUser, extraData, navigation }) => {
           const data = doc.data();
           setHighScore(data.highScore);
         } else {
-          console.log("No such document!");
         }
       })
       .catch(function (error) {

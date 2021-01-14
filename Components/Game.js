@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
-import GameHighScore from './GameHighScore';
-import Shapes from './Shapes';
-import Timer from './Timer';
-import AppLoading from 'expo-app-loading';
-import * as Font from 'expo-font';
-import { firebase } from '../src/firebaseConfig';
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, StyleSheet } from "react-native";
+import { Button } from "react-native-paper";
+import GameHighScore from "./GameHighScore";
+import Shapes from "./Shapes";
+import Timer from "./Timer";
+import AppLoading from "expo-app-loading";
+import * as Font from "expo-font";
+import { firebase } from "../src/firebaseConfig";
 
 const Game = ({ route, navigation }) => {
   let [fontsLoaded, error] = Font.useFonts({
-    Graduate: require('../assets/fonts/Graduate-Regular.ttf')
+    Graduate: require("../assets/fonts/Graduate-Regular.ttf"),
   });
 
   const { params } = route;
   const { difficulty, roomId, isMultiplayer, user } = params;
   const { username, id } = params.user;
-  const [panels, setPanels] = useState(['red', 'yellow', 'blue', 'green']);
+  const [panels, setPanels] = useState(["red", "yellow", "blue", "green"]);
   const [sequence, setSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [highScore, setHighScore] = useState();
   const [currentScore, setCurrentScore] = useState(0);
   const [seconds, setSeconds] = useState(3);
-  const scoreRef = firebase.firestore().collection('scores').doc(id);
+  const scoreRef = firebase.firestore().collection("scores").doc(id);
 
   // On game load, will pull users high score from db and setHighScore
   useEffect(() => {
@@ -34,11 +34,10 @@ const Game = ({ route, navigation }) => {
           const data = doc.data();
           setHighScore(data.highScore);
         } else {
-          console.log('No such document!');
         }
       })
       .catch(function (error) {
-        console.log('Error getting document:', error);
+        console.log("Error getting document:", error);
       });
   }, []);
 
@@ -94,11 +93,11 @@ const Game = ({ route, navigation }) => {
   };
 
   const calculatePoints = () => {
-    if (difficulty === 'easy') {
+    if (difficulty === "easy") {
       return sequence.length;
-    } else if (difficulty === 'normal') {
+    } else if (difficulty === "normal") {
       return 2 * sequence.length;
-    } else if (difficulty === 'hard') {
+    } else if (difficulty === "hard") {
       return 3 * sequence.length;
     }
   };
@@ -116,14 +115,14 @@ const Game = ({ route, navigation }) => {
       setHighScore(currentScore);
       return scoreRef
         .update({
-          highScore: currentScore
+          highScore: currentScore,
         })
         .catch(function (error) {
-          console.error('Error updating document: ', error);
+          console.error("Error updating document: ", error);
         });
     }
     if (isMultiplayer) {
-      navigation.navigate('GameOver', { user, currentScore, roomId });
+      navigation.navigate("GameOver", { user, currentScore, roomId });
     }
   };
 
@@ -136,7 +135,7 @@ const Game = ({ route, navigation }) => {
           <View style={styles.imgCont}>
             <Image
               style={styles.img}
-              source={require('../assets/Argulympics-no-logo.png')}
+              source={require("../assets/Argulympics-no-logo.png")}
             />
           </View>
 
@@ -196,51 +195,51 @@ const Game = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   gameContainer: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#bde0fe'
+    alignItems: "center",
+    backgroundColor: "#bde0fe",
   },
   headerContainer: {
     flex: 1,
-    width: '100%'
+    width: "100%",
   },
   shapesContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
-    marginBottom: 40
+    justifyContent: "flex-end",
+    marginBottom: 40,
   },
 
   buttonContainer: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: "center",
   },
 
   imgCont: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: "center",
   },
   username: {
     flex: 1,
-    alignItems: 'center',
-    marginTop: 25
+    alignItems: "center",
+    marginTop: 25,
   },
   timerButton: {
-    alignItems: 'center',
-    flex: 1
+    alignItems: "center",
+    flex: 1,
   },
   highScore: {
-    flex: 1
+    flex: 1,
   },
   button: {},
   img: {
     marginTop: 0,
-    width: '100%',
-    resizeMode: 'center'
+    width: "100%",
+    resizeMode: "center",
   },
   subtitle: {
-    fontFamily: 'Graduate',
+    fontFamily: "Graduate",
     fontSize: 32,
-    marginBottom: 30
-  }
+    marginBottom: 30,
+  },
 });
 
 export default Game;
