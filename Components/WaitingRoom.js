@@ -9,26 +9,15 @@ import { firebase } from "../src/firebaseConfig";
 const WaitingRoom = ({
   navigation,
   route: {
-    params: { user, code, roomId }
-  }
+    params: { user, code, roomId },
+  },
 }) => {
   let [fontsLoaded, error] = Font.useFonts({
-<<<<<<< HEAD
-    Graduate: require('../assets/fonts/Graduate-Regular.ttf')
-  });
-
-  const [users, setUsers] = useState([]);
-  const [host, setHost] = useState('');
-  // const [difficulty, setDifficulty] = useState('');
-  // const [betweenTime, setBetweenTime] = useState(null);
-  // const [flashTime, setFlashTime] = useState(null);
-=======
     Graduate: require("../assets/fonts/Graduate-Regular.ttf"),
   });
 
   const [users, setUsers] = useState([]);
   const [host, setHost] = useState("");
->>>>>>> waiting-room
   const [imageUrl, setImageUrl] = useState();
 
   const getAndLoadHttpUrl = async () => {
@@ -50,7 +39,7 @@ const WaitingRoom = ({
 
   const roomRef = firebase
     .firestore()
-    .collection('multiplayerGames')
+    .collection("multiplayerGames")
     .doc(roomId);
 
   useEffect(() => {
@@ -71,14 +60,14 @@ const WaitingRoom = ({
       if (querySnapshot.data().gameIsActive) {
         showUsers();
         loadingRoom();
-        navigation.navigate('Game', {
+        navigation.navigate("Game", {
           users,
           user,
           roomId,
           isMultiplayer: true,
-          difficulty: 'normal',
+          difficulty: "normal",
           flashTime: 300,
-          betweenTime: 250
+          betweenTime: 250,
         });
       }
     });
@@ -206,58 +195,58 @@ export default WaitingRoom;
 const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
-    backgroundColor: '#bde0fe'
+    backgroundColor: "#bde0fe",
   },
 
   // HEADER SECTION
 
   headerCont: {
     flex: 2,
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   img: {
     flex: 3,
-    width: '100%',
-    resizeMode: 'center'
+    width: "100%",
+    resizeMode: "center",
   },
   titleCont: {
-    flex: 1
+    flex: 1,
   },
   pageTitleText: {
-    fontFamily: 'Graduate',
-    textAlign: 'center',
-    fontSize: 30
+    fontFamily: "Graduate",
+    textAlign: "center",
+    fontSize: 30,
   },
   roomCodeCont: {
-    flex: 1
+    flex: 1,
   },
   roomCodeText: {
-    fontFamily: 'Graduate',
-    textAlign: 'center',
-    fontSize: 25
+    fontFamily: "Graduate",
+    textAlign: "center",
+    fontSize: 25,
   },
 
   participantsCont: {
-    flex: 1
+    flex: 1,
   },
   participantsText: {
-    fontFamily: 'Graduate',
-    fontSize: 20
+    fontFamily: "Graduate",
+    fontSize: 20,
   },
 
   // TABLE SECTION
 
   waitingTable: {
     flex: 3,
-    justifyContent: 'flex-start',
-    textAlign: 'center'
+    justifyContent: "flex-start",
+    textAlign: "center",
   },
 
   waitingText: {
     paddingTop: 12,
-    textAlign: 'center',
-    fontFamily: 'Graduate',
-    fontSize: 25
+    textAlign: "center",
+    fontFamily: "Graduate",
+    fontSize: 25,
   },
 
   // User Card
@@ -274,7 +263,7 @@ const styles = StyleSheet.create({
   // flex horizontal
 
   cardImage: {
-    flex: 1
+    flex: 1,
   },
   cardText: {
     top: -4.5,
@@ -300,6 +289,6 @@ const styles = StyleSheet.create({
   },
   avatar: {
     width: 50,
-    height: 50
-  }
+    height: 50,
+  },
 });
