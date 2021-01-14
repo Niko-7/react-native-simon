@@ -83,7 +83,6 @@ const WaitingRoom = ({
     return (
       <View style={styles.pageContainer}>
         <View style={styles.headerCont}>
-          <Text>ROOM CODE: {code}</Text>
           <Image
             style={styles.img}
             source={require("../assets/ARGULYMPICS.png")}
@@ -102,7 +101,7 @@ const WaitingRoom = ({
           {users.map((user) => {
             console.log(user);
             return (
-              <Card key={user.id} style={styles.card}>
+              <Card key={user.userId} style={styles.card}>
                 <Card.Content>
                   <View style={styles.cardImage}>
                     <Image
@@ -119,7 +118,6 @@ const WaitingRoom = ({
                       )}
                       {user.username}
                     </Title>
-                    <Paragraph>Fighting for {user.argument}</Paragraph>
                     <Paragraph style={styles.highScore}>
                       Current High Score: {user.score}
                     </Paragraph>
