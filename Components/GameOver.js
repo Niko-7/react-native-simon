@@ -9,11 +9,11 @@ import { firebase } from '../src/firebaseConfig';
 const GameOver = ({
   navigation,
   route: {
-    params: { roomId, user, currentScore }
-  }
+    params: { roomId, user, currentScore },
+  },
 }) => {
   let [fontsLoaded, error] = Font.useFonts({
-    Graduate: require('../assets/fonts/Graduate-Regular.ttf')
+    Graduate: require('../assets/fonts/Graduate-Regular.ttf'),
   });
 
   const [usersArray, setUsersArray] = useState([]);
@@ -67,56 +67,62 @@ const GameOver = ({
       });
     });
 
-    const players = [];
-
     const checkGameOver = roomRef.onSnapshot((querySnapshot) => {
-      usersRef.get().then((doc) => {
-        doc.forEach((person) => {
-          players.push(person.data());
-        });
-      });
-      console.log(players.length, 'players length');
-      console.log(querySnapshot.data().gameOvers, 'gameOvers');
-      if (players.length <= querySnapshot.data().gameOvers) {
-        console.log('in the if statement');
-        usersRef
-          .orderBy('score', 'desc')
-          .limit(1)
-          .get()
-          .then((users) => {
-            let winner;
-            users.forEach((winnerData) => {
-              winner = winnerData.data();
-            });
-            checkGameOver();
-            trackStatus();
+      const players = [];
 
-            Alert.alert(
-              'Argument settled!',
-              `${winner.username} is the winner!!\nFighting for ${winner.argument}`,
-              [
-                {
-                  text: 'OK',
-                  onPress: () => {
-                    if (user.isHost) {
-                      roomRef
-                        .delete()
-                        .then(() => {
-                          console.log('room deleted.');
-                        })
-                        .catch((err) => {
-                          console.error('Error removing document: ', error);
-                        });
-                    }
-
-                    navigation.navigate('GameChoice', { extraData: user });
-                  }
-                }
-              ],
-              { cancelable: false }
-            );
+      usersRef
+        .get()
+        .then((doc) => {
+          doc.forEach((person) => {
+            players.push(person.data());
           });
-      }
+
+          return players;
+        })
+        .then((playersArray) => {
+          console.log(playersArray.length, 'players length');
+          console.log(querySnapshot.data().gameOvers, 'gameOvers');
+          if (playersArray.length <= querySnapshot.data().gameOvers) {
+            console.log('in the if statement');
+            usersRef
+              .orderBy('score', 'desc')
+              .limit(1)
+              .get()
+              .then((users) => {
+                let winner;
+                users.forEach((winnerData) => {
+                  winner = winnerData.data();
+                });
+                checkGameOver();
+                trackStatus();
+
+                Alert.alert(
+                  'Argument settled!',
+                  `${winner.username} is the winner!!\nFighting for ${winner.argument}`,
+                  [
+                    {
+                      text: 'OK',
+                      onPress: () => {
+                        if (user.isHost) {
+                          roomRef
+                            .delete()
+                            .then(() => {
+                              console.log('room deleted.');
+                            })
+                            .catch((err) => {
+                              console.error('Error removing document: ', error);
+                            });
+                        }
+
+                        navigation.navigate('GameChoice', { extraData: user });
+                      },
+                    },
+                  ],
+                  { cancelable: false }
+                );
+              });
+          }
+        });
     });
     getAndLoadHttpUrl(user);
   }, []);
@@ -147,7 +153,7 @@ const GameOver = ({
                     <Image
                       style={styles.avatar}
                       source={{
-                        uri: imageUrl
+                        uri: imageUrl,
                       }}
                     />
                   </View>
@@ -182,43 +188,43 @@ export default GameOver;
 const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
-    backgroundColor: '#bde0fe'
+    backgroundColor: '#bde0fe',
   },
 
   // HEADER SECTION
 
   headerCont: {
     flex: 2,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   img: {
     flex: 3,
     width: '100%',
-    resizeMode: 'center'
+    resizeMode: 'center',
   },
   titleCont: {
-    flex: 1
+    flex: 1,
   },
   pageTitleText: {
     fontFamily: 'Graduate',
     textAlign: 'center',
-    fontSize: 30
+    fontSize: 30,
   },
   roomCodeCont: {
-    flex: 1
+    flex: 1,
   },
   roomCodeText: {
     fontFamily: 'Graduate',
     textAlign: 'center',
-    fontSize: 25
+    fontSize: 25,
   },
 
   participantsCont: {
-    flex: 1
+    flex: 1,
   },
   participantsText: {
     fontFamily: 'Graduate',
-    fontSize: 20
+    fontSize: 20,
   },
 
   // TABLE SECTION
@@ -226,14 +232,14 @@ const styles = StyleSheet.create({
   waitingTable: {
     flex: 3,
     justifyContent: 'flex-start',
-    textAlign: 'center'
+    textAlign: 'center',
   },
 
   waitingText: {
     paddingTop: 12,
     textAlign: 'center',
     fontFamily: 'Graduate',
-    fontSize: 25
+    fontSize: 25,
   },
 
   // User Card
@@ -244,13 +250,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7A919',
     paddingBottom: 0.2,
     flexDirection: 'row',
-    height: 100
+    height: 100,
   },
 
   // flex horizontal
 
   cardImage: {
-    flex: 1
+    flex: 1,
   },
   cardText: {
     top: -4.5,
@@ -258,24 +264,24 @@ const styles = StyleSheet.create({
     flex: 4,
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    textAlign: 'left'
+    textAlign: 'left',
   },
 
   cardTitle: {
     fontFamily: 'Graduate',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
   },
   hostTitle: {
-    fontFamily: 'Graduate'
+    fontFamily: 'Graduate',
   },
   highScore: {
-    fontFamily: 'Graduate'
+    fontFamily: 'Graduate',
   },
   arguText: {
-    fontFamily: 'Graduate'
+    fontFamily: 'Graduate',
   },
   avatar: {
     width: 50,
-    height: 50
-  }
+    height: 50,
+  },
 });
