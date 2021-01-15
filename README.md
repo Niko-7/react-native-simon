@@ -1,5 +1,7 @@
 # Argulympics
 
+![Argulympics Logo](https://github.com/xmenbteam/react-native-simon/blob/master/assets/ARGULYMPICS.png?raw=true)
+
 ## Table of contents
 
 - [About](#about)
