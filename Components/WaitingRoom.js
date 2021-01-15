@@ -109,7 +109,6 @@ const WaitingRoom = ({
         )}
         <View style={styles.waitingTable}>
           {users.map((user) => {
-            console.log(user);
             return (
               <Card key={user.userId} style={styles.card}>
                 <Card.Content>

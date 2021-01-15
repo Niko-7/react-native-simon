@@ -24,7 +24,6 @@ export const joinRoom = (code, user, argument, navigation) => {
         if (!querySnapshot.empty) {
           querySnapshot.forEach(function (doc) {
             const roomId = doc.id;
-            console.log('in foreach');
 
             if (doc.exists) {
               roomsRef.doc(roomId).collection('users').doc(user.username).set({

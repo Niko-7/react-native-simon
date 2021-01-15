@@ -1,19 +1,19 @@
-import React from "react";
-import { View, StyleSheet, Alert, Image } from "react-native";
-import { Text, Card, Title, Paragraph } from "react-native-paper";
-import { useEffect, useState } from "react/cjs/react.development";
-import AppLoading from "expo-app-loading";
-import * as Font from "expo-font";
-import { firebase } from "../src/firebaseConfig";
+import React from 'react';
+import { View, StyleSheet, Alert, Image } from 'react-native';
+import { Text, Card, Title, Paragraph } from 'react-native-paper';
+import { useEffect, useState } from 'react/cjs/react.development';
+import AppLoading from 'expo-app-loading';
+import * as Font from 'expo-font';
+import { firebase } from '../src/firebaseConfig';
 
 const GameOver = ({
   navigation,
   route: {
-    params: { roomId, user, currentScore },
-  },
+    params: { roomId, user, currentScore }
+  }
 }) => {
   let [fontsLoaded, error] = Font.useFonts({
-    Graduate: require("../assets/fonts/Graduate-Regular.ttf"),
+    Graduate: require('../assets/fonts/Graduate-Regular.ttf')
   });
 
   const [usersArray, setUsersArray] = useState([]);
@@ -27,18 +27,18 @@ const GameOver = ({
       .then((url) => {
         setImageUrl(url);
       })
-      .catch((e) => console.log("Errors while downloading => ", e));
+      .catch((e) => console.log('Errors while downloading => ', e));
   };
 
   const usersRef = firebase
     .firestore()
-    .collection("multiplayerGames")
+    .collection('multiplayerGames')
     .doc(roomId)
-    .collection("users");
+    .collection('users');
 
   const roomRef = firebase
     .firestore()
-    .collection("multiplayerGames")
+    .collection('multiplayerGames')
     .doc(roomId);
 
   useEffect(() => {
@@ -75,9 +75,12 @@ const GameOver = ({
           players.push(person.data());
         });
       });
-      if (players.length === querySnapshot.data().gameOvers) {
+      console.log(players.length, 'players length');
+      console.log(querySnapshot.data().gameOvers, 'gameOvers');
+      if (players.length <= querySnapshot.data().gameOvers) {
+        console.log('in the if statement');
         usersRef
-          .orderBy("score", "desc")
+          .orderBy('score', 'desc')
           .limit(1)
           .get()
           .then((users) => {
@@ -89,27 +92,26 @@ const GameOver = ({
             trackStatus();
 
             Alert.alert(
-              "Argument settled!",
+              'Argument settled!',
               `${winner.username} is the winner!!\nFighting for ${winner.argument}`,
               [
                 {
-                  text: "OK",
+                  text: 'OK',
                   onPress: () => {
-                    console.log(user);
                     if (user.isHost) {
                       roomRef
                         .delete()
                         .then(() => {
-                          console.log("room deleted.");
+                          console.log('room deleted.');
                         })
                         .catch((err) => {
-                          console.error("Error removing document: ", error);
+                          console.error('Error removing document: ', error);
                         });
                     }
 
-                    navigation.navigate("GameChoice", { extraData: user });
-                  },
-                },
+                    navigation.navigate('GameChoice', { extraData: user });
+                  }
+                }
               ],
               { cancelable: false }
             );
@@ -130,7 +132,7 @@ const GameOver = ({
         <View style={styles.headerCont}>
           <Image
             style={styles.img}
-            source={require("../assets/ARGULYMPICS.png")}
+            source={require('../assets/ARGULYMPICS.png')}
           />
           <View style={styles.titleCont}>
             <Text style={styles.pageTitleText}>GAME OVER</Text>
@@ -145,7 +147,7 @@ const GameOver = ({
                     <Image
                       style={styles.avatar}
                       source={{
-                        uri: imageUrl,
+                        uri: imageUrl
                       }}
                     />
                   </View>
@@ -180,100 +182,100 @@ export default GameOver;
 const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
-    backgroundColor: "#bde0fe",
+    backgroundColor: '#bde0fe'
   },
 
   // HEADER SECTION
 
   headerCont: {
     flex: 2,
-    justifyContent: "center",
+    justifyContent: 'center'
   },
   img: {
     flex: 3,
-    width: "100%",
-    resizeMode: "center",
+    width: '100%',
+    resizeMode: 'center'
   },
   titleCont: {
-    flex: 1,
+    flex: 1
   },
   pageTitleText: {
-    fontFamily: "Graduate",
-    textAlign: "center",
-    fontSize: 30,
+    fontFamily: 'Graduate',
+    textAlign: 'center',
+    fontSize: 30
   },
   roomCodeCont: {
-    flex: 1,
+    flex: 1
   },
   roomCodeText: {
-    fontFamily: "Graduate",
-    textAlign: "center",
-    fontSize: 25,
+    fontFamily: 'Graduate',
+    textAlign: 'center',
+    fontSize: 25
   },
 
   participantsCont: {
-    flex: 1,
+    flex: 1
   },
   participantsText: {
-    fontFamily: "Graduate",
-    fontSize: 20,
+    fontFamily: 'Graduate',
+    fontSize: 20
   },
 
   // TABLE SECTION
 
   waitingTable: {
     flex: 3,
-    justifyContent: "flex-start",
-    textAlign: "center",
+    justifyContent: 'flex-start',
+    textAlign: 'center'
   },
 
   waitingText: {
     paddingTop: 12,
-    textAlign: "center",
-    fontFamily: "Graduate",
-    fontSize: 25,
+    textAlign: 'center',
+    fontFamily: 'Graduate',
+    fontSize: 25
   },
 
   // User Card
 
   card: {
-    borderColor: "#ED2E18",
+    borderColor: '#ED2E18',
     borderWidth: 2,
-    backgroundColor: "#F7A919",
+    backgroundColor: '#F7A919',
     paddingBottom: 0.2,
-    flexDirection: "row",
-    height: 100,
+    flexDirection: 'row',
+    height: 100
   },
 
   // flex horizontal
 
   cardImage: {
-    flex: 1,
+    flex: 1
   },
   cardText: {
     top: -4.5,
     marginLeft: 75,
     flex: 4,
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    textAlign: "left",
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    textAlign: 'left'
   },
 
   cardTitle: {
-    fontFamily: "Graduate",
-    textTransform: "uppercase",
+    fontFamily: 'Graduate',
+    textTransform: 'uppercase'
   },
   hostTitle: {
-    fontFamily: "Graduate",
+    fontFamily: 'Graduate'
   },
   highScore: {
-    fontFamily: "Graduate",
+    fontFamily: 'Graduate'
   },
   arguText: {
-    fontFamily: "Graduate",
+    fontFamily: 'Graduate'
   },
   avatar: {
     width: 50,
-    height: 50,
-  },
+    height: 50
+  }
 });
